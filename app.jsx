@@ -66,9 +66,9 @@ const App = () => {
                         <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
                         <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
                         <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
-                        <a href="tel:01046882119"
+                        <a href="tel:01000000000"
                             className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
-                            <IconPhone /> 010.4688.2119
+                            <IconPhone /> 010.0000.0000
                         </a>
                     </div>
 
@@ -116,27 +116,93 @@ const App = () => {
                 </div>
             </section>
 
-            {/* --- Intro Text Section --- */}
+            {/* --- Value Proposition --- */}
             <section id="about" className="py-24 bg-white">
-                <div className="container mx-auto px-6 text-center max-w-4xl">
-                    <div className="flex justify-center mb-6">
-                        <div className="w-16 h-1 bg-[#5d7c47]"></div>
+                <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div className="text-center space-y-4">
+                        <div className="text-4xl font-black text-[#5d7c47]">01</div>
+                        <h4 className="text-2xl font-black text-slate-900">삶의 온도가 바뀌는 30분</h4>
+                        <p className="text-slate-500 font-medium leading-relaxed">복잡한 도심 인프라는 30분 거리에 두고,<br />집에 도착하는 순간 온전한 자연이 시작됩니다.</p>
                     </div>
-                    <h3 className="text-3xl md:text-5xl font-black mb-8 leading-tight">
-                        청주 최대규모! 51 대단지,<br />
-                        관리실이 있는 안전한 단지
-                    </h3>
-                    <p className="text-slate-500 text-lg md:text-xl leading-loose font-medium">
-                        진정한 자연 속 힐링 타운하우스를 소개합니다.<br />
-                        청주 남일면에 위치한 "에코 알베로" 타운하우스는 편의시설을 단지 내에 갖춘<br />
-                        주거환경의 차원을 높인 프리미엄 단지입니다.<br />
-                        뛰어난 단지 경관과 함께 삶의 여유와 힐링을 느낄 수 있는 신개념 전원주택단지입니다.
-                    </p>
+                    <div className="text-center space-y-4 border-y md:border-y-0 md:border-x border-slate-100 py-12 md:py-0">
+                        <div className="text-4xl font-black text-[#5d7c47]">02</div>
+                        <h4 className="text-2xl font-black text-slate-900">아이의 웃음소리가 들리는 마당</h4>
+                        <p className="text-slate-500 font-medium leading-relaxed">층간소음 탈출! 하이닉스 아빠들이<br />에코 알베로를 선택하는 가장 큰 이유입니다.</p>
+                    </div>
+                    <div className="text-center space-y-4">
+                        <div className="text-4xl font-black text-[#5d7c47]">03</div>
+                        <h4 className="text-2xl font-black text-slate-900">아파트의 편리함을 그대로</h4>
+                        <p className="text-slate-500 font-medium leading-relaxed">단지 내 전문 관리실과 상시 보안 시스템으로<br />전원주택의 불안함과 번거로움을 해결했습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- Lifestyle Section --- */}
+            <section className="py-24 bg-slate-50">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h3 className="text-3xl md:text-5xl font-black mb-6">누구에게나 꿈꾸던 삶이 있습니다</h3>
+                        <p className="text-slate-500 text-lg font-medium">에코 알베로가 제안하는 맞춤형 라이프스타일</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Card 1: Kids & Yard */}
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                            <div className="aspect-[4/3] overflow-hidden">
+                                <img src="/lifestyle_3040.png" alt="Kids playing in yard" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            </div>
+                            <div className="p-6 space-y-3">
+                                <h4 className="text-lg font-black text-slate-900">아이들이 마음껏 뛰어노는 마당</h4>
+                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                                    층간소음 걱정 없이 아이들이 자연과 함께 성장하는 우리 가족만의 소중한 공간입니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 2: Healing & Garden */}
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                            <div className="aspect-[4/3] overflow-hidden">
+                                <img src="/lifestyle_5060.png" alt="Healing garden" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            </div>
+                            <div className="p-6 space-y-3">
+                                <h4 className="text-lg font-black text-slate-900">여유로운 가드닝과 힐링 라이프</h4>
+                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                                    복잡한 도심을 벗어나 맑은 공기와 함께 즐기는 여유로운 전원생활의 낭만을 누리세요.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 3: Pet & Party */}
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                            <div className="aspect-[4/3] overflow-hidden">
+                                <img src="/lifestyle_party.png" alt="Pet and Party" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            </div>
+                            <div className="p-6 space-y-3">
+                                <h4 className="text-lg font-black text-slate-900">반려견과 함께하는 가든 파티</h4>
+                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                                    반려견이 자유롭게 뛰놀고, 지인들과 함께 맛있는 바비큐 파티를 즐길 수 있습니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Card 4: Jacuzzi & Camping */}
+                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                            <div className="aspect-[4/3] overflow-hidden">
+                                <img src="/lifestyle_jacuzzi.png" alt="Jacuzzi and Camping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            </div>
+                            <div className="p-6 space-y-3">
+                                <h4 className="text-lg font-black text-slate-900">테라스 자쿠지와 감성 캠핑</h4>
+                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                                    별 쏟아지는 밤, 프라이빗한 테라스에서 즐기는 자쿠지와 캠핑으로 일상의 피로를 씻어냅니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             {/* --- Location Highlights --- */}
-            <section id="location" className="py-24 bg-slate-50">
+            <section id="location" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10">
@@ -146,8 +212,7 @@ const App = () => {
                             </h4>
                             <div className="space-y-8">
                                 <div className="flex gap-6 items-start">
-                                    <div
-                                        className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -156,8 +221,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div
-                                        className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -166,8 +230,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div
-                                        className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -195,7 +258,7 @@ const App = () => {
             </section>
 
             {/* --- Gallery --- */}
-            <section id="gallery" className="py-24 bg-white">
+            <section id="gallery" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                         <h4 className="text-4xl md:text-5xl font-black">
@@ -256,7 +319,7 @@ const App = () => {
                                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
                                         <IconPhone />
                                     </div>
-                                    <span className="text-2xl font-bold">010.4688.2119</span>
+                                    <span className="text-2xl font-bold">010.0000.0000</span>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
@@ -319,11 +382,10 @@ const App = () => {
                     <div className="mt-12 pt-12 border-t border-slate-50 text-center md:text-left">
                         <p className="text-slate-400 text-sm leading-loose font-medium">
                             에코 알베로 | 분양대행: 주식회사 와운 | 주소: 충청북도 청주시 상당구 수암로54번길 8 3동 3층 <br />
-                            사업자등록번호: [번호확인 필요] | 대표자: [성함] | 분양문의: 010.4688.2119 <br />
+                            사업자등록번호: [번호확인 필요] | 대표자: [성함] | 분양문의: 010.0000.0000 <br />
                             본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제와 다를 수 있습니다.
                         </p>
-                        <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECO ALBERO. ALL RIGHTS
-                            RESERVED.</p>
+                        <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECO ALBERO. ALL RIGHTS RESERVED.</p>
                     </div>
                 </div>
             </footer>
