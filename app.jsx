@@ -24,6 +24,7 @@ const IconClock = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" heigh
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [modalType, setModalType] = useState(null); // 'terms' | 'privacy' | null
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -93,14 +94,13 @@ const App = () => {
                             className="inline-flex items-center gap-2 bg-[#ff8a00] text-white px-4 py-1.5 rounded mb-8 font-bold text-sm tracking-wide">
                             <IconClock /> 잔여 필지 빠르게 소진 중
                         </div>
-                        <h2 className="text-white text-4xl md:text-7xl font-extrabold leading-[1.1] mb-8">
-                            하이닉스 퇴근 후 30분,<br />
-                            청주 대단지 프리미엄<br />
-                            <span className="text-[#a4c639]">관리형 타운하우스</span>
-                        </h2>
+                        <h1 className="text-white text-4xl md:text-6xl font-extrabold leading-[1.1] mb-8">
+                            퇴근 후 30분<br />
+                            도심의 소음이 숲의 숨소리로<br />
+                        </h1>
                         <p className="text-white/80 text-lg md:text-2xl mb-12 font-medium leading-relaxed">
-                            아파트형 편리한 인프라와<br />
-                            숲세권의 평온함을 동시에 누리는 51세대 명품 단지
+                            하이닉스·현대백화점 30분, 청남대·대청댐 25분<br />
+                            도심의 편리함과 자연의 평온함을 동시에 소유하세요.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <button onClick={scrollToContact}
@@ -121,18 +121,18 @@ const App = () => {
                 <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div className="text-center space-y-4">
                         <div className="text-4xl font-black text-[#5d7c47]">01</div>
-                        <h4 className="text-2xl font-black text-slate-900">삶의 온도가 바뀌는 30분</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">복잡한 도심 인프라는 30분 거리에 두고,<br />집에 도착하는 순간 온전한 자연이 시작됩니다.</p>
+                        <h4 className="text-2xl font-black text-slate-900">도심과 자연 사이, 완벽한 30분</h4>
+                        <p className="text-slate-500 font-medium leading-relaxed">하이닉스·현대백화점의 인프라는 30분 거리에,<br />청남대·대청댐의 힐링은 25분 거리에 있습니다.</p>
                     </div>
                     <div className="text-center space-y-4 border-y md:border-y-0 md:border-x border-slate-100 py-12 md:py-0">
                         <div className="text-4xl font-black text-[#5d7c47]">02</div>
                         <h4 className="text-2xl font-black text-slate-900">아이의 웃음소리가 들리는 마당</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">층간소음 탈출! 하이닉스 아빠들이<br />에코 알베로를 선택하는 가장 큰 이유입니다.</p>
+                        <p className="text-slate-500 font-medium leading-relaxed">층간소음 탈출! 넓은 잔디 마당에서<br />아이와 반려견이 마음껏 뛰어놀 수 있습니다.</p>
                     </div>
                     <div className="text-center space-y-4">
                         <div className="text-4xl font-black text-[#5d7c47]">03</div>
                         <h4 className="text-2xl font-black text-slate-900">아파트의 편리함을 그대로</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">단지 내 전문 관리실과 상시 보안 시스템으로<br />전원주택의 불안함과 번거로움을 해결했습니다.</p>
+                        <p className="text-slate-500 font-medium leading-relaxed">단지 내 전문 관리실과 상시 보안 시스템으로<br />전원주택의 번거로움을 완벽히 해결했습니다.</p>
                     </div>
                 </div>
             </section>
@@ -234,6 +234,15 @@ const App = () => {
                                         <IconCheck />
                                     </div>
                                     <div>
+                                        <h5 className="text-xl font-black mb-2">청남대·대청댐 명품 생활권</h5>
+                                        <p className="text-slate-500 font-medium">대통령의 휴양지 청남대와 대청댐이 인접한 천혜의 자연환경을 매일 누립니다.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6 items-start">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                        <IconCheck />
+                                    </div>
+                                    <div>
                                         <h5 className="text-xl font-black mb-2">4차 우회도로 인접</h5>
                                         <p className="text-slate-500 font-medium">청주 전역 및 오창, 세종 방면으로의 쾌속 교통망을 갖췄습니다.</p>
                                     </div>
@@ -249,7 +258,7 @@ const App = () => {
                                     <IconMapPin />
                                 </div>
                                 <h6 className="text-2xl font-black mb-2 text-white drop-shadow-md">에코 알베로 현장</h6>
-                                <p className="text-slate-900 font-bold bg-white/90 px-4 py-1 rounded-full text-sm">청주시 남일면 고은리 일원</p>
+                                <p className="text-slate-900 font-bold bg-white/90 px-4 py-1 rounded-full text-sm">청주시 남일면 고은리 산35-25</p>
                                 <p className="mt-4 text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">클릭하여 네이버 지도로 보기</p>
                             </div>
                         </a>
@@ -325,7 +334,7 @@ const App = () => {
                                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
                                         <IconMapPin />
                                     </div>
-                                    <span className="text-xl font-bold">홍보관: 청주시 남일면 고은리 일원</span>
+                                    <span className="text-xl font-bold">현장: 청주시 남일면 고은리 산35-25</span>
                                 </div>
                             </div>
                         </div>
@@ -374,9 +383,9 @@ const App = () => {
                             <div className="text-[#5d7c47] font-black text-2xl tracking-tighter italic">ECO ALBERO</div>
                         </div>
                         <div className="flex gap-12 text-slate-400 font-bold text-sm">
-                            <a href="#" className="hover:text-slate-900 transition-colors">이용약관</a>
-                            <a href="#" className="hover:text-slate-900 transition-colors">개인정보처리방침</a>
-                            <a href="#" className="hover:text-slate-900 transition-colors">오시는길</a>
+                            <button onClick={() => setModalType('terms')} className="hover:text-slate-900 transition-colors">이용약관</button>
+                            <button onClick={() => setModalType('privacy')} className="hover:text-slate-900 transition-colors">개인정보처리방침</button>
+                            <a href="#location" className="hover:text-slate-900 transition-colors">오시는길</a>
                         </div>
                     </div>
                     <div className="mt-12 pt-12 border-t border-slate-50 text-center md:text-left">
@@ -389,6 +398,65 @@ const App = () => {
                     </div>
                 </div>
             </footer>
+
+            {/* --- Modal --- */}
+            {modalType && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                    <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setModalType(null)}></div>
+                    <div className="bg-white rounded-[32px] w-full max-w-2xl max-h-[80vh] overflow-hidden relative z-10 shadow-2xl flex flex-col">
+                        <div className="p-8 border-b border-slate-100 flex justify-between items-center">
+                            <h5 className="text-2xl font-black">
+                                {modalType === 'terms' ? '이용약관' : '개인정보처리방침'}
+                            </h5>
+                            <button onClick={() => setModalType(null)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        <div className="p-8 overflow-y-auto text-slate-600 leading-relaxed space-y-6 font-medium">
+                            {modalType === 'terms' ? (
+                                <>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">제 1 조 (목적)</h6>
+                                        <p className="text-sm">본 약관은 에코 알베로 분양 홍보 사이트(이하 "사이트")가 제공하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
+                                    </section>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">제 2 조 (정보의 한계 및 변경)</h6>
+                                        <p className="text-sm">본 사이트에 사용된 조감도, CG, 이미지, 평면도 등은 소비자의 이해를 돕기 위해 제작된 것으로 실제 시공 시 인허가 과정이나 현장 여건에 따라 변경될 수 있습니다.</p>
+                                    </section>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">제 3 조 (저작권의 귀속)</h6>
+                                        <p className="text-sm">사이트에 게재된 모든 콘텐츠(이미지, 텍스트, 로고 등)에 대한 저작권은 에코 알베로 및 분양 대행사에 귀속되며, 무단 복제 및 배포를 금합니다.</p>
+                                    </section>
+                                </>
+                            ) : (
+                                <>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">1. 개인정보의 수집 및 이용 목적</h6>
+                                        <p className="text-sm">수집된 개인정보는 에코 알베로 분양 상담, 방문 예약 확인, 분양 관련 정보 제공(전화, SMS) 및 마케팅 활용을 위해 사용됩니다.</p>
+                                    </section>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">2. 수집하는 개인정보 항목</h6>
+                                        <p className="text-sm">필수항목: 성함, 연락처, 관심분야</p>
+                                    </section>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">3. 개인정보의 보유 및 이용 기간</h6>
+                                        <p className="text-sm">개인정보는 분양 종료 시까지 또는 정보 주체의 삭제 요청 시까지 보유하며, 목적 달성 후 지체 없이 파기합니다.</p>
+                                    </section>
+                                    <section className="space-y-3">
+                                        <h6 className="text-slate-900 font-bold">4. 동의 거부 권리</h6>
+                                        <p className="text-sm">귀하는 개인정보 수집 및 이용에 동의하지 않을 권리가 있으나, 동의 거부 시 상담 신청 및 서비스 이용이 제한될 수 있습니다.</p>
+                                    </section>
+                                </>
+                            )}
+                        </div>
+                        <div className="p-6 bg-slate-50 border-t border-slate-100 text-center">
+                            <button onClick={() => setModalType(null)} className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all">
+                                확인
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
