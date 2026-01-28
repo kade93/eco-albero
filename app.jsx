@@ -42,7 +42,7 @@ const App = () => {
                 <div className="container mx-auto flex justify-between items-center text-sm font-medium">
                     <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 51세대 한정 분양 중</p>
                     <div className="flex gap-4 items-center">
-                        <span>현장 문의: 010.4688.2119</span>
+                        <span>현장 문의: 010.0000.0000</span>
                         <span className="bg-white/20 px-2 py-0.5 rounded">특별 혜택 확인</span>
                     </div>
                 </div>
