@@ -21,6 +21,14 @@ const IconClock = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" heigh
     <polyline points="12 6 12 12 16 14" />
 </svg>;
 
+const getAssetPath = (path) => {
+    const base = import.meta.env.BASE_URL;
+    // Ensure base ends with / and path doesn't start with /
+    const normalizedBase = base.endsWith('/') ? base : `${base}/`;
+    const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
+    return `${normalizedBase}${normalizedPath}`;
+};
+
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,51 +46,54 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900">
-            {/* --- Top Info Bar --- */}
-            <div className="bg-[#5d7c47] text-white py-2 px-6 hidden md:block">
-                <div className="container mx-auto flex justify-between items-center text-sm font-medium">
-                    <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 51세대 한정 분양 중</p>
-                    <div className="flex gap-4 items-center">
-                        <span>현장 문의: 010.0000.0000</span>
-                        <span className="bg-white/20 px-2 py-0.5 rounded">특별 혜택 확인</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* --- Header --- */}
-            <nav className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-white'}`}>
-                <div className="container mx-auto px-6 h-20 flex justify-between items-center">
-                    <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <img src="/eco_albero_logo.jpeg" alt="Eco Albero Logo" className="h-12 w-auto rounded-lg" />
-                        <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
-                        <div className="flex flex-col leading-none hidden sm:flex">
-                            <span className="text-[#5d7c47] font-black text-lg tracking-tighter">에코 알베로</span>
-                            <span className="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Village</span>
+            {/* --- Sticky Header Wrapper --- */}
+            <div className="sticky top-0 z-50 w-full">
+                {/* --- Top Info Bar --- */}
+                <div className="bg-[#5d7c47] text-white py-1.5 px-6 hidden md:block border-b border-white/10">
+                    <div className="container mx-auto flex justify-between items-center text-[13px] font-bold tracking-tight">
+                        <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 51세대 분양 중</p>
+                        <div className="flex gap-4 items-center">
+                            <span>현장 문의: 010.0000.0000</span>
+                            <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Special Benefit</span>
                         </div>
                     </div>
-
-                    <div className="hidden lg:flex items-center gap-10 text-[15px] font-bold text-slate-600">
-                        <a href="#about" className="hover:text-[#5d7c47] transition-colors">단지안내</a>
-                        <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
-                        <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
-                        <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
-                        <a href="tel:01000000000"
-                            className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
-                            <IconPhone /> 010.0000.0000
-                        </a>
-                    </div>
-
-                    <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="4" x2="20" y1="12" y2="12" />
-                            <line x1="4" x2="20" y1="6" y2="6" />
-                            <line x1="4" x2="20" y1="18" y2="18" />
-                        </svg>
-                    </button>
                 </div>
-            </nav>
+
+                {/* --- Header --- */}
+                <nav className={`w-full transition-all duration-300 ${scrolled
+                    ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-white'}`}>
+                    <div className="container mx-auto px-6 h-20 flex justify-between items-center">
+                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                            <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-12 w-auto rounded-lg" />
+                            <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
+                            <div className="flex flex-col leading-none hidden sm:flex">
+                                <span className="text-[#5d7c47] font-black text-lg tracking-tighter">에코 알베로</span>
+                                <span className="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Village</span>
+                            </div>
+                        </div>
+
+                        <div className="hidden lg:flex items-center gap-10 text-[15px] font-bold text-slate-600">
+                            <a href="#about" className="hover:text-[#5d7c47] transition-colors">단지안내</a>
+                            <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
+                            <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
+                            <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
+                            <a href="tel:01000000000"
+                                className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
+                                <IconPhone /> 010.0000.0000
+                            </a>
+                        </div>
+
+                        <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="4" x2="20" y1="12" y2="12" />
+                                <line x1="4" x2="20" y1="6" y2="6" />
+                                <line x1="4" x2="20" y1="18" y2="18" />
+                            </svg>
+                        </button>
+                    </div>
+                </nav>
+            </div>
 
             {/* --- Hero Section --- */}
             <section className="relative h-[80vh] min-h-[600px] flex items-center overflow-hidden bg-slate-900">
@@ -149,7 +160,7 @@ const App = () => {
                         {/* Card 1: Kids & Yard */}
                         <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
                             <div className="aspect-[4/3] overflow-hidden">
-                                <img src="/lifestyle_3040.png" alt="Kids playing in yard" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <img src={getAssetPath('lifestyle_3040.png')} alt="Kids playing in yard" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             </div>
                             <div className="p-6 space-y-3">
                                 <h4 className="text-lg font-black text-slate-900">아이들이 마음껏 뛰어노는 마당</h4>
@@ -162,7 +173,7 @@ const App = () => {
                         {/* Card 2: Healing & Garden */}
                         <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
                             <div className="aspect-[4/3] overflow-hidden">
-                                <img src="/lifestyle_5060.png" alt="Healing garden" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <img src={getAssetPath('lifestyle_5060.png')} alt="Healing garden" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             </div>
                             <div className="p-6 space-y-3">
                                 <h4 className="text-lg font-black text-slate-900">여유로운 가드닝과 힐링 라이프</h4>
@@ -175,7 +186,7 @@ const App = () => {
                         {/* Card 3: Pet & Party */}
                         <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
                             <div className="aspect-[4/3] overflow-hidden">
-                                <img src="/lifestyle_party.png" alt="Pet and Party" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <img src={getAssetPath('lifestyle_party.png')} alt="Pet and Party" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             </div>
                             <div className="p-6 space-y-3">
                                 <h4 className="text-lg font-black text-slate-900">반려견과 함께하는 가든 파티</h4>
@@ -188,7 +199,7 @@ const App = () => {
                         {/* Card 4: Jacuzzi & Camping */}
                         <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
                             <div className="aspect-[4/3] overflow-hidden">
-                                <img src="/lifestyle_jacuzzi.png" alt="Jacuzzi and Camping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <img src={getAssetPath('lifestyle_jacuzzi.png')} alt="Jacuzzi and Camping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             </div>
                             <div className="p-6 space-y-3">
                                 <h4 className="text-lg font-black text-slate-900">테라스 자쿠지와 감성 캠핑</h4>
@@ -251,7 +262,7 @@ const App = () => {
                         </div>
                         <a href="https://naver.me/GBv6kOWz" target="_blank" rel="noopener noreferrer"
                             className="lg:w-1/2 bg-white p-4 rounded-[40px] shadow-2xl relative group overflow-hidden block">
-                            <img src="/map.png"
+                            <img src={getAssetPath('map.png')}
                                 alt="에코알베로 지도 위치" className="w-full rounded-[30px] group-hover:scale-105 transition-transform duration-700" />
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-slate-900/10 group-hover:bg-slate-900/20 transition-all">
                                 <div className="bg-[#5d7c47] text-white p-4 rounded-full mb-4 shadow-xl">
@@ -281,7 +292,7 @@ const App = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div className="space-y-4 group cursor-pointer">
                             <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src="/design1.png"
+                                <img src={getAssetPath('design1.png')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Modern Minimalist" />
                             </div>
@@ -289,7 +300,7 @@ const App = () => {
                         </div>
                         <div className="space-y-4 group cursor-pointer lg:translate-y-12">
                             <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src="/design2.png"
+                                <img src={getAssetPath('design2.png')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Luxury Villa" />
                             </div>
@@ -297,7 +308,7 @@ const App = () => {
                         </div>
                         <div className="space-y-4 group cursor-pointer">
                             <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src="/design3.png"
+                                <img src={getAssetPath('design3.png')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Cozy Family House" />
                             </div>
@@ -379,7 +390,7 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-12">
                         <div className="flex items-center gap-3">
-                            <img src="/eco_albero_logo.jpeg" alt="Eco Albero Logo" className="h-10 w-auto rounded-md grayscale opacity-80" />
+                            <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-10 w-auto rounded-md grayscale opacity-80" />
                             <div className="text-[#5d7c47] font-black text-2xl tracking-tighter italic">ECO ALBERO</div>
                         </div>
                         <div className="flex gap-12 text-slate-400 font-bold text-sm">
