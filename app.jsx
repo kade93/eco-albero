@@ -696,8 +696,9 @@ const App = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 gap-y-12">
                         {/* A */}
-                        <div className="space-y-4 group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_a.webp'), label: 'A타입 모던 프리미엄' })}>
-                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                        <div className="flex flex-col group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_a.webp'), label: 'A타입 모던 프리미엄' })}>
+                            <h6 className="order-1 md:order-2 text-lg font-black text-slate-800 text-center mb-4 md:mb-0 md:mt-4">A타입 모던 프리미엄 외관</h6>
+                            <div className="order-2 md:order-1 aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
                                 <img src={getAssetPath('archi_sample_a.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Architecture Sample A" />
@@ -707,11 +708,11 @@ const App = () => {
                                     </div>
                                 </div>
                             </div>
-                            <h6 className="text-lg font-black text-slate-800 text-center">A타입 모던 프리미엄 외관</h6>
                         </div>
                         {/* B */}
-                        <div className="space-y-4 group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_b.webp'), label: 'B타입 자연 친화적 디자인' })}>
-                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                        <div className="flex flex-col group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_b.webp'), label: 'B타입 자연 친화적 디자인' })}>
+                            <h6 className="order-1 md:order-2 text-lg font-black text-slate-800 text-center mb-4 md:mb-0 md:mt-4">B타입 자연 친화적 디자인</h6>
+                            <div className="order-2 md:order-1 aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
                                 <img src={getAssetPath('archi_sample_b.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Architecture Sample B" />
@@ -721,11 +722,11 @@ const App = () => {
                                     </div>
                                 </div>
                             </div>
-                            <h6 className="text-lg font-black text-slate-800 text-center">B타입 자연 친화적 디자인</h6>
                         </div>
                         {/* C */}
-                        <div className="space-y-4 group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_c.webp'), label: 'C타입 하이엔드 럭셔리 뷰' })}>
-                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                        <div className="flex flex-col group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_c.webp'), label: 'C타입 하이엔드 럭셔리 뷰' })}>
+                            <h6 className="order-1 md:order-2 text-lg font-black text-slate-800 text-center mb-4 md:mb-0 md:mt-4">C타입 하이엔드 럭셔리 뷰</h6>
+                            <div className="order-2 md:order-1 aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
                                 <img src={getAssetPath('archi_sample_c.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Architecture Sample C" />
@@ -735,11 +736,11 @@ const App = () => {
                                     </div>
                                 </div>
                             </div>
-                            <h6 className="text-lg font-black text-slate-800 text-center">C타입 하이엔드 럭셔리 뷰</h6>
                         </div>
                         {/* D */}
-                        <div className="space-y-4 group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_d.webp'), label: 'D타입 프리미엄 단독' })}>
-                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                        <div className="flex flex-col group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_d.webp'), label: 'D타입 프리미엄 단독' })}>
+                            <h6 className="order-1 md:order-2 text-lg font-black text-slate-800 text-center mb-4 md:mb-0 md:mt-4">D타입 최고급 프리미엄 스케일</h6>
+                            <div className="order-2 md:order-1 aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
                                 <img src={getAssetPath('archi_sample_d.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     alt="Architecture Sample D" />
@@ -749,7 +750,6 @@ const App = () => {
                                     </div>
                                 </div>
                             </div>
-                            <h6 className="text-lg font-black text-slate-800 text-center">D타입 최고급 프리미엄 스케일</h6>
                         </div>
                     </div>
                 </div>
@@ -1049,10 +1049,25 @@ const App = () => {
                                 </div>
                             </div>
 
-                            <button className="w-full py-4 mt-8 bg-catalog-gold text-catalog-dark font-bold hover:bg-white transition-colors duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-catalog-gold/20">
-                                <IconPhone />
-                                상담 신청하기
-                            </button>
+                            <div className="mt-8 space-y-3">
+                                <button
+                                    onClick={() => {
+                                        setIsPanoOpen(false);
+                                        setTimeout(() => scrollToContact(), 100);
+                                    }}
+                                    className="w-full py-4 bg-catalog-gold text-catalog-dark font-bold hover:bg-white transition-colors duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-catalog-gold/20"
+                                >
+                                    <IconCheck />
+                                    상담 신청하기
+                                </button>
+                                <a
+                                    href="tel:043-250-1120"
+                                    className="w-full py-4 bg-white/5 border border-white/20 text-white font-bold hover:bg-white/10 transition-colors duration-300 rounded-xl flex items-center justify-center gap-2"
+                                >
+                                    <IconPhone />
+                                    전화로 바로 문의
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
