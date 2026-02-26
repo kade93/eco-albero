@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // --- Icons (Inline SVGs for reliability in preview) ---
 const IconX = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>;
@@ -134,6 +134,71 @@ const getPathCenter = (pathStr) => {
     };
 };
 
+const ZoomableImage = ({ src, alt }) => {
+    const [isZoomed, setIsZoomed] = useState(false);
+    const containerRef = useRef(null);
+
+    const handleZoomToggle = (e) => {
+        e.stopPropagation();
+
+        if (!isZoomed) {
+            setIsZoomed(true);
+
+            // Calculate click position relative to the image currently
+            const img = document.getElementById(`zoom-img-${(alt || 'img').toString().replace(/\s+/g, '-')}`);
+            if (img && containerRef.current) {
+                const rect = img.getBoundingClientRect();
+
+                // Get the percentage of where we clicked relative to the visual image
+                const clickXPercent = (e.clientX - rect.left) / rect.width;
+                const clickYPercent = (e.clientY - rect.top) / rect.height;
+
+                // Wait for the next tick for the image to scale, then set scroll position
+                setTimeout(() => {
+                    if (containerRef.current) {
+                        const scrollW = containerRef.current.scrollWidth;
+                        const scrollH = containerRef.current.scrollHeight;
+                        const clientW = containerRef.current.clientWidth;
+                        const clientH = containerRef.current.clientHeight;
+
+                        // Center the scroll on the clicked point
+                        containerRef.current.scrollTo({
+                            left: (scrollW * clickXPercent) - (clientW / 2),
+                            top: (scrollH * clickYPercent) - (clientH / 2),
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 50);
+            }
+        } else {
+            setIsZoomed(false);
+        }
+    };
+
+    return (
+        <div
+            ref={containerRef}
+            className={`w-full h-full max-h-[90vh] rounded-xl relative shadow-2xl shadow-black ring-1 ring-white/10 flex transition-all duration-300 ${isZoomed ? 'overflow-auto items-start justify-start cursor-zoom-out bg-black/95 scrollbar-default' : 'overflow-hidden items-center justify-center cursor-zoom-in bg-transparent scrollbar-hide'}`}
+            onClick={handleZoomToggle}
+        >
+            <img
+                id={`zoom-img-${(alt || 'img').toString().replace(/\s+/g, '-')}`}
+                src={src}
+                alt={alt}
+                className={`transition-transform duration-300 origin-[0_0] ${isZoomed ? 'w-[200%] md:w-[250%] max-w-none h-auto select-none' : 'max-w-full max-h-[90vh] object-contain select-none'}`}
+            />
+
+            {/* Guide Icon */}
+            {!isZoomed && (
+                <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-xs md:text-sm font-bold backdrop-blur-md pointer-events-none flex items-center gap-1.5 shadow-lg opacity-80 animate-pulse border border-white/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                    클릭하여 원본 확대
+                </div>
+            )}
+        </div>
+    );
+};
+
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -145,7 +210,28 @@ const App = () => {
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+
+        // Escape key listener to close modals sequentially
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setExpandedPanoImage(prevExpanded => {
+                    if (prevExpanded) {
+                        return null; // Just close the expanded image
+                    } else {
+                        // If no expanded image, close other modals
+                        setIsPanoOpen(false);
+                        setModalType(null);
+                        return null;
+                    }
+                });
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
     }, []);
 
     const scrollToContact = () => {
@@ -185,6 +271,11 @@ const App = () => {
                             <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
                             <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
                             <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
+                            <a href="/eco_albero_catalog.pdf" download="에코알베로_카달로그.pdf"
+                                className="border-2 border-[#5d7c47] text-[#5d7c47] px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-[#5d7c47] hover:text-white transition-all font-bold">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                카달로그
+                            </a>
                             <a href="tel:01000000000"
                                 className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
                                 <IconPhone /> 010.0000.0000
@@ -297,9 +388,10 @@ const App = () => {
                                 className="bg-[#5d7c47] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#4a6339] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
                                 지금 분양 문의하기
                             </button>
-                            <a href="https://youtu.be/4O8F_lLN4DE?si=gVKuLWUvJq6bCo1M" target="_blank" rel="noopener noreferrer"
-                                className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center">
-                                모델하우스 영상보기
+                            <a href="/eco_albero_catalog.pdf" download="에코알베로_카달로그.pdf"
+                                className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#5d7c47]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                카달로그 다운로드
                             </a>
                         </div>
                     </div>
@@ -524,37 +616,132 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                         <h4 className="text-4xl md:text-5xl font-black">
-                            공간의 깊이가 다른<br />
-                            <span className="text-[#5d7c47]">에코 알베로</span> 하우스
+                            자유로운 맞춤형 설계<br />
+                            <span className="text-[#5d7c47]">에코 알베로</span> 건축 예시
                         </h4>
-                        <p className="text-slate-400 font-bold text-lg max-w-sm">
-                            사용자의 라이프스타일에 맞춘 자유로운 설계와 분양사에서 제공하는 감각적인 건축 예시를 확인해보세요.
-                        </p>
+                        <div className="text-left md:text-right">
+                            <p className="text-slate-500 font-bold md:text-lg max-w-lg mb-2">
+                                사용자의 라이프스타일에 맞춘 맞춤형 자율 설계가 가능합니다. 분양사에서 제공하는 건축 타입별 예시를 확인해보세요.
+                            </p>
+                            <span className="inline-flex items-center gap-2 text-[#5d7c47] text-sm font-bold bg-[#5d7c47]/10 px-4 py-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                사진을 클릭하시면 크게 보실 수 있습니다.
+                            </span>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div className="space-y-4 group cursor-pointer">
-                            <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src={getAssetPath('design1.png')}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 gap-y-12">
+                        {/* A */}
+                        <div className="space-y-4 group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_a.webp'), label: 'A타입 모던 프리미엄' })}>
+                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                                <img src={getAssetPath('archi_sample_a.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Modern Minimalist" />
+                                    alt="Architecture Sample A" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
                             </div>
-                            <h6 className="text-xl font-bold">모던 미니멀리즘 디자인</h6>
+                            <h6 className="text-lg font-black text-slate-800 text-center">A타입 모던 프리미엄 외관</h6>
                         </div>
-                        <div className="space-y-4 group cursor-pointer lg:translate-y-12">
-                            <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src={getAssetPath('design2.png')}
+                        {/* B */}
+                        <div className="space-y-4 group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_b.webp'), label: 'B타입 자연 친화적 디자인' })}>
+                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                                <img src={getAssetPath('archi_sample_b.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Luxury Villa" />
+                                    alt="Architecture Sample B" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
                             </div>
-                            <h6 className="text-xl font-bold">숲세권 럭셔리 빌라 타입</h6>
+                            <h6 className="text-lg font-black text-slate-800 text-center">B타입 자연 친화적 디자인</h6>
                         </div>
-                        <div className="space-y-4 group cursor-pointer">
-                            <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-slate-100">
-                                <img src={getAssetPath('design3.png')}
+                        {/* C */}
+                        <div className="space-y-4 group cursor-pointer" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_c.webp'), label: 'C타입 하이엔드 럭셔리 뷰' })}>
+                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                                <img src={getAssetPath('archi_sample_c.webp')}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Cozy Family House" />
+                                    alt="Architecture Sample C" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
                             </div>
-                            <h6 className="text-xl font-bold">가족 중심형 프리미엄 하우스</h6>
+                            <h6 className="text-lg font-black text-slate-800 text-center">C타입 하이엔드 럭셔리 뷰</h6>
+                        </div>
+                        {/* D */}
+                        <div className="space-y-4 group cursor-pointer lg:translate-y-8" onClick={() => setExpandedPanoImage({ src: getAssetPath('archi_sample_d.webp'), label: 'D타입 프리미엄 단독' })}>
+                            <div className="aspect-[4/3] rounded-3xl bg-slate-100 overflow-hidden shadow-md group-hover:shadow-xl group-hover:-translate-y-2 transition-all relative">
+                                <img src={getAssetPath('archi_sample_d.webp')}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    alt="Architecture Sample D" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 className="text-lg font-black text-slate-800 text-center">D타입 최고급 프리미엄 스케일</h6>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- Interior Features --- */}
+            <section id="interior" className="py-24 bg-white border-t border-slate-100">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-4xl mx-auto mb-16">
+                        <span className="text-yellow-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM INTERIOR</span>
+                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                            기본이 다른 품격,<br />
+                            에코 알베로만의 <span className="text-[#5d7c47]">시그니처 인테리어</span>
+                        </h3>
+                        <p className="text-slate-500 md:text-lg font-medium">최고급 마감재와 트렌디한 공간 설계로 일상의 가치를 높이는 하이엔드 라이프를 선사합니다.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
+                        {/* Kitchen */}
+                        {/* Kitchen */}
+                        <div
+                            className="group cursor-pointer rounded-[40px] overflow-hidden bg-slate-900 border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative"
+                            onClick={() => setExpandedPanoImage({ src: getAssetPath('interior_kitchen.webp'), label: '럭셔리 다이닝 & 오픈 키친' })}
+                        >
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                                <img src={getAssetPath('interior_kitchen.webp')} alt="Premium Kitchen" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-700 flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg translate-y-8 group-hover:translate-y-0 duration-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                                    <div className="bg-[#5d7c47] text-white text-xs font-bold px-3 py-1.5 rounded-full w-max mb-4 shadow-md tracking-wider">KITCHEN</div>
+                                    <h4 className="text-3xl font-black text-white mb-3">럭셔리 다이닝 & 오픈 키친</h4>
+                                    <p className="text-white/90 md:text-lg font-medium leading-relaxed drop-shadow-md">하이엔드 주방 가구 및 효율적인 동선을 고려한 와이드 아일랜드 식탁. 온 가족이 소통하는 품격 있는 다이닝 문화를 제안합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Window / Living */}
+                        <div
+                            className="group cursor-pointer rounded-[40px] overflow-hidden bg-slate-900 border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative lg:mt-16"
+                            onClick={() => setExpandedPanoImage({ src: getAssetPath('interior_window.webp'), label: '채광 특화 파노라마 윈도우' })}
+                        >
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                                <img src={getAssetPath('interior_window.webp')} alt="Premium Window" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-700 flex items-center justify-center">
+                                    <div className="bg-white/90 text-slate-800 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg translate-y-8 group-hover:translate-y-0 duration-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                                    <div className="bg-blue-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full w-max mb-4 shadow-md tracking-wider">LIVING VIEW</div>
+                                    <h4 className="text-3xl font-black text-white mb-3">채광 특화 파노라마 윈도우</h4>
+                                    <p className="text-white/90 md:text-lg font-medium leading-relaxed drop-shadow-md">시야를 방해하지 않는 광폭 와이드 통창 설계로 자연 채광을 극대화하고, 사계절 에코 알베로의 아름다운 숲 뷰를 거실 안으로 들입니다.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -732,9 +919,9 @@ const App = () => {
                             <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto w-full">
                                 <div className="grid grid-cols-3 gap-3 md:gap-6">
                                     {[
-                                        { id: 'left', label: '왼쪽 뷰', src: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80' },
-                                        { id: 'front', label: '정면 뷰', src: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80' },
-                                        { id: 'right', label: '오른쪽 뷰', src: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&q=80' }
+                                        { id: 'se', label: '동남향 VIEW', src: getAssetPath('view_southeast.png') },
+                                        { id: 's', label: '정남향 VIEW', src: getAssetPath('view_south.png') },
+                                        { id: 'sw', label: '남서향 VIEW', src: getAssetPath('view_southwest.png') }
                                     ].map(img => (
                                         <div
                                             key={img.id}
@@ -806,23 +993,25 @@ const App = () => {
             {/* Lightbox for Expanded Image */}
             {expandedPanoImage && (
                 <div
-                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black/95 p-4 md:p-8 animate-in fade-in zoom-in-95 duration-200"
-                    onClick={() => setExpandedPanoImage(null)}
+                    className="fixed inset-[0] z-[9999] flex flex-col items-center justify-center bg-black/95 p-2 md:p-6 animate-in fade-in zoom-in-95 duration-200"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedPanoImage(null);
+                    }}
                 >
                     <button
-                        className="absolute top-6 right-6 z-50 p-3 bg-white/10 text-white rounded-full hover:bg-white/30 hover:scale-110 transition-all backdrop-blur-md"
-                        onClick={(e) => { e.stopPropagation(); setExpandedPanoImage(null); }}
+                        className="absolute top-6 right-6 z-[10000] p-3 bg-white/10 text-white rounded-full hover:bg-white/30 hover:scale-110 transition-all backdrop-blur-md"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedPanoImage(null);
+                        }}
                     >
                         <IconX />
                     </button>
 
-                    <div className="relative w-full max-w-7xl max-h-[85vh] flex items-center justify-center group" onClick={(e) => e.stopPropagation()}>
-                        <img
-                            src={expandedPanoImage.src}
-                            alt={expandedPanoImage.label}
-                            className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl shadow-black ring-1 ring-white/10"
-                        />
-                        <div className="absolute bottom-6 bg-black/80 backdrop-blur-md px-6 py-3 rounded-full text-white font-bold tracking-widest border border-white/10 shadow-lg pointer-events-none transition-opacity">
+                    <div className="relative w-full h-[90vh] md:h-[95vh] flex items-center justify-center group text-center" onClick={(e) => e.stopPropagation()}>
+                        <ZoomableImage src={expandedPanoImage.src} alt={expandedPanoImage.label} />
+                        <div className="absolute bottom-6 bg-black/80 backdrop-blur-md px-6 py-3 rounded-full text-white font-bold tracking-widest border border-white/10 shadow-lg pointer-events-none transition-opacity z-10">
                             {expandedPanoImage.label}
                         </div>
                     </div>
