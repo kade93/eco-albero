@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // --- Icons (Inline SVGs for reliability in preview) ---
+const IconX = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12" /></svg>;
+const IconCamera360 = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></svg>;
 const IconPhone = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path
@@ -29,10 +31,116 @@ const getAssetPath = (path) => {
     return `${normalizedBase}${normalizedPath}`;
 };
 
+const PHASES = {
+    '1': { color: '#9d67cc', label: '1차' },
+    '2': { color: '#ff9d48', label: '2차' },
+    '3': { color: '#2ecc71', label: '3차' },
+    '4': { color: '#3498db', label: '4차' },
+    '5': { color: '#ff6b81', label: '5차' },
+    '6': { color: '#1abc9c', label: '6차' },
+    '7': { color: '#a0522d', label: '7차' },
+    '8': { color: '#b2ed6b', label: '8차' },
+    '9': { color: '#e74c3c', label: '9차' },
+};
+
+// --- Plot Data (Extracted from 2112x2016 source) ---
+const PLOTS = [
+    { id: '9-1', x: 65.41, y: 65.43, phase: '9', path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
+    { id: '9-2', x: 69.54, y: 63.96, phase: '9', path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
+    { id: '9-3', x: 73.43, y: 61.64, phase: '9', path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
+    { id: '9-4', x: 77.72, y: 58.83, phase: '9', path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
+    { id: '9-5', x: 81.76, y: 56.35, phase: '9', path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
+    { id: '8-1', x: 62.04, y: 44.54, phase: '8', path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
+    { id: '8-2', x: 65.67, y: 42.47, phase: '8', path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
+    { id: '8-3', x: 69.47, y: 40.4, phase: '8', path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
+    { id: '8-4', x: 73.06, y: 38.44, phase: '8', path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
+    { id: '7-1', x: 49.05, y: 50.44, phase: '7', path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
+    { id: '7-2', x: 54.85, y: 48.53, phase: '7', path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
+    { id: '7-3', x: 58.37, y: 46.57, phase: '7', path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
+    { id: '6-1', x: 47.49, y: 60.38, phase: '6', path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
+    { id: '6-2', x: 52.82, y: 57.68, phase: '6', path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
+    { id: '6-3', x: 58.04, y: 54.97, phase: '6', path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
+    { id: '6-4', x: 61.31, y: 53.03, phase: '6', path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
+    { id: '6-5', x: 64.57, y: 51.07, phase: '6', path: 'M1326.5 1009L1371.5 1088L1422.5 1059.5L1371.5 982L1326.5 1009Z' },
+    { id: '5-1', x: 70.72, y: 55.03, phase: '5', path: 'M1489 1151L1448.5 1071.5L1502 1046.5L1539.5 1127.5L1489 1151Z' },
+    { id: '5-2', x: 74.02, y: 53.12, phase: '5', path: 'M1563 1114.5L1518.5 1034L1563 1006L1609 1085.5L1563 1114.5Z' },
+    { id: '5-3', x: 77.53, y: 51.13, phase: '5', path: 'M1633 1071.5L1591 996L1642.5 968L1687.5 1046.5L1633 1071.5Z' },
+    { id: '5-4', x: 68.19, y: 49.93, phase: '5', path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
+    { id: '5-5', x: 71.68, y: 48.08, phase: '5', path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
+    { id: '5-6', x: 75.0, y: 46.07, phase: '5', path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
+    { id: '4-1', x: 57.86, y: 70.4, phase: '4', path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
+    { id: '4-2', x: 61.29, y: 67.45, phase: '4', path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
+    { id: '4-3', x: 60.83, y: 60.34, phase: '4', path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
+    { id: '4-4', x: 64.11, y: 58.47, phase: '4', path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
+    { id: '4-5', x: 67.42, y: 56.58, phase: '4', path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
+    { id: '2-1', x: 56.62, y: 62.44, phase: '2', path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
+    { id: '2-2', x: 52.65, y: 64.57, phase: '2', path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
+    { id: '2-3', x: 48.79, y: 66.7, phase: '2', path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
+    { id: '2-4', x: 52.54, y: 71.64, phase: '2', path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
+    { id: '2-5', x: 55.14, y: 76.19, phase: '2', path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
+    { id: '2-6', x: 58.42, y: 79.13, phase: '2', path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
+    { id: '3-1', x: 50.72, y: 79.72, phase: '3', path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
+    { id: '3-2', x: 65.45, y: 55.62, phase: '3', path: 'M959 1564V1624H841V1564H959Z' },
+    { id: '3-3', x: 44.07, y: 74.22, phase: '3', path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
+    { id: '3-4', x: 52.42, y: 57.03, phase: '3', path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
+    { id: '1-1', x: 49.78, y: 78.04, phase: '1', path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
+    { id: '1-2', x: 58.57, y: 94.51, phase: '1', path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
+    { id: '1-3', x: 55.09, y: 91.83, phase: '1', path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
+    { id: '1-4', x: 51.73, y: 90.07, phase: '1', path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
+    { id: '1-5', x: 48.66, y: 88.14, phase: '1', path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
+    { id: '1-6', x: 60.08, y: 87.24, phase: '1', path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
+    { id: '1-7', x: 56.2, y: 83.71, phase: '1', path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
+    { id: '1-8', x: 52.71, y: 81.51, phase: '1', path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
+];
+
+// SVG path 데이터로부터 자동으로 중앙 좌표(bounding box 중심)를 계산하는 함수
+const getPathCenter = (pathStr) => {
+    const commands = pathStr.match(/[A-Za-z][^A-Za-z]*/g);
+    const points = [];
+    let currX = 0, currY = 0;
+
+    if (commands) {
+        commands.forEach(cmd => {
+            const type = cmd[0];
+            const args = cmd.slice(1).trim().split(/[\s,]+/).map(Number);
+            if ((type === 'M' || type === 'L') && args.length >= 2) {
+                currX = args[0];
+                currY = args[1];
+                points.push({ x: currX, y: currY });
+            } else if (type === 'H' && args.length >= 1) {
+                currX = args[0];
+                points.push({ x: currX, y: currY });
+            } else if (type === 'V' && args.length >= 1) {
+                currY = args[0];
+                points.push({ x: currX, y: currY });
+            }
+        });
+    }
+
+    if (points.length === 0) return { left: '50%', top: '50%' };
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    points.forEach(p => {
+        if (p.x < minX) minX = p.x;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.y > maxY) maxY = p.y;
+    });
+
+    // 폴리곤의 Bounding Box 중앙값을 구한 뒤, 뷰박스 크기(2112x2016)에 비례한 퍼센트로 변환합니다.
+    return {
+        left: `${((minX + maxX) / 2 / 2112) * 100}%`,
+        top: `${((minY + maxY) / 2 / 2016) * 100}%`
+    };
+};
+
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [modalType, setModalType] = useState(null); // 'terms' | 'privacy' | null
+    const [modalType, setModalType] = useState(null);
+    const [selectedPlot, setSelectedPlot] = useState(null);
+    const [isPanoOpen, setIsPanoOpen] = useState(false);
+    const [expandedPanoImage, setExpandedPanoImage] = useState(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -72,7 +180,8 @@ const App = () => {
                         </div>
 
                         <div className="hidden lg:flex items-center gap-10 text-[15px] font-bold text-slate-600">
-                            <a href="#about" className="hover:text-[#5d7c47] transition-colors">단지안내</a>
+                            <a href="#plots" className="hover:text-[#5d7c47] transition-colors">부지전경</a>
+                            <a href="#community" className="hover:text-[#5d7c47] transition-colors">프리미엄 커뮤니티</a>
                             <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
                             <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
                             <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
@@ -94,31 +203,102 @@ const App = () => {
                 </nav>
             </div>
 
-            {/* --- Hero Section --- */}
-            <section className="relative h-[80vh] min-h-[600px] flex items-center overflow-hidden bg-slate-900">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000"
-                    alt="Main House" className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105" />
+            {/* --- Interactive Plot Explorer --- */}
+            <section id="plots" className="relative min-h-screen flex flex-col items-center justify-center bg-slate-900 py-32 overflow-hidden shadow-2xl">
+                {/* Beautiful Background styling */}
+                <div className="absolute inset-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-40 scale-105 filter blur-sm"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900"></div>
+
+                {/* Header intro just for plots */}
+                <div className="relative z-10 text-center mb-8 px-6 pt-10">
+                    <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide font-bold drop-shadow-md">프리미엄 부지 전경</h2>
+                    <p className="text-white/90 md:text-lg font-light tracking-wide shadow-black drop-shadow mx-auto max-w-xl">
+                        자연과 맞닿은 하이엔드 타운하우스. <br className="md:hidden" />
+                        원하시는 부지를 클릭하여 해당 부지의 뷰를 직접 확인하세요.
+                    </p>
+                </div>
+
+                {/* Ratio-Locked Interactive Container */}
+                <div className="relative z-10 flex items-center justify-center p-4 lg:p-12 w-full">
+                    <div
+                        className="relative w-full max-w-4xl flex items-center justify-center group/map bg-white border-2 border-[#5d7c47]/50 rounded-xl shadow-2xl overflow-hidden"
+                        style={{ aspectRatio: '2112/2016' }}
+                    >
+                        {/* Background Image - Matches the container exactly */}
+                        <img
+                            src={getAssetPath('site_main_before_polygon.png')}
+                            alt="Site Map Background"
+                            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                        />
+
+                        {/* High-Precision SVG Interaction Layer - RENDERED ALONE */}
+                        <svg
+                            viewBox="0 0 2112 2016"
+                            className="absolute inset-0 w-full h-full z-10 select-none overflow-visible"
+                            preserveAspectRatio="none"
+                        >
+                            {/* We will replace these circles with <path> elements from Figma */}
+                            {PLOTS.map(plot => (
+                                <g
+                                    key={`poly-${plot.id}`}
+                                    className="pointer-events-auto cursor-pointer group/poly"
+                                    onClick={() => {
+                                        setSelectedPlot(plot);
+                                        setIsPanoOpen(true);
+                                    }}
+                                >
+                                    {/* ALWAYS RENDER BOTH FOR DEBUGGING */}
+                                    <path
+                                        d={plot.path}
+                                        className="fill-red-500/50 stroke-red-600 group-hover/poly:fill-[#5d7c47]/60 group-hover/poly:stroke-[#5d7c47] transition-all duration-300"
+                                        strokeWidth="4"
+                                    />
+                                </g>
+                            ))}
+                        </svg>
+
+                        {/* Visual Marker Labels */}
+                        <div className="absolute inset-0 pointer-events-none z-20">
+                            {PLOTS.map(plot => (
+                                <div
+                                    key={`label-${plot.id}`}
+                                    className="absolute w-8 h-8 -ml-4 -mt-4 text-[10px] tracking-tighter text-white font-bold rounded-full flex items-center justify-center border border-white/50 shadow-md pointer-events-none backdrop-blur-sm"
+                                    style={{
+                                        ...getPathCenter(plot.path),
+                                        backgroundColor: PHASES[plot.phase].color + 'CC' // Add transparency
+                                    }}
+                                >
+                                    {plot.id}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- Hero Section Alternative (moved from top) --- */}
+            <section className="relative py-24 flex items-center justify-center overflow-hidden bg-white border-b border-slate-100">
                 <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-3xl">
+                    <div className="max-w-3xl mx-auto text-center">
                         <div
-                            className="inline-flex items-center gap-2 bg-[#ff8a00] text-white px-4 py-1.5 rounded mb-8 font-bold text-sm tracking-wide">
+                            className="inline-flex items-center gap-2 bg-[#ff8a00] text-white px-5 py-2 rounded-full mb-8 font-bold text-sm tracking-wide shadow-lg">
                             <IconClock /> 잔여 필지 빠르게 소진 중
                         </div>
-                        <h1 className="text-white text-4xl md:text-6xl font-extrabold leading-[1.1] mb-8">
+                        <h1 className="text-slate-900 text-4xl md:text-6xl font-extrabold leading-[1.2] mb-8">
                             퇴근 후 30분<br />
-                            도심의 소음이 숲의 숨소리로<br />
+                            도심의 소음이 숲의 숨소리로
                         </h1>
-                        <p className="text-white/80 text-lg md:text-2xl mb-12 font-medium leading-relaxed">
+                        <p className="text-slate-500 text-lg md:text-2xl mb-12 font-medium leading-relaxed">
                             하이닉스·현대백화점 30분, 청남대·대청댐 25분<br />
                             도심의 편리함과 자연의 평온함을 동시에 소유하세요.
                         </p>
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-wrap gap-4 items-center justify-center">
                             <button onClick={scrollToContact}
-                                className="bg-white text-slate-900 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-100 transition-all flex items-center gap-2">
+                                className="bg-[#5d7c47] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#4a6339] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
                                 지금 분양 문의하기
                             </button>
                             <a href="https://youtu.be/4O8F_lLN4DE?si=gVKuLWUvJq6bCo1M" target="_blank" rel="noopener noreferrer"
-                                className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-5 rounded-full font-black text-lg hover:bg-white/20 transition-all inline-block text-center">
+                                className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center">
                                 모델하우스 영상보기
                             </a>
                         </div>
@@ -126,86 +306,149 @@ const App = () => {
                 </div>
             </section>
 
-            {/* --- Value Proposition --- */}
-            <section id="about" className="py-24 bg-white">
-                <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div className="text-center space-y-4">
-                        <div className="text-4xl font-black text-[#5d7c47]">01</div>
-                        <h4 className="text-2xl font-black text-slate-900">도심과 자연 사이, 완벽한 30분</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">하이닉스·현대백화점의 인프라는 30분 거리에,<br />청남대·대청댐의 힐링은 25분 거리에 있습니다.</p>
+            {/* --- Value Proposition: Premium Community --- */}
+            <section id="community" className="py-24 bg-white">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-4xl mx-auto mb-16">
+                        <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
+                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                            거주하기 편한 <span className="text-blue-600">아파트형</span> 전원주택단지<br />
+                            필수시설인 <span className="text-red-600">단지공용시설</span> 완벽 특화
+                        </h3>
+                        <p className="text-slate-500 md:text-lg font-medium">삶의 질을 중시하며 독특한 Lifestyle을 창조하는 마을</p>
                     </div>
-                    <div className="text-center space-y-4 border-y md:border-y-0 md:border-x border-slate-100 py-12 md:py-0">
-                        <div className="text-4xl font-black text-[#5d7c47]">02</div>
-                        <h4 className="text-2xl font-black text-slate-900">아이의 웃음소리가 들리는 마당</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">층간소음 탈출! 넓은 잔디 마당에서<br />아이와 반려견이 마음껏 뛰어놀 수 있습니다.</p>
-                    </div>
-                    <div className="text-center space-y-4">
-                        <div className="text-4xl font-black text-[#5d7c47]">03</div>
-                        <h4 className="text-2xl font-black text-slate-900">아파트의 편리함을 그대로</h4>
-                        <p className="text-slate-500 font-medium leading-relaxed">단지 내 전문 관리실과 상시 보안 시스템으로<br />전원주택의 번거로움을 완벽히 해결했습니다.</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {/* Community Feature */}
+                        <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                            </div>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3">관리사무동 운영</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">단지관리인 상주를 통해 공원, 재활용 분리수거장 등 체계적인 관리 서비스 제공</p>
+                        </div>
+                        {/* Convenience Facility */}
+                        <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            </div>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3">24시간 무인편의점</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">단지 밖을 나가지 않아도 언제든 편리하게 이용할 수 있는 상가 편의점 구축</p>
+                        </div>
+                        {/* Fitness */}
+                        <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                            </div>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3">주민 커뮤니티시설</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">2층에 조성된 프리미엄 운동시설 및 문화 공간으로 입주민 간 네트워킹 강화</p>
+                        </div>
+                        {/* Laundry */}
+                        <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                            </div>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3">대형 무인 세탁소</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">집에서 하기 힘든 대형 빨래도 단지 내에서 해결할 수 있는 무인 세탁 시설 공간</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* --- Lifestyle Section --- */}
-            <section className="py-24 bg-slate-50">
+            {/* --- Nature Park Section --- */}
+            <section className="py-24 bg-slate-50 relative overflow-hidden">
                 <div className="container mx-auto px-6">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h3 className="text-3xl md:text-5xl font-black mb-6">누구에게나 꿈꾸던 삶이 있습니다</h3>
-                        <p className="text-slate-500 text-lg font-medium">에코 알베로가 제안하는 맞춤형 라이프스타일</p>
+                    <div className="flex flex-col lg:flex-row gap-16 items-center">
+                        <div className="lg:w-1/2 space-y-10 order-2 lg:order-1">
+                            <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
+                            <h3 className="text-3xl md:text-5xl font-black leading-tight text-slate-900">
+                                단지 내 공원 시설<br />
+                                1만평 이상의 녹지를 품다
+                            </h3>
+                            <p className="text-slate-600 text-lg leading-relaxed font-medium">
+                                단지 전체 면적도 계약자 분들에게 제공됩니다.<br />
+                                자연에 둘러싸여 건강까지 생각하는 프리미엄 힐링 단지를 경험하세요.
+                            </p>
+                            <div className="space-y-6 pt-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                        <IconCheck />
+                                    </div>
+                                    <span className="text-lg font-bold text-slate-800">단지 내 유실수 공원 제공 (과실수)</span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                        <IconCheck />
+                                    </div>
+                                    <span className="text-lg font-bold text-slate-800">시원한 나무 정자가 조성된 단지 쉼터</span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                        <IconCheck />
+                                    </div>
+                                    <span className="text-lg font-bold text-slate-800">안전하고 편안한 단지 내 숲길 산책로</span>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                        <IconCheck />
+                                    </div>
+                                    <span className="text-lg font-bold text-slate-800">동남향, 정남향 설계로 태봉산 조망 확보!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:w-1/2 relative order-1 lg:order-2">
+                            <div className="absolute inset-0 bg-[#5d7c47] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
+                            <img src={getAssetPath('lifestyle_5060.png')} alt="Park and Nature" className="w-full h-auto rounded-[40px] shadow-2xl relative z-10" />
+                            {/* Floating overlay badge */}
+                            <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100">
+                                <div className="text-4xl font-black text-[#5d7c47] mb-1">10,000평+</div>
+                                <div className="text-slate-500 font-bold">자연 녹지 공간</div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </section>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Card 1: Kids & Yard */}
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
-                            <div className="aspect-[4/3] overflow-hidden">
-                                <img src={getAssetPath('lifestyle_3040.png')} alt="Kids playing in yard" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            {/* --- Hi-Tech Section --- */}
+            <section className="py-24 bg-white text-slate-900 relative flex flex-col items-center justify-center overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
+                <div className="container mx-auto px-6 relative z-10 text-center">
+                    <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
+                    <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                        스마트한 첨단시스템으로<br />
+                        생활 편의성을 업그레이드 하다!
+                    </h3>
+                    <p className="text-slate-500 md:text-lg mb-16 font-medium max-w-2xl mx-auto">전방위 생활지원 SYSTEM, 생활서비스 조경 등 아파트 수준의 특별한 보안과 관리를 제공합니다.</p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-5xl mx-auto">
+                        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                             </div>
-                            <div className="p-6 space-y-3">
-                                <h4 className="text-lg font-black text-slate-900">아이들이 마음껏 뛰어노는 마당</h4>
-                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                                    층간소음 걱정 없이 아이들이 자연과 함께 성장하는 우리 가족만의 소중한 공간입니다.
-                                </p>
-                            </div>
+                            <h5 className="font-black text-lg text-slate-900">최신 단지내 CCTV</h5>
+                            <p className="text-slate-500 text-xs mt-2 leading-relaxed">사각지대 없는 24시간 안전망</p>
                         </div>
-
-                        {/* Card 2: Healing & Garden */}
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
-                            <div className="aspect-[4/3] overflow-hidden">
-                                <img src={getAssetPath('lifestyle_5060.png')} alt="Healing garden" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                             </div>
-                            <div className="p-6 space-y-3">
-                                <h4 className="text-lg font-black text-slate-900">여유로운 가드닝과 힐링 라이프</h4>
-                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                                    복잡한 도심을 벗어나 맑은 공기와 함께 즐기는 여유로운 전원생활의 낭만을 누리세요.
-                                </p>
-                            </div>
+                            <h5 className="font-black text-lg text-slate-900">무인 경비 & 출동</h5>
+                            <p className="text-slate-500 text-xs mt-2 leading-relaxed">안심 전문 출동 경비 시스템</p>
                         </div>
-
-                        {/* Card 3: Pet & Party */}
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
-                            <div className="aspect-[4/3] overflow-hidden">
-                                <img src={getAssetPath('lifestyle_party.png')} alt="Pet and Party" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                             </div>
-                            <div className="p-6 space-y-3">
-                                <h4 className="text-lg font-black text-slate-900">반려견과 함께하는 가든 파티</h4>
-                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                                    반려견이 자유롭게 뛰놀고, 지인들과 함께 맛있는 바비큐 파티를 즐길 수 있습니다.
-                                </p>
-                            </div>
+                            <h5 className="font-black text-lg text-slate-900">스마트 출입 차단</h5>
+                            <p className="text-slate-500 text-xs mt-2 leading-relaxed">스마트폰 연동 차량통제 게이트</p>
                         </div>
-
-                        {/* Card 4: Jacuzzi & Camping */}
-                        <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
-                            <div className="aspect-[4/3] overflow-hidden">
-                                <img src={getAssetPath('lifestyle_jacuzzi.png')} alt="Jacuzzi and Camping" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
+                            <div className="w-16 h-16 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47] mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                             </div>
-                            <div className="p-6 space-y-3">
-                                <h4 className="text-lg font-black text-slate-900">테라스 자쿠지와 감성 캠핑</h4>
-                                <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                                    별 쏟아지는 밤, 프라이빗한 테라스에서 즐기는 자쿠지와 캠핑으로 일상의 피로를 씻어냅니다.
-                                </p>
-                            </div>
+                            <h5 className="font-black text-lg text-slate-900">전용 스마트앱 연동</h5>
+                            <p className="text-slate-500 text-xs mt-2 leading-relaxed">세대 조명통제/공용시설예약</p>
                         </div>
                     </div>
                 </div>
@@ -463,6 +706,124 @@ const App = () => {
                             <button onClick={() => setModalType(null)} className="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800 transition-all">
                                 확인
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Panorama Modal */}
+            {isPanoOpen && selectedPlot && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-300">
+                    <div className="relative w-full max-w-6xl h-[80vh] bg-catalog-dark rounded-2xl overflow-hidden shadow-2xl border border-white/10 flex flex-col md:flex-row">
+                        <button
+                            className="absolute top-4 right-4 z-50 p-2 bg-black/50 text-white rounded-full hover:bg-white hover:text-black transition-all"
+                            onClick={() => setIsPanoOpen(false)}
+                        >
+                            <IconX />
+                        </button>
+
+                        <div className="w-full md:w-2/3 h-full relative group p-4 md:p-8 space-y-4 flex flex-col bg-black/50">
+                            <div className="text-white mb-6 pt-12 md:pt-0 shrink-0">
+                                <h3 className="text-2xl font-serif mb-2 text-catalog-gold">부지 전경 (남향)</h3>
+                                <p className="text-white/80 text-sm tracking-wide">전부 남향, 해당 부지에서 바라보는 뷰를 보여드립니다.</p>
+                            </div>
+
+                            {/* Thumbnails View */}
+                            <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto w-full">
+                                <div className="grid grid-cols-3 gap-3 md:gap-6">
+                                    {[
+                                        { id: 'left', label: '왼쪽 뷰', src: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80' },
+                                        { id: 'front', label: '정면 뷰', src: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80' },
+                                        { id: 'right', label: '오른쪽 뷰', src: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&q=80' }
+                                    ].map(img => (
+                                        <div
+                                            key={img.id}
+                                            className="aspect-square relative rounded-2xl overflow-hidden cursor-pointer group/thumb border-2 border-white/10 hover:border-catalog-gold transition-all shadow-lg"
+                                            onClick={() => setExpandedPanoImage(img)}
+                                        >
+                                            <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-transparent transition-colors duration-300 z-10"></div>
+                                            <div className="absolute bottom-3 left-3 z-20 bg-black/80 px-3 py-1.5 rounded-lg text-white text-xs md:text-sm font-bold backdrop-blur-md border border-white/20">{img.label}</div>
+                                            <img src={img.src} alt={img.label} className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-700" />
+
+                                            {/* Expand Icon */}
+                                            <div className="absolute inset-0 z-30 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                                <div className="bg-catalog-gold/90 text-slate-900 p-2 rounded-full shadow-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="text-white/40 text-xs md:text-sm text-center mt-8 font-medium bg-white/5 py-3 rounded-full border border-white/5">
+                                    👆 사진을 클릭하시면 전체 화면으로 크게 보실 수 있습니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full md:w-1/3 h-full p-8 flex flex-col justify-between bg-slate-900 border-l border-white/5 overflow-y-auto">
+                            <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-catalog-gold/20 text-catalog-gold border border-catalog-gold/30">
+                                        {PHASES[selectedPlot.phase].label}
+                                    </span>
+                                    <span className="text-white/40 text-xs">부지 {selectedPlot.id}</span>
+                                </div>
+                                <h2 className="text-3xl font-serif text-white mb-6">프리미엄 부지 {selectedPlot.id}</h2>
+
+                                <div className="space-y-6">
+                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
+                                        <div className="text-sm font-bold text-catalog-gold">부지 면적</div>
+                                        <div className="text-xl font-light text-white">450 <span className="text-sm text-white/50">m²</span></div>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
+                                        <div className="text-sm font-bold text-catalog-gold">분양가</div>
+                                        <div className="text-xl font-bold text-white tracking-widest">문의</div>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-white/10">
+                                        <h3 className="text-sm font-bold text-white/80 mb-3 uppercase tracking-wider">주요 특징</h3>
+                                        <ul className="grid grid-cols-2 gap-3">
+                                            {['모든 세대 남향', '파노라마 숲 뷰', '프라이빗 정원', '자연 조망권'].map(feat => (
+                                                <li key={feat} className="flex items-center gap-2 text-xs text-white/70">
+                                                    <div className="w-1 h-1 rounded-full bg-catalog-gold flex-shrink-0"></div>
+                                                    <span>{feat}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button className="w-full py-4 mt-8 bg-catalog-gold text-catalog-dark font-bold hover:bg-white transition-colors duration-300 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-catalog-gold/20">
+                                <IconPhone />
+                                상담 신청하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Lightbox for Expanded Image */}
+            {expandedPanoImage && (
+                <div
+                    className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black/95 p-4 md:p-8 animate-in fade-in zoom-in-95 duration-200"
+                    onClick={() => setExpandedPanoImage(null)}
+                >
+                    <button
+                        className="absolute top-6 right-6 z-50 p-3 bg-white/10 text-white rounded-full hover:bg-white/30 hover:scale-110 transition-all backdrop-blur-md"
+                        onClick={(e) => { e.stopPropagation(); setExpandedPanoImage(null); }}
+                    >
+                        <IconX />
+                    </button>
+
+                    <div className="relative w-full max-w-7xl max-h-[85vh] flex items-center justify-center group" onClick={(e) => e.stopPropagation()}>
+                        <img
+                            src={expandedPanoImage.src}
+                            alt={expandedPanoImage.label}
+                            className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl shadow-black ring-1 ring-white/10"
+                        />
+                        <div className="absolute bottom-6 bg-black/80 backdrop-blur-md px-6 py-3 rounded-full text-white font-bold tracking-widest border border-white/10 shadow-lg pointer-events-none transition-opacity">
+                            {expandedPanoImage.label}
                         </div>
                     </div>
                 </div>
