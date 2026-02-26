@@ -247,7 +247,7 @@ const App = () => {
                     <div className="container mx-auto flex justify-between items-center text-[13px] font-bold tracking-tight">
                         <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 51세대 분양 중</p>
                         <div className="flex gap-4 items-center">
-                            <span>현장 문의: 010.0000.0000</span>
+                            <span>분양 문의: 043-250-1120</span>
                         </div>
                     </div>
                 </div>
@@ -276,9 +276,9 @@ const App = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그
                             </a>
-                            <a href="tel:01000000000"
+                            <a href="tel:0432501120"
                                 className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
-                                <IconPhone /> 010.0000.0000
+                                <IconPhone /> 043-250-1120
                             </a>
                         </div>
 
@@ -488,11 +488,41 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="lg:w-1/2 relative order-1 lg:order-2">
+                        <div className="lg:w-1/2 relative order-1 lg:order-2 mt-8 lg:mt-0">
+                            {/* Decorative background blob */}
                             <div className="absolute inset-0 bg-[#5d7c47] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
-                            <img src={getAssetPath('lifestyle_5060.png')} alt="Park and Nature" className="w-full h-auto rounded-[40px] shadow-2xl relative z-10" />
+
+                            {/* Premium Masonry Gallery */}
+                            <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10 w-full">
+                                {/* Left column: Vertical image */}
+                                <div className="space-y-4 md:space-y-6 pt-12 md:pt-16">
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[120%] h-0">
+                                        <img src={getAssetPath('lifestyle_3040.png')} alt="3040 Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
+                                            <p className="text-white font-bold text-sm md:text-base tracking-wide">여유로운 주말 아침</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right column: Two horizontal/square images */}
+                                <div className="space-y-4 md:space-y-6">
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[100%] h-0">
+                                        <img src={getAssetPath('lifestyle_party.png')} alt="Party Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
+                                            <p className="text-white font-bold text-sm md:text-base tracking-wide">프라이빗 가든 파티</p>
+                                        </div>
+                                    </div>
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[100%] h-0">
+                                        <img src={getAssetPath('lifestyle_5060.png')} alt="5060 Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
+                                            <p className="text-white font-bold text-sm md:text-base tracking-wide">자연과 함께하는 힐링</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Floating overlay badge */}
-                            <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100">
+                            <div className="absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
                                 <div className="text-4xl font-black text-[#5d7c47] mb-1">10,000평+</div>
                                 <div className="text-slate-500 font-bold">자연 녹지 공간</div>
                             </div>
@@ -561,8 +591,8 @@ const App = () => {
                                         <IconCheck />
                                     </div>
                                     <div>
-                                        <h5 className="text-xl font-black mb-2">하이닉스/현대백화점 30분</h5>
-                                        <p className="text-slate-500 font-medium">퇴근 후 30분 만에 자연 속으로. 청주의 핵심 인프라를 지척에서 누립니다.</p>
+                                        <h5 className="text-xl font-black mb-2">프리미엄 핵심 생활권 30분</h5>
+                                        <p className="text-slate-500 font-medium">SK하이닉스, 현대백화점, 롯데아울렛 등 청주의 핵심 인프라를 지척에서 누립니다.</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
@@ -570,8 +600,8 @@ const App = () => {
                                         <IconCheck />
                                     </div>
                                     <div>
-                                        <h5 className="text-xl font-black mb-2">단지 내 전용 관리사무소</h5>
-                                        <p className="text-slate-500 font-medium">보안과 공동시설 관리를 책임지는 전문 인력이 상주하여 편리합니다.</p>
+                                        <h5 className="text-xl font-black mb-2">단지 내 관공서 및 스마트 편의시설</h5>
+                                        <p className="text-slate-500 font-medium">상당구청, 남일면사무소 인접. 24시간 무인 편의점 및 세탁 시설 공간으로 스마트한 생활을 지원합니다.</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
@@ -579,8 +609,8 @@ const App = () => {
                                         <IconCheck />
                                     </div>
                                     <div>
-                                        <h5 className="text-xl font-black mb-2">청남대·대청댐 명품 생활권</h5>
-                                        <p className="text-slate-500 font-medium">대통령의 휴양지 청남대와 대청댐이 인접한 천혜의 자연환경을 매일 누립니다.</p>
+                                        <h5 className="text-xl font-black mb-2">초·중학교 차량 6분 거리</h5>
+                                        <p className="text-slate-500 font-medium">반경 3km 내 초등학교와 중학교가 위치하여 자녀 양육에 안성맞춤입니다.</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
@@ -588,31 +618,55 @@ const App = () => {
                                         <IconCheck />
                                     </div>
                                     <div>
-                                        <h5 className="text-xl font-black mb-2">4차 우회도로 인접</h5>
-                                        <p className="text-slate-500 font-medium">청주 전역 및 오창, 세종 방면으로의 쾌속 교통망을 갖췄습니다.</p>
+                                        <h5 className="text-xl font-black mb-2">사통팔달 쾌속 교통망</h5>
+                                        <p className="text-slate-500 font-medium">4차 우회도로 인접 및 대전, 세종, 오송으로 통하는 사통팔달의 중심에 위치합니다.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a href="https://naver.me/GBv6kOWz" target="_blank" rel="noopener noreferrer"
-                            className="lg:w-1/2 bg-white p-4 rounded-[40px] shadow-2xl relative group overflow-hidden block">
-                            <img src={getAssetPath('map.png')}
-                                alt="에코알베로 지도 위치" className="w-full rounded-[30px] group-hover:scale-105 transition-transform duration-700" />
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-slate-900/10 group-hover:bg-slate-900/20 transition-all">
-                                <div className="bg-[#5d7c47] text-white p-4 rounded-full mb-4 shadow-xl">
-                                    <IconMapPin />
+                        <div className="lg:w-1/2 relative group block rounded-[30px] p-2 bg-slate-100/50 cursor-pointer overflow-hidden border border-slate-100" onClick={() => setExpandedPanoImage({ src: getAssetPath('location_left.webp'), label: '광역 입지 안내도' })}>
+                            <div className="relative overflow-hidden rounded-[20px]">
+                                <img src={getAssetPath('location_left.webp')} alt="에코알베로 입지 지도" className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-700 bg-white" />
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/80 to-transparent p-6 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform hidden md:block">
+                                    <p className="text-white font-bold tracking-widest text-sm flex items-center justify-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                        클릭하여 광역 지도 크게 보기
+                                    </p>
                                 </div>
-                                <h6 className="text-2xl font-black mb-2 text-white drop-shadow-md">에코 알베로 현장</h6>
-                                <p className="text-slate-900 font-bold bg-white/90 px-4 py-1 rounded-full text-sm">청주시 남일면 고은리 산35-25</p>
-                                <p className="mt-4 text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">클릭하여 네이버 지도로 보기</p>
                             </div>
-                        </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- Development Info --- */}
+            <section id="development" className="py-24 bg-slate-50 border-t border-slate-100 border-b">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-4xl mx-auto mb-16">
+                        <span className="text-blue-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM VISION</span>
+                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                            에코 알베로 주변<br />
+                            <span className="text-[#5d7c47]">도로망 신설 및 개발 호재</span>
+                        </h3>
+                        <p className="text-slate-500 md:text-lg font-medium">더욱 빠르고 편리해지는 광역 교통망으로 에코 알베로의 탁월한 미래 가치를 선점하세요.</p>
+                    </div>
+
+                    <div className="max-w-5xl mx-auto relative group block rounded-[40px] p-2 bg-white shadow-xl cursor-pointer overflow-hidden border border-slate-100" onClick={() => setExpandedPanoImage({ src: getAssetPath('location_right.webp'), label: '주변 개발 및 신설 도로망 정보' })}>
+                        <div className="relative overflow-hidden rounded-[32px]">
+                            <img src={getAssetPath('location_right.webp')} alt="주변 개발 및 신설 도로망 정보" className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-700 bg-white" />
+                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/80 to-transparent p-6 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform hidden md:block">
+                                <p className="text-white font-bold tracking-widest text-sm flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                                    클릭하여 개발 정보 크게 보기
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* --- Gallery --- */}
-            <section id="gallery" className="py-24 bg-slate-50">
+            <section id="gallery" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                         <h4 className="text-4xl md:text-5xl font-black">
@@ -726,7 +780,7 @@ const App = () => {
 
                         {/* Window / Living */}
                         <div
-                            className="group cursor-pointer rounded-[40px] overflow-hidden bg-slate-900 border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative lg:mt-16"
+                            className="group cursor-pointer rounded-[40px] overflow-hidden bg-slate-900 border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative"
                             onClick={() => setExpandedPanoImage({ src: getAssetPath('interior_window.webp'), label: '채광 특화 파노라마 윈도우' })}
                         >
                             <div className="relative aspect-[4/3] overflow-hidden">
@@ -768,13 +822,13 @@ const App = () => {
                                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
                                         <IconPhone />
                                     </div>
-                                    <span className="text-2xl font-bold">010.0000.0000</span>
+                                    <span className="text-2xl font-bold">043-250-1120</span>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
                                         <IconMapPin />
                                     </div>
-                                    <span className="text-xl font-bold">현장: 청주시 남일면 고은리 산35-25</span>
+                                    <span className="text-xl font-bold">현장: 청주시 남일면 고은리 산 35-2번지 일원</span>
                                 </div>
                             </div>
                         </div>
@@ -828,11 +882,14 @@ const App = () => {
                             <a href="#location" className="hover:text-slate-900 transition-colors">오시는길</a>
                         </div>
                     </div>
-                    <div className="mt-12 pt-12 border-t border-slate-50 text-center md:text-left">
-                        <p className="text-slate-400 text-sm leading-loose font-medium">
-                            에코 알베로 | 분양 : 주식회사 와운 | 주소: 충청북도 청주시 상당구 수암로54번길 8 3동 3층 <br />
-                            사업자등록번호: [번호확인 필요] | 대표자: [성함] | 분양문의: 010.0000.0000 <br />
-                            본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제와 다를 수 있습니다.
+                    <div className="mt-12 pt-12 border-t border-slate-50 text-center md:text-left space-y-4">
+                        <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                            <span className="font-bold text-slate-500">시행사</span> : (주)와운 &nbsp;|&nbsp; <span className="font-bold text-slate-500">시공사</span> : <a href="http://www.igong.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">(주)이공건축</a><br />
+                            <span className="font-bold text-slate-500">사무실</span> : 충북 청주시 상당구 상당로 54번길 8 3층 &nbsp;|&nbsp; <span className="font-bold text-slate-500">현장위치</span> : 충북 청주시 상당구 남일면 고은리 산 35-2번지 일원 (현장사무소 & 견본주택)<br />
+                            <span className="font-bold text-slate-500">분양문의</span> : 043-250-1120
+                        </p>
+                        <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                            ※ 본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제와 다를 수 있습니다.
                         </p>
                         <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECO ALBERO. ALL RIGHTS RESERVED.</p>
                     </div>
