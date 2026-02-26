@@ -293,6 +293,17 @@ const App = () => {
                     </div>
                 </nav>
             </div>
+            {/* --- Mobile Dropdown Menu --- */}
+            {isMenuOpen && (
+                <div className="lg:hidden bg-white border-b border-slate-100 shadow-xl overflow-hidden px-6 py-4 flex flex-col gap-4 absolute top-full left-0 w-full z-40 transition-all origin-top">
+                    <a href="#about" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>단지소개</a>
+                    <a href="#location" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>프리미엄 입지</a>
+                    <a href="#gallery" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>건축예시</a>
+                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#5d7c47] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#4a6339] mt-2 w-full text-center">
+                        문의하기
+                    </button>
+                </div>
+            )}
 
             {/* --- Interactive Plot Explorer --- */}
             <section id="plots" className="relative min-h-screen flex flex-col items-center justify-center bg-slate-900 py-32 overflow-hidden shadow-2xl">
@@ -353,7 +364,7 @@ const App = () => {
                             {PLOTS.map(plot => (
                                 <div
                                     key={`label-${plot.id}`}
-                                    className="absolute w-8 h-8 -ml-4 -mt-4 text-[10px] tracking-tighter text-white font-bold rounded-full flex items-center justify-center border border-white/50 shadow-md pointer-events-none backdrop-blur-sm"
+                                    className="absolute w-5 h-5 -ml-2.5 -mt-2.5 text-[8px] md:w-8 md:h-8 md:-ml-4 md:-mt-4 md:text-[10px] tracking-tighter text-white font-bold rounded-full flex items-center justify-center border border-white/50 shadow-md pointer-events-none backdrop-blur-sm"
                                     style={{
                                         ...getPathCenter(plot.path),
                                         backgroundColor: PHASES[plot.phase].color + 'CC' // Add transparency
@@ -496,7 +507,7 @@ const App = () => {
                             <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10 w-full">
                                 {/* Left column: Vertical image */}
                                 <div className="space-y-4 md:space-y-6 pt-12 md:pt-16">
-                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[120%] h-0">
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group aspect-[4/5]">
                                         <img src={getAssetPath('lifestyle_3040.png')} alt="3040 Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
                                             <p className="text-white font-bold text-sm md:text-base tracking-wide">여유로운 주말 아침</p>
@@ -506,13 +517,13 @@ const App = () => {
 
                                 {/* Right column: Two horizontal/square images */}
                                 <div className="space-y-4 md:space-y-6">
-                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[100%] h-0">
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group aspect-square">
                                         <img src={getAssetPath('lifestyle_party.png')} alt="Party Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
                                             <p className="text-white font-bold text-sm md:text-base tracking-wide">프라이빗 가든 파티</p>
                                         </div>
                                     </div>
-                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group pb-[100%] h-0">
+                                    <div className="relative rounded-3xl overflow-hidden shadow-2xl group aspect-square">
                                         <img src={getAssetPath('lifestyle_5060.png')} alt="5060 Lifestyle" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-6 pointer-events-none">
                                             <p className="text-white font-bold text-sm md:text-base tracking-wide">자연과 함께하는 힐링</p>
