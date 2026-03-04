@@ -7,5 +7,6 @@ export default defineConfig({
     base: "/eco-albero/",
     server: {
         host: true,
+        port: 3000,
     },
 })

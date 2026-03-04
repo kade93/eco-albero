@@ -1,3 +1,4 @@
+import emailjs from '@emailjs/browser';
 import React, { useState, useEffect, useRef } from 'react';
 
 // --- Icons (Inline SVGs for reliability in preview) ---
@@ -32,15 +33,15 @@ const getAssetPath = (path) => {
 };
 
 const PHASES = {
-    '1': { color: '#9d67cc', label: '1차' },
-    '2': { color: '#ff9d48', label: '2차' },
-    '3': { color: '#2ecc71', label: '3차' },
-    '4': { color: '#3498db', label: '4차' },
-    '5': { color: '#ff6b81', label: '5차' },
-    '6': { color: '#1abc9c', label: '6차' },
-    '7': { color: '#a0522d', label: '7차' },
-    '8': { color: '#b2ed6b', label: '8차' },
-    '9': { color: '#e74c3c', label: '9차' },
+    '1': { color: '#af94c4', label: '1차' },
+    '2': { color: '#f49644', label: '2차' },
+    '3': { color: '#22a985', label: '3차' },
+    '4': { color: '#567eb9', label: '4차' },
+    '5': { color: '#f6748c', label: '5차' },
+    '6': { color: '#33becb', label: '6차' },
+    '7': { color: '#9b6b6a', label: '7차' },
+    '8': { color: '#79db70', label: '8차' },
+    '9': { color: '#ea4335', label: '9차' },
 };
 
 // --- Plot Data (Extracted from 2112x2016 source) ---
@@ -79,18 +80,18 @@ const PLOTS = [
     { id: '2-4', x: 52.54, y: 71.64, phase: '2', path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
     { id: '2-5', x: 55.14, y: 76.19, phase: '2', path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
     { id: '2-6', x: 58.42, y: 79.13, phase: '2', path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
-    { id: '3-1', x: 50.72, y: 79.72, phase: '3', path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
-    { id: '3-2', x: 65.45, y: 55.62, phase: '3', path: 'M959 1564V1624H841V1564H959Z' },
-    { id: '3-3', x: 44.07, y: 74.22, phase: '3', path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
-    { id: '3-4', x: 52.42, y: 57.03, phase: '3', path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
-    { id: '1-1', x: 49.78, y: 78.04, phase: '1', path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
-    { id: '1-2', x: 58.57, y: 94.51, phase: '1', path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
-    { id: '1-3', x: 55.09, y: 91.83, phase: '1', path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
-    { id: '1-4', x: 51.73, y: 90.07, phase: '1', path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
-    { id: '1-5', x: 48.66, y: 88.14, phase: '1', path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
-    { id: '1-6', x: 60.08, y: 87.24, phase: '1', path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
-    { id: '1-7', x: 56.2, y: 83.71, phase: '1', path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
-    { id: '1-8', x: 52.71, y: 81.51, phase: '1', path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
+    { id: '3-4', x: 50.72, y: 79.72, phase: '3', path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
+    { id: '3-3', x: 65.45, y: 55.62, phase: '3', path: 'M959 1564V1624H841V1564H959Z' },
+    { id: '3-2', x: 44.07, y: 74.22, phase: '3', path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
+    { id: '3-1', x: 52.42, y: 57.03, phase: '3', path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
+    { id: '3-5', x: 49.78, y: 78.04, phase: '3', path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
+    { id: '1-1', x: 58.57, y: 94.51, phase: '1', path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
+    { id: '1-2', x: 55.09, y: 91.83, phase: '1', path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
+    { id: '1-3', x: 51.73, y: 90.07, phase: '1', path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
+    { id: '1-4', x: 48.66, y: 88.14, phase: '1', path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
+    { id: '1-7', x: 60.08, y: 87.24, phase: '1', path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
+    { id: '1-6', x: 56.2, y: 83.71, phase: '1', path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
+    { id: '1-5', x: 52.71, y: 81.51, phase: '1', path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
 ];
 
 // SVG path 데이터로부터 자동으로 중앙 좌표(bounding box 중심)를 계산하는 함수
@@ -207,18 +208,19 @@ const App = () => {
     const [isPanoOpen, setIsPanoOpen] = useState(false);
     const [expandedPanoImage, setExpandedPanoImage] = useState(null);
 
+    const [formData, setFormData] = useState({ name: '', phone: '', interest: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
 
-        // Escape key listener to close modals sequentially
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
                 setExpandedPanoImage(prevExpanded => {
                     if (prevExpanded) {
-                        return null; // Just close the expanded image
+                        return null;
                     } else {
-                        // If no expanded image, close other modals
                         setIsPanoOpen(false);
                         setModalType(null);
                         return null;
@@ -234,8 +236,62 @@ const App = () => {
         };
     }, []);
 
+    const calculateMappedArea = (plot) => {
+        if (!plot) return '0.0';
+        const coords = plot.path.match(/-?\d+\.?\d*/g).map(Number);
+        const xs = coords.filter((_, i) => i % 2 === 0);
+        const ys = coords.filter((_, i) => i % 2 !== 0);
+        const minX = Math.min(...xs), maxX = Math.max(...xs);
+        const minY = Math.min(...ys), maxY = Math.max(...ys);
+        const area = (maxX - minX) * (maxY - minY);
+
+        const minGlobalArea = 540.3;     // Anchor min
+        const maxGlobalArea = 1884.0;    // Anchor max
+        const minActualArea = 2500;      // Bounding box area min
+        const maxActualArea = 43500;     // Bounding box area max
+
+        if (maxActualArea === minActualArea) return minGlobalArea.toFixed(1);
+
+        const normalized = (area - minActualArea) / (maxActualArea - minActualArea);
+        const mappedArea = minGlobalArea + normalized * (maxGlobalArea - minGlobalArea);
+        const clampedMap = Math.max(minGlobalArea, Math.min(maxGlobalArea, mappedArea));
+
+        return clampedMap.toFixed(1);
+    };
+
     const scrollToContact = () => {
         document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const handleEmailSubmit = (e) => {
+        e.preventDefault();
+
+        if (!formData.name || !formData.phone) {
+            alert('성함과 연락처를 모두 입력해주세요.');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        emailjs.send(
+            'service_0flym24',
+            'YOUR_TEMPLATE_ID',
+            {
+                from_name: formData.name,
+                phone_number: formData.phone,
+                interest: formData.interest || '미선택',
+            },
+            'YOUR_PUBLIC_KEY'
+        )
+            .then(() => {
+                alert('성공적으로 문의가 접수되었습니다. 곧 연락드리겠습니다!');
+                setFormData({ name: '', phone: '', interest: '' });
+                setIsSubmitting(false);
+            }, (error) => {
+                alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                console.error('EmailJS Error:', error);
+                setIsSubmitting(false);
+            });
     };
 
     return (
@@ -245,7 +301,7 @@ const App = () => {
                 {/* --- Top Info Bar --- */}
                 <div className="bg-[#5d7c47] text-white py-1.5 px-6 hidden md:block border-b border-white/10">
                     <div className="container mx-auto flex justify-between items-center text-[13px] font-bold tracking-tight">
-                        <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 51세대 분양 중</p>
+                        <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 46세대 분양 중</p>
                         <div className="flex gap-4 items-center">
                             <span>분양 문의: 043-250-1120</span>
                         </div>
@@ -271,7 +327,7 @@ const App = () => {
                             <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
                             <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
                             <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
-                            <a href="/eco_albero_catalog.pdf" download="에코알베로_카달로그.pdf"
+                            <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
                                 className="border-2 border-[#5d7c47] text-[#5d7c47] px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-[#5d7c47] hover:text-white transition-all font-bold">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그
@@ -386,7 +442,7 @@ const App = () => {
                             className="inline-flex items-center gap-2 bg-[#ff8a00] text-white px-5 py-2 rounded-full mb-8 font-bold text-sm tracking-wide shadow-lg">
                             <IconClock /> 잔여 필지 빠르게 소진 중
                         </div>
-                        <h1 className="text-slate-900 text-4xl md:text-6xl font-extrabold leading-[1.2] mb-8">
+                        <h1 className="text-slate-900 text-4xl md:text-6xl font-extrabold leading-relaxed break-keep mb-8">
                             퇴근 후 30분<br />
                             도심의 소음이 숲의 숨소리로
                         </h1>
@@ -399,7 +455,7 @@ const App = () => {
                                 className="bg-[#5d7c47] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#4a6339] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
                                 지금 분양 문의하기
                             </button>
-                            <a href="/eco_albero_catalog.pdf" download="에코알베로_카달로그.pdf"
+                            <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
                                 className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#5d7c47]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그 다운로드
@@ -414,9 +470,9 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-4xl mx-auto mb-16">
                         <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
-                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-                            거주하기 편한 <span className="text-blue-600">아파트형</span> 전원주택단지<br />
-                            필수시설인 <span className="text-red-600">단지공용시설</span> 완벽 특화
+                        <h3 className="text-3xl md:text-5xl text-slate-900 font-black mb-6 leading-[1.6] break-keep">
+                            거주하기 편한 <span className="text-purple-600">아파트형 단지공용 시설</span><br />
+                            프리미엄 커뮤니티 완벽 특화
                         </h3>
                         <p className="text-slate-500 md:text-lg font-medium">삶의 질을 중시하며 독특한 Lifestyle을 창조하는 마을</p>
                     </div>
@@ -427,7 +483,7 @@ const App = () => {
                             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3">관리사무동 운영</h4>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">관리사무동 운영</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">단지관리인 상주를 통해 공원, 재활용 분리수거장 등 체계적인 관리 서비스 제공</p>
                         </div>
                         {/* Convenience Facility */}
@@ -435,7 +491,7 @@ const App = () => {
                             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3">24시간 무인편의점</h4>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">24시간 무인편의점</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">단지 밖을 나가지 않아도 언제든 편리하게 이용할 수 있는 상가 편의점 구축</p>
                         </div>
                         {/* Fitness */}
@@ -443,7 +499,7 @@ const App = () => {
                             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3">주민 커뮤니티시설</h4>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">주민 커뮤니티시설</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">2층에 조성된 프리미엄 운동시설 및 문화 공간으로 입주민 간 네트워킹 강화</p>
                         </div>
                         {/* Laundry */}
@@ -451,7 +507,7 @@ const App = () => {
                             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3">대형 무인 세탁소</h4>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">대형 무인 세탁소</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">집에서 하기 힘든 대형 빨래도 단지 내에서 해결할 수 있는 무인 세탁 시설 공간</p>
                         </div>
                     </div>
@@ -464,7 +520,7 @@ const App = () => {
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10 order-2 lg:order-1">
                             <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
-                            <h3 className="text-3xl md:text-5xl font-black leading-tight text-slate-900">
+                            <h3 className="text-3xl md:text-5xl font-black leading-relaxed text-slate-900 break-keep">
                                 단지 내 공원 시설<br />
                                 1만평 이상의 녹지를 품다
                             </h3>
@@ -559,7 +615,7 @@ const App = () => {
                             <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mb-4 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                             </div>
-                            <h5 className="font-black text-lg text-slate-900">최신 단지내 CCTV</h5>
+                            <h5 className="font-black text-lg text-slate-900">단지내 최신 CCTV</h5>
                             <p className="text-slate-500 text-xs mt-2 leading-relaxed">사각지대 없는 24시간 안전망</p>
                         </div>
                         <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
@@ -769,7 +825,6 @@ const App = () => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
                         {/* Kitchen */}
-                        {/* Kitchen */}
                         <div
                             className="group cursor-pointer rounded-[40px] overflow-hidden bg-slate-900 border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative"
                             onClick={() => setExpandedPanoImage({ src: getAssetPath('interior_kitchen.webp'), label: '럭셔리 다이닝 & 오픈 키친' })}
@@ -820,10 +875,10 @@ const App = () => {
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="bg-white rounded-[50px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
                         <div className="lg:w-[45%] bg-[#5d7c47] p-12 md:p-20 text-white space-y-8">
-                            <h4 className="text-4xl md:text-6xl font-black leading-tight">
+                            <h3 className="text-3xl md:text-5xl font-black leading-relaxed break-keep text-white">
                                 지금 바로<br />
                                 문의하세요
-                            </h4>
+                            </h3>
                             <p className="text-white/70 text-lg font-medium">
                                 원하시는 필지 위치와 건축 상담을<br />
                                 전문 분양상담사가 상세히 안내해 드립니다.
@@ -843,16 +898,18 @@ const App = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="lg:w-[55%] p-12 md:p-20 space-y-8">
+                        <form onSubmit={handleEmailSubmit} className="lg:w-[55%] p-12 md:p-20 space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Name</label>
                                     <input type="text" placeholder="성함"
+                                        value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#5d7c47] transition-colors font-bold text-lg" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Phone</label>
                                     <input type="tel" placeholder="연락처"
+                                        value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#5d7c47] transition-colors font-bold text-lg" />
                                 </div>
                             </div>
@@ -860,21 +917,22 @@ const App = () => {
                                 <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Interest</label>
                                 <div className="flex flex-wrap gap-4 pt-2">
                                     {['방문예약', '분양가문의', '필지문의', '기타'].map((item) => (
-                                        <button key={item}
-                                            className="px-6 py-3 rounded-full border-2 border-slate-100 font-bold text-slate-500 hover:border-[#5d7c47] hover:text-[#5d7c47] transition-all">
+                                        <button key={item} type="button"
+                                            onClick={() => setFormData({ ...formData, interest: item })}
+                                            className={`px-6 py-3 rounded-full border-2 font-bold transition-all ${formData.interest === item ? 'border-[#5d7c47] text-[#5d7c47] bg-[#5d7c47]/5' : 'border-slate-100 text-slate-500 hover:border-[#5d7c47] hover:text-[#5d7c47]'}`}>
                                             {item}
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            <div className="pt-8">
-                                <button
-                                    className="w-full bg-[#5d7c47] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#4a6339] transition-all shadow-xl shadow-green-100">
-                                    신청하기
+                            <div className="pt-8 w-full">
+                                <button type="submit" disabled={isSubmitting}
+                                    className="block text-center w-full bg-[#5d7c47] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#4a6339] disabled:bg-slate-300 transition-all shadow-xl shadow-green-100">
+                                    {isSubmitting ? '전송 중...' : '상담 신청하기'}
                                 </button>
-                                <p className="text-center mt-6 text-slate-400 text-sm font-medium">개인정보는 분양 상담을 위해서만 활용됩니다.</p>
+                                <p className="text-center mt-6 text-slate-400 text-sm font-medium w-full">개인정보는 분양 상담을 위해서만 활용됩니다.</p>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -900,7 +958,7 @@ const App = () => {
                             <span className="font-bold text-slate-500">분양문의</span> : 043-250-1120
                         </p>
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">
-                            ※ 본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제와 다를 수 있습니다.
+                            ※ 본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제 시공 시 인허가 과정이나 현장 여건에 따라 변경될 수 있습니다.
                         </p>
                         <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECO ALBERO. ALL RIGHTS RESERVED.</p>
                     </div>
@@ -990,15 +1048,15 @@ const App = () => {
                                         { id: 'se', label: '동남향 VIEW', src: getAssetPath('view_southeast.png') },
                                         { id: 's', label: '정남향 VIEW', src: getAssetPath('view_south.png') },
                                         { id: 'sw', label: '남서향 VIEW', src: getAssetPath('view_southwest.png') }
-                                    ].map(img => (
+                                    ].map((img, index) => (
                                         <div
-                                            key={img.id}
-                                            className="aspect-square relative rounded-2xl overflow-hidden cursor-pointer group/thumb border-2 border-white/10 hover:border-catalog-gold transition-all shadow-lg"
+                                            key={index}
+                                            className="relative aspect-video rounded-xl overflow-hidden group/thumb cursor-pointer hover:ring-2 hover:ring-catalog-gold transition-all"
                                             onClick={() => setExpandedPanoImage(img)}
                                         >
+                                            <img src={img.src} alt={img.label} className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-700" />
                                             <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-transparent transition-colors duration-300 z-10"></div>
                                             <div className="absolute bottom-3 left-3 z-20 bg-black/80 px-3 py-1.5 rounded-lg text-white text-xs md:text-sm font-bold backdrop-blur-md border border-white/20">{img.label}</div>
-                                            <img src={img.src} alt={img.label} className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-700" />
 
                                             {/* Expand Icon */}
                                             <div className="absolute inset-0 z-30 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -1028,7 +1086,7 @@ const App = () => {
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
                                         <div className="text-sm font-bold text-catalog-gold">부지 면적</div>
-                                        <div className="text-xl font-light text-white">450 <span className="text-sm text-white/50">m²</span></div>
+                                        <div className="text-xl font-light text-white">{calculateMappedArea(selectedPlot)} <span className="text-sm text-white/50">m²</span></div>
                                     </div>
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
                                         <div className="text-sm font-bold text-catalog-gold">분양가</div>
