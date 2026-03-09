@@ -1,4 +1,3 @@
-import emailjs from '@emailjs/browser';
 import React, { useState, useEffect, useRef } from 'react';
 
 // --- Icons (Inline SVGs for reliability in preview) ---
@@ -46,52 +45,52 @@ const PHASES = {
 
 // --- Plot Data (Extracted from 2112x2016 source) ---
 const PLOTS = [
-    { id: '9-1', x: 65.41, y: 65.43, phase: '9', path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
-    { id: '9-2', x: 69.54, y: 63.96, phase: '9', path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
-    { id: '9-3', x: 73.43, y: 61.64, phase: '9', path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
-    { id: '9-4', x: 77.72, y: 58.83, phase: '9', path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
-    { id: '9-5', x: 81.76, y: 56.35, phase: '9', path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
-    { id: '8-1', x: 62.04, y: 44.54, phase: '8', path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
-    { id: '8-2', x: 65.67, y: 42.47, phase: '8', path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
-    { id: '8-3', x: 69.47, y: 40.4, phase: '8', path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
-    { id: '8-4', x: 73.06, y: 38.44, phase: '8', path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
-    { id: '7-1', x: 49.05, y: 50.44, phase: '7', path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
-    { id: '7-2', x: 54.85, y: 48.53, phase: '7', path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
-    { id: '7-3', x: 58.37, y: 46.57, phase: '7', path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
-    { id: '6-1', x: 47.49, y: 60.38, phase: '6', path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
-    { id: '6-2', x: 52.82, y: 57.68, phase: '6', path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
-    { id: '6-3', x: 58.04, y: 54.97, phase: '6', path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
-    { id: '6-4', x: 61.31, y: 53.03, phase: '6', path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
-    { id: '6-5', x: 64.57, y: 51.07, phase: '6', path: 'M1326.5 1009L1371.5 1088L1422.5 1059.5L1371.5 982L1326.5 1009Z' },
-    { id: '5-1', x: 70.72, y: 55.03, phase: '5', path: 'M1489 1151L1448.5 1071.5L1502 1046.5L1539.5 1127.5L1489 1151Z' },
-    { id: '5-2', x: 74.02, y: 53.12, phase: '5', path: 'M1563 1114.5L1518.5 1034L1563 1006L1609 1085.5L1563 1114.5Z' },
-    { id: '5-3', x: 77.53, y: 51.13, phase: '5', path: 'M1633 1071.5L1591 996L1642.5 968L1687.5 1046.5L1633 1071.5Z' },
-    { id: '5-4', x: 68.19, y: 49.93, phase: '5', path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
-    { id: '5-5', x: 71.68, y: 48.08, phase: '5', path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
-    { id: '5-6', x: 75.0, y: 46.07, phase: '5', path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
-    { id: '4-1', x: 57.86, y: 70.4, phase: '4', path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
-    { id: '4-2', x: 61.29, y: 67.45, phase: '4', path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
-    { id: '4-3', x: 60.83, y: 60.34, phase: '4', path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
-    { id: '4-4', x: 64.11, y: 58.47, phase: '4', path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
-    { id: '4-5', x: 67.42, y: 56.58, phase: '4', path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
-    { id: '2-1', x: 56.62, y: 62.44, phase: '2', path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
-    { id: '2-2', x: 52.65, y: 64.57, phase: '2', path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
-    { id: '2-3', x: 48.79, y: 66.7, phase: '2', path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
-    { id: '2-4', x: 52.54, y: 71.64, phase: '2', path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
-    { id: '2-5', x: 55.14, y: 76.19, phase: '2', path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
-    { id: '2-6', x: 58.42, y: 79.13, phase: '2', path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
-    { id: '3-4', x: 50.72, y: 79.72, phase: '3', path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
-    { id: '3-3', x: 65.45, y: 55.62, phase: '3', path: 'M959 1564V1624H841V1564H959Z' },
-    { id: '3-2', x: 44.07, y: 74.22, phase: '3', path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
-    { id: '3-1', x: 52.42, y: 57.03, phase: '3', path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
-    { id: '3-5', x: 49.78, y: 78.04, phase: '3', path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
-    { id: '1-1', x: 58.57, y: 94.51, phase: '1', path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
-    { id: '1-2', x: 55.09, y: 91.83, phase: '1', path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
-    { id: '1-3', x: 51.73, y: 90.07, phase: '1', path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
-    { id: '1-4', x: 48.66, y: 88.14, phase: '1', path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
-    { id: '1-7', x: 60.08, y: 87.24, phase: '1', path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
-    { id: '1-6', x: 56.2, y: 83.71, phase: '1', path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
-    { id: '1-5', x: 52.71, y: 81.51, phase: '1', path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
+    { id: '9-1', x: 65.41, y: 65.43, phase: '9', area: 723.4, path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
+    { id: '9-2', x: 69.54, y: 63.96, phase: '9', area: 816.4, path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
+    { id: '9-3', x: 73.43, y: 61.64, phase: '9', area: 821.1, path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
+    { id: '9-4', x: 77.72, y: 58.83, phase: '9', area: 792.6, path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
+    { id: '9-5', x: 81.76, y: 56.35, phase: '9', area: 696.0, path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
+    { id: '8-1', x: 62.04, y: 44.54, phase: '8', area: 750.8, path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
+    { id: '8-2', x: 65.67, y: 42.47, phase: '8', area: 836.7, path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
+    { id: '8-3', x: 69.47, y: 40.4, phase: '8', area: 831.9, path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
+    { id: '8-4', x: 73.06, y: 38.44, phase: '8', area: 816.4, path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
+    { id: '7-1', x: 49.05, y: 50.44, phase: '7', area: 1346.8, path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
+    { id: '7-2', x: 54.85, y: 48.53, phase: '7', area: 750.8, path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
+    { id: '7-3', x: 58.37, y: 46.57, phase: '7', area: 749.6, path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
+    { id: '6-1', x: 47.49, y: 60.38, phase: '6', area: 1265.7, path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
+    { id: '6-2', x: 52.82, y: 57.68, phase: '6', area: 662.6, path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
+    { id: '6-3', x: 58.04, y: 54.97, phase: '6', area: 589.9, path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
+    { id: '6-4', x: 61.31, y: 53.03, phase: '6', area: 595.9, path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
+    { id: '6-5', x: 64.57, y: 51.07, phase: '6', area: 597.1, path: 'M1326.5 1009L1371.5 1088L1422.5 1059.5L1371.5 982L1326.5 1009Z' },
+    { id: '5-1', x: 70.72, y: 55.03, phase: '5', area: 591.2, path: 'M1489 1151L1448.5 1071.5L1502 1046.5L1539.5 1127.5L1489 1151Z' },
+    { id: '5-2', x: 74.02, y: 53.12, phase: '5', area: 591.2, path: 'M1563 1114.5L1518.5 1034L1563 1006L1609 1085.5L1563 1114.5Z' },
+    { id: '5-3', x: 77.53, y: 51.13, phase: '5', area: 582.8, path: 'M1633 1071.5L1591 996L1642.5 968L1687.5 1046.5L1633 1071.5Z' },
+    { id: '5-4', x: 68.19, y: 49.93, phase: '5', area: 594.7, path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
+    { id: '5-5', x: 71.68, y: 48.08, phase: '5', area: 594.7, path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
+    { id: '5-6', x: 75.0, y: 46.07, phase: '5', area: 588.8, path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
+    { id: '4-1', x: 57.86, y: 70.4, phase: '4', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
+    { id: '4-2', x: 61.29, y: 67.45, phase: '4', area: 572.1, path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
+    { id: '4-3', x: 60.83, y: 60.34, phase: '4', area: 585.2, path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
+    { id: '4-4', x: 64.11, y: 58.47, phase: '4', area: 591.2, path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
+    { id: '4-5', x: 67.42, y: 56.58, phase: '4', area: 592.3, path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
+    { id: '2-1', x: 56.62, y: 62.44, phase: '2', area: 736.5, path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
+    { id: '2-2', x: 52.65, y: 64.57, phase: '2', area: 759.1, path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
+    { id: '2-3', x: 48.79, y: 66.7, phase: '2', area: 717.5, path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
+    { id: '2-4', x: 52.54, y: 71.64, phase: '2', area: 809.2, path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
+    { id: '2-5', x: 55.14, y: 76.19, phase: '2', area: 756.7, path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
+    { id: '2-6', x: 58.42, y: 79.13, phase: '2', area: 729.4, path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
+    { id: '3-4', x: 50.72, y: 79.72, phase: '3', area: 1529.6, path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
+    { id: '3-3', x: 65.45, y: 55.62, phase: '3', area: 743.3, path: 'M959 1564V1624H841V1564H959Z' },
+    { id: '3-2', x: 44.07, y: 74.22, phase: '3', area: 727.0, path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
+    { id: '3-1', x: 52.42, y: 57.03, phase: '3', area: 783.6, path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
+    { id: '3-5', x: 49.78, y: 78.04, phase: '3', area: 1022.6, path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
+    { id: '1-1', x: 58.57, y: 94.51, phase: '1', area: 819.4, path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
+    { id: '1-2', x: 55.09, y: 91.83, phase: '1', area: 772.7, path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
+    { id: '1-3', x: 51.73, y: 90.07, phase: '1', area: 734.1, path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
+    { id: '1-4', x: 48.66, y: 88.14, phase: '1', area: 767.5, path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
+    { id: '1-7', x: 60.08, y: 87.24, phase: '1', area: 646.3, path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
+    { id: '1-6', x: 56.2, y: 83.71, phase: '1', area: 634.8, path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
+    { id: '1-5', x: 52.71, y: 81.51, phase: '1', area: 638.2, path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
 ];
 
 // SVG path 데이터로부터 자동으로 중앙 좌표(bounding box 중심)를 계산하는 함수
@@ -237,26 +236,8 @@ const App = () => {
     }, []);
 
     const calculateMappedArea = (plot) => {
-        if (!plot) return '0.0';
-        const coords = plot.path.match(/-?\d+\.?\d*/g).map(Number);
-        const xs = coords.filter((_, i) => i % 2 === 0);
-        const ys = coords.filter((_, i) => i % 2 !== 0);
-        const minX = Math.min(...xs), maxX = Math.max(...xs);
-        const minY = Math.min(...ys), maxY = Math.max(...ys);
-        const area = (maxX - minX) * (maxY - minY);
-
-        const minGlobalArea = 540.3;     // Anchor min
-        const maxGlobalArea = 1884.0;    // Anchor max
-        const minActualArea = 2500;      // Bounding box area min
-        const maxActualArea = 43500;     // Bounding box area max
-
-        if (maxActualArea === minActualArea) return minGlobalArea.toFixed(1);
-
-        const normalized = (area - minActualArea) / (maxActualArea - minActualArea);
-        const mappedArea = minGlobalArea + normalized * (maxGlobalArea - minGlobalArea);
-        const clampedMap = Math.max(minGlobalArea, Math.min(maxGlobalArea, mappedArea));
-
-        return clampedMap.toFixed(1);
+        if (!plot || !plot.area) return '0.0';
+        return plot.area.toFixed(1);
     };
 
     const scrollToContact = () => {
@@ -271,27 +252,23 @@ const App = () => {
             return;
         }
 
-        setIsSubmitting(true);
+        const subject = encodeURIComponent(`[에코알베로] 분양 상담 신청 - ${formData.name}님`);
+        const body = encodeURIComponent(
+            `안녕하세요, 에코알베로 분양 상담 신청 내역입니다.\n\n` +
+            `■ 성함: ${formData.name}\n` +
+            `■ 연락처: ${formData.phone}\n` +
+            `■ 관심분야: ${formData.interest || '미선택'}\n\n` +
+            `위 내용으로 상담을 신청합니다. 확인 부탁드립니다.`
+        );
 
-        emailjs.send(
-            'service_0flym24',
-            'YOUR_TEMPLATE_ID',
-            {
-                from_name: formData.name,
-                phone_number: formData.phone,
-                interest: formData.interest || '미선택',
-            },
-            'YOUR_PUBLIC_KEY'
-        )
-            .then(() => {
-                alert('성공적으로 문의가 접수되었습니다. 곧 연락드리겠습니다!');
-                setFormData({ name: '', phone: '', interest: '' });
-                setIsSubmitting(false);
-            }, (error) => {
-                alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-                console.error('EmailJS Error:', error);
-                setIsSubmitting(false);
-            });
+        const mailtoUrl = `mailto:ecoalbero@naver.com?subject=${subject}&body=${body}`;
+
+        // 메일 앱 실행
+        window.location.href = mailtoUrl;
+
+        // 폼 초기화
+        setFormData({ name: '', phone: '', interest: '' });
+        alert('메일 프로그램이 실행되었습니다. 내용을 확인하신 후 전송 버튼을 눌러주세요!');
     };
 
     return (
@@ -304,6 +281,8 @@ const App = () => {
                         <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 46세대 분양 중</p>
                         <div className="flex gap-4 items-center">
                             <span>분양 문의: 043-250-1120</span>
+                            <span className="opacity-40">|</span>
+                            <span>이메일: ecoalbero@naver.com</span>
                         </div>
                     </div>
                 </div>
@@ -370,9 +349,8 @@ const App = () => {
                 {/* Header intro just for plots */}
                 <div className="relative z-10 text-center mb-8 px-6 pt-10">
                     <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide font-bold drop-shadow-md">프리미엄 부지 전경</h2>
-                    <p className="text-white/90 md:text-lg font-light tracking-wide shadow-black drop-shadow mx-auto max-w-xl">
-                        자연과 맞닿은 하이엔드 타운하우스. <br className="md:hidden" />
-                        원하시는 부지를 클릭하여 해당 부지의 뷰를 직접 확인하세요.
+                    <p className="text-white/90 md:text-lg font-light tracking-wide shadow-black drop-shadow mx-auto max-w-3xl">
+                        자연과 맞닿은 하이엔드 타운하우스. 원하시는 부지를 클릭하여 해당 부지의 뷰를 직접 확인하세요.
                     </p>
                 </div>
 
@@ -442,10 +420,10 @@ const App = () => {
                             className="inline-flex items-center gap-2 bg-[#ff8a00] text-white px-5 py-2 rounded-full mb-8 font-bold text-sm tracking-wide shadow-lg">
                             <IconClock /> 잔여 필지 빠르게 소진 중
                         </div>
-                        <h1 className="text-slate-900 text-4xl md:text-6xl font-extrabold leading-relaxed break-keep mb-8">
-                            퇴근 후 30분<br />
-                            도심의 소음이 숲의 숨소리로
-                        </h1>
+                        <div className="mb-8 space-y-3">
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-extrabold break-keep">퇴근 후 30분</h3>
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-extrabold break-keep">도심의 소음이 숲의 숨소리로</h3>
+                        </div>
                         <p className="text-slate-500 text-lg md:text-2xl mb-12 font-medium leading-relaxed">
                             하이닉스·현대백화점 30분, 청남대·대청댐 25분<br />
                             도심의 편리함과 자연의 평온함을 동시에 소유하세요.
@@ -469,11 +447,11 @@ const App = () => {
             <section id="community" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-4xl mx-auto mb-16">
-                        <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
-                        <h3 className="text-3xl md:text-5xl text-slate-900 font-black mb-6 leading-[1.6] break-keep">
-                            거주하기 편한 <span className="text-purple-600">아파트형 단지공용 시설</span><br />
-                            프리미엄 커뮤니티 완벽 특화
-                        </h3>
+                        <span className="text-catalog-gold font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
+                        <div className="mb-6 space-y-3">
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-black break-keep">거주하기 편한 아파트형 단지공용 시설</h3>
+                            <h3 className="text-4xl md:text-5xl text-catalog-brand font-black break-keep">프리미엄 커뮤니티 완벽 특화</h3>
+                        </div>
                         <p className="text-slate-500 md:text-lg font-medium">삶의 질을 중시하며 독특한 Lifestyle을 창조하는 마을</p>
                     </div>
 
@@ -500,14 +478,14 @@ const App = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">주민 커뮤니티시설</h4>
-                            <p className="text-slate-500 text-sm leading-relaxed">2층에 조성된 프리미엄 운동시설 및 문화 공간으로 입주민 간 네트워킹 강화</p>
+                            <p className="text-slate-500 text-sm leading-relaxed">관리사무소에 프리미엄 운동시설 및 문화 공간 조성, 입주민 간 네트워킹 강화</p>
                         </div>
                         {/* Laundry */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
                             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">대형 무인 세탁소</h4>
+                            <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">무인 세탁소</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">집에서 하기 힘든 대형 빨래도 단지 내에서 해결할 수 있는 무인 세탁 시설 공간</p>
                         </div>
                     </div>
@@ -520,12 +498,12 @@ const App = () => {
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10 order-2 lg:order-1">
                             <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
-                            <h3 className="text-3xl md:text-5xl font-black leading-relaxed text-slate-900 break-keep">
-                                단지 내 공원 시설<br />
-                                1만평 이상의 녹지를 품다
-                            </h3>
+                            <div className="mb-6 space-y-3">
+                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">단지 내 공원 시설</h3>
+                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">1만평 이상의 녹지를 품다</h3>
+                            </div>
                             <p className="text-slate-600 text-lg leading-relaxed font-medium">
-                                단지 전체 면적도 계약자 분들에게 제공됩니다.<br />
+                                공원 면적도 계약자 분들에게 제공됩니다.<br />
                                 자연에 둘러싸여 건강까지 생각하는 프리미엄 힐링 단지를 경험하세요.
                             </p>
                             <div className="space-y-6 pt-4">
@@ -533,7 +511,7 @@ const App = () => {
                                     <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
                                         <IconCheck />
                                     </div>
-                                    <span className="text-lg font-bold text-slate-800">단지 내 유실수 공원 제공 (과실수)</span>
+                                    <span className="text-lg font-bold text-slate-800">단지 내 과실수 산책로와 등산로 </span>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
@@ -604,11 +582,11 @@ const App = () => {
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
                 <div className="container mx-auto px-6 relative z-10 text-center">
                     <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
-                    <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-                        스마트한 첨단시스템으로<br />
-                        생활 편의성을 업그레이드 하다!
-                    </h3>
-                    <p className="text-slate-500 md:text-lg mb-16 font-medium max-w-2xl mx-auto">전방위 생활지원 SYSTEM, 생활서비스 조경 등 아파트 수준의 특별한 보안과 관리를 제공합니다.</p>
+                    <div className="mb-6 space-y-3">
+                        <h3 className="text-4xl md:text-5xl font-black break-keep">스마트한 첨단시스템으로</h3>
+                        <h3 className="text-4xl md:text-5xl font-black break-keep">생활 편의성을 업그레이드</h3>
+                    </div>
+                    <p className="text-slate-500 md:text-lg mb-16 font-medium max-w-4xl mx-auto">전방위 생활지원 SYSTEM, 생활서비스 조경 등 아파트 수준의 특별한 보안과 관리를 제공합니다.</p>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-5xl mx-auto">
                         <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
@@ -648,10 +626,10 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10">
-                            <h4 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight">
-                                청주 중심이 가깝고<br />
-                                직주근접이 완벽
-                            </h4>
+                            <div className="mb-6 space-y-3">
+                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">청주 중심이 가깝고</h3>
+                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">직주근접이 완벽</h3>
+                            </div>
                             <div className="space-y-8">
                                 <div className="flex gap-6 items-start">
                                     <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
@@ -711,9 +689,9 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-4xl mx-auto mb-16">
                         <span className="text-blue-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM VISION</span>
-                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
+                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-[1.3] md:leading-[1.4]">
                             에코 알베로 주변<br />
-                            <span className="text-[#5d7c47]">도로망 신설 및 개발 호재</span>
+                            <span className="text-catalog-brand">도로망 신설 및 개발 호재</span>
                         </h3>
                         <p className="text-slate-500 md:text-lg font-medium">더욱 빠르고 편리해지는 광역 교통망으로 에코 알베로의 탁월한 미래 가치를 선점하세요.</p>
                     </div>
@@ -735,10 +713,9 @@ const App = () => {
             {/* --- Gallery --- */}
             <section id="gallery" className="py-24 bg-white">
                 <div className="container mx-auto px-6">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
                         <h4 className="text-4xl md:text-5xl font-black">
-                            자유로운 맞춤형 설계<br />
-                            <span className="text-[#5d7c47]">에코 알베로</span> 건축 예시
+                            자유로운 맞춤형 설계
                         </h4>
                         <div className="text-left md:text-right">
                             <p className="text-slate-500 font-bold md:text-lg max-w-lg mb-2">
@@ -816,10 +793,10 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-4xl mx-auto mb-16">
                         <span className="text-yellow-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM INTERIOR</span>
-                        <h3 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-                            기본이 다른 품격,<br />
-                            에코 알베로만의 <span className="text-[#5d7c47]">시그니처 인테리어</span>
-                        </h3>
+                        <div className="mb-6 space-y-3">
+                            <h3 className="text-4xl md:text-5xl font-black break-keep text-slate-900">기본이 다른 품격,</h3>
+                            <h3 className="text-4xl md:text-5xl font-black break-keep text-slate-900">에코 알베로만의 <span className="text-[#5d7c47]">시그니처 인테리어</span></h3>
+                        </div>
                         <p className="text-slate-500 md:text-lg font-medium">최고급 마감재와 트렌디한 공간 설계로 일상의 가치를 높이는 하이엔드 라이프를 선사합니다.</p>
                     </div>
 
@@ -875,10 +852,10 @@ const App = () => {
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="bg-white rounded-[50px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
                         <div className="lg:w-[45%] bg-[#5d7c47] p-12 md:p-20 text-white space-y-8">
-                            <h3 className="text-3xl md:text-5xl font-black leading-relaxed break-keep text-white">
-                                지금 바로<br />
-                                문의하세요
-                            </h3>
+                            <div className="mb-6 space-y-3">
+                                <h3 className="text-4xl md:text-5xl font-black break-keep text-white">지금 바로</h3>
+                                <h3 className="text-4xl md:text-5xl font-black break-keep text-white">문의하세요</h3>
+                            </div>
                             <p className="text-white/70 text-lg font-medium">
                                 원하시는 필지 위치와 건축 상담을<br />
                                 전문 분양상담사가 상세히 안내해 드립니다.
@@ -1085,7 +1062,7 @@ const App = () => {
 
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
-                                        <div className="text-sm font-bold text-catalog-gold">부지 면적</div>
+                                        <div className="text-sm font-bold text-catalog-gold">분양 면적</div>
                                         <div className="text-xl font-light text-white">{calculateMappedArea(selectedPlot)} <span className="text-sm text-white/50">m²</span></div>
                                     </div>
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
