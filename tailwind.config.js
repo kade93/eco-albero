@@ -8,7 +8,7 @@ export default {
         extend: {
             colors: {
                 'catalog-bg': '#f5f4ef',
-                'catalog-brand': '#5d7c47',
+                'catalog-brand': '#059669',
                 'catalog-gold': '#c5a059',
                 'catalog-dark': '#2c2c2c',
                 'catalog-accent': '#e5e1d3',

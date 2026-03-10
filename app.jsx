@@ -276,13 +276,16 @@ const App = () => {
             {/* --- Sticky Header Wrapper --- */}
             <div className="sticky top-0 z-50 w-full">
                 {/* --- Top Info Bar --- */}
-                <div className="bg-[#5d7c47] text-white py-1.5 px-6 hidden md:block border-b border-white/10">
-                    <div className="container mx-auto flex justify-between items-center text-[13px] font-bold tracking-tight">
-                        <p>청주 숲세권 프리미엄 타운하우스 "에코 알베로" 46세대 분양 중</p>
-                        <div className="flex gap-4 items-center">
-                            <span>분양 문의: 043-250-1120</span>
-                            <span className="opacity-40">|</span>
-                            <span>이메일: ecoalbero@naver.com</span>
+                <div className="bg-[#059669] text-white py-2 px-6 hidden md:block shadow-sm">
+                    <div className="container mx-auto flex justify-between items-center text-[13px] font-medium tracking-wide">
+                        <p className="flex items-center gap-2">
+                            <span className="bg-white text-[#059669] px-2 py-0.5 rounded text-[11px] font-black tracking-widest leading-none mt-[1px]">NOTICE</span>
+                            <span className="font-bold">청주 숲세권 프리미엄 타운하우스 "에코 알베로" 46세대 분양 중</span>
+                        </p>
+                        <div className="flex gap-4 items-center opacity-90">
+                            <span>분양 문의: <strong className="text-white font-black">043-250-1120</strong></span>
+                            <span className="opacity-30">|</span>
+                            <span>이메일: <strong className="text-white font-black">ecoalbero@naver.com</strong></span>
                         </div>
                     </div>
                 </div>
@@ -295,19 +298,19 @@ const App = () => {
                             <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-12 w-auto rounded-lg" />
                             <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
                             <div className="flex flex-col leading-none hidden sm:flex">
-                                <span className="text-[#5d7c47] font-black text-lg tracking-tighter">에코 알베로</span>
+                                <span className="text-[#059669] font-black text-lg tracking-tighter">에코 알베로</span>
                                 <span className="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Village</span>
                             </div>
                         </div>
 
                         <div className="hidden lg:flex items-center gap-10 text-[15px] font-bold text-slate-600">
-                            <a href="#plots" className="hover:text-[#5d7c47] transition-colors">부지전경</a>
-                            <a href="#community" className="hover:text-[#5d7c47] transition-colors">프리미엄 커뮤니티</a>
-                            <a href="#location" className="hover:text-[#5d7c47] transition-colors">입지현황</a>
-                            <a href="#gallery" className="hover:text-[#5d7c47] transition-colors">건축예시</a>
-                            <a href="#contact" className="hover:text-[#5d7c47] transition-colors">상담예약</a>
+                            <a href="#plots" className="hover:text-[#059669] transition-colors">부지전경</a>
+                            <a href="#community" className="hover:text-[#059669] transition-colors">프리미엄 커뮤니티</a>
+                            <a href="#location" className="hover:text-[#059669] transition-colors">입지현황</a>
+                            <a href="#gallery" className="hover:text-[#059669] transition-colors">건축예시</a>
+                            <a href="#contact" className="hover:text-[#059669] transition-colors">상담예약</a>
                             <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
-                                className="border-2 border-[#5d7c47] text-[#5d7c47] px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-[#5d7c47] hover:text-white transition-all font-bold">
+                                className="border-2 border-[#059669] text-[#059669] px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-[#059669] hover:text-white transition-all font-bold">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그
                             </a>
@@ -331,35 +334,42 @@ const App = () => {
             {/* --- Mobile Dropdown Menu --- */}
             {isMenuOpen && (
                 <div className="lg:hidden bg-white border-b border-slate-100 shadow-xl overflow-hidden px-6 py-4 flex flex-col gap-4 absolute top-full left-0 w-full z-40 transition-all origin-top">
-                    <a href="#about" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>단지소개</a>
-                    <a href="#location" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>프리미엄 입지</a>
-                    <a href="#gallery" className="text-slate-600 font-bold hover:text-[#5d7c47] py-2" onClick={() => setIsMenuOpen(false)}>건축예시</a>
-                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#5d7c47] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#4a6339] mt-2 w-full text-center">
+                    <a href="#about" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>단지소개</a>
+                    <a href="#location" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>프리미엄 입지</a>
+                    <a href="#gallery" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>건축예시</a>
+                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#059669] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#047857] mt-2 w-full text-center">
                         문의하기
                     </button>
                 </div>
             )}
 
             {/* --- Interactive Plot Explorer --- */}
-            <section id="plots" className="relative min-h-screen flex flex-col items-center justify-center bg-slate-900 py-32 overflow-hidden shadow-2xl">
-                {/* Beautiful Background styling */}
-                <div className="absolute inset-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-40 scale-105 filter blur-sm"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900"></div>
-
-                {/* Header intro just for plots */}
-                <div className="relative z-10 text-center mb-8 px-6 pt-10">
-                    <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide font-bold drop-shadow-md">프리미엄 부지 전경</h2>
-                    <p className="text-white/90 md:text-lg font-light tracking-wide shadow-black drop-shadow mx-auto max-w-3xl">
-                        자연과 맞닿은 하이엔드 타운하우스. 원하시는 부지를 클릭하여 해당 부지의 뷰를 직접 확인하세요.
-                    </p>
-                </div>
+            <section id="plots" className="relative flex flex-col items-center justify-start bg-white pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden shadow-2xl">
+                {/* Beautiful Nature Background styling */}
+                <div
+                    className="absolute inset-0 w-full h-full bg-cover bg-center opacity-80"
+                    style={{ backgroundImage: `url(${getAssetPath('nature_view.png')})` }}
+                ></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#059669]/10 via-white/50 to-white"></div>
+                <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
 
                 {/* Ratio-Locked Interactive Container */}
-                <div className="relative z-10 flex items-center justify-center p-4 lg:p-12 w-full">
+                <div className="relative z-10 flex items-center justify-center px-4 lg:px-12 w-full">
                     <div
-                        className="relative w-full max-w-4xl flex items-center justify-center group/map bg-white border-2 border-[#5d7c47]/50 rounded-xl shadow-2xl overflow-hidden"
+                        className="relative w-full max-w-4xl flex items-center justify-center group/map bg-black border-2 border-[#059669]/50 rounded-xl shadow-2xl overflow-hidden"
                         style={{ aspectRatio: '2112/2016' }}
                     >
+                        <div className="absolute top-[5%] left-0 right-0 z-30 flex flex-col items-center pointer-events-none px-4">
+                            <h2 className="text-4xl md:text-6xl font-black text-white mb-4 md:mb-6 tracking-widest drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] shadow-black">EcoAlbero 에코알베로</h2>
+                            <div className="inline-flex flex-col items-center bg-[#022c22]/90 backdrop-blur-md py-4 md:py-5 px-6 md:px-10 rounded-[2rem] shadow-2xl border border-white/20 mx-auto max-w-3xl pointer-events-auto">
+                                <p className="text-white text-sm md:text-xl font-bold tracking-wide text-center">
+                                    청주의 맑은 하늘과 숲을 품은 하이엔드 타운하우스
+                                </p>
+                                <p className="text-green-100 text-sm md:text-lg font-bold tracking-wide mt-2 md:mt-3 text-center break-keep">
+                                    필지를 클릭하여 해당 위치의 풍경을 직접 확인해보세요.
+                                </p>
+                            </div>
+                        </div>
                         {/* Background Image - Matches the container exactly */}
                         <img
                             src={getAssetPath('site_main_before_polygon.png')}
@@ -386,7 +396,7 @@ const App = () => {
                                     {/* ALWAYS RENDER BOTH FOR DEBUGGING */}
                                     <path
                                         d={plot.path}
-                                        className="fill-red-500/50 stroke-red-600 group-hover/poly:fill-[#5d7c47]/60 group-hover/poly:stroke-[#5d7c47] transition-all duration-300"
+                                        className="fill-red-500/50 stroke-red-600 group-hover/poly:fill-[#059669]/60 group-hover/poly:stroke-[#059669] transition-all duration-300"
                                         strokeWidth="4"
                                     />
                                 </g>
@@ -430,12 +440,12 @@ const App = () => {
                         </p>
                         <div className="flex flex-wrap gap-4 items-center justify-center">
                             <button onClick={scrollToContact}
-                                className="bg-[#5d7c47] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#4a6339] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
+                                className="bg-[#059669] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#047857] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
                                 지금 분양 문의하기
                             </button>
                             <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
                                 className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#5d7c47]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그 다운로드
                             </a>
                         </div>
@@ -450,7 +460,7 @@ const App = () => {
                         <span className="text-catalog-gold font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
                         <div className="mb-6 space-y-3">
                             <h3 className="text-4xl md:text-5xl text-slate-900 font-black break-keep">거주하기 편한 아파트형 단지공용 시설</h3>
-                            <h3 className="text-4xl md:text-5xl text-catalog-brand font-black break-keep">프리미엄 커뮤니티 완벽 특화</h3>
+                            <h3 className="text-4xl md:text-5xl text-[#059669] font-black break-keep">프리미엄 커뮤니티 완벽 특화</h3>
                         </div>
                         <p className="text-slate-500 md:text-lg font-medium">삶의 질을 중시하며 독특한 Lifestyle을 창조하는 마을</p>
                     </div>
@@ -458,7 +468,7 @@ const App = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {/* Community Feature */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">관리사무동 운영</h4>
@@ -466,7 +476,7 @@ const App = () => {
                         </div>
                         {/* Convenience Facility */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">24시간 무인편의점</h4>
@@ -474,7 +484,7 @@ const App = () => {
                         </div>
                         {/* Fitness */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">주민 커뮤니티시설</h4>
@@ -482,7 +492,7 @@ const App = () => {
                         </div>
                         {/* Laundry */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#5d7c47] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">무인 세탁소</h4>
@@ -497,7 +507,7 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10 order-2 lg:order-1">
-                            <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
+                            <span className="text-[#059669] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
                             <div className="mb-6 space-y-3">
                                 <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">단지 내 공원 시설</h3>
                                 <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">1만평 이상의 녹지를 품다</h3>
@@ -508,25 +518,25 @@ const App = () => {
                             </p>
                             <div className="space-y-6 pt-4">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">단지 내 과실수 산책로와 등산로 </span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">시원한 나무 정자가 조성된 단지 쉼터</span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">안전하고 편안한 단지 내 숲길 산책로</span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47]">
+                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">동남향, 정남향 설계로 태봉산 조망 확보!</span>
@@ -535,7 +545,7 @@ const App = () => {
                         </div>
                         <div className="lg:w-1/2 relative order-1 lg:order-2 mt-8 lg:mt-0">
                             {/* Decorative background blob */}
-                            <div className="absolute inset-0 bg-[#5d7c47] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
+                            <div className="absolute inset-0 bg-[#059669] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
 
                             {/* Premium Masonry Gallery */}
                             <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10 w-full">
@@ -568,7 +578,7 @@ const App = () => {
 
                             {/* Floating overlay badge */}
                             <div className="absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
-                                <div className="text-4xl font-black text-[#5d7c47] mb-1">10,000평+</div>
+                                <div className="text-4xl font-black text-[#059669] mb-1">10,000평+</div>
                                 <div className="text-slate-500 font-bold">자연 녹지 공간</div>
                             </div>
                         </div>
@@ -581,7 +591,7 @@ const App = () => {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <span className="text-[#5d7c47] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
+                    <span className="text-[#059669] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
                     <div className="mb-6 space-y-3">
                         <h3 className="text-4xl md:text-5xl font-black break-keep">스마트한 첨단시스템으로</h3>
                         <h3 className="text-4xl md:text-5xl font-black break-keep">생활 편의성을 업그레이드</h3>
@@ -611,7 +621,7 @@ const App = () => {
                             <p className="text-slate-500 text-xs mt-2 leading-relaxed">스마트폰 연동 차량통제 게이트</p>
                         </div>
                         <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
-                            <div className="w-16 h-16 rounded-full bg-[#5d7c47]/10 flex items-center justify-center text-[#5d7c47] mb-4 shadow-sm">
+                            <div className="w-16 h-16 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669] mb-4 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                             </div>
                             <h5 className="font-black text-lg text-slate-900">전용 스마트앱 연동</h5>
@@ -632,7 +642,7 @@ const App = () => {
                             </div>
                             <div className="space-y-8">
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -641,7 +651,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -650,7 +660,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -659,7 +669,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#5d7c47] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -691,7 +701,7 @@ const App = () => {
                         <span className="text-blue-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM VISION</span>
                         <h3 className="text-3xl md:text-5xl font-black mb-6 leading-[1.3] md:leading-[1.4]">
                             에코 알베로 주변<br />
-                            <span className="text-catalog-brand">도로망 신설 및 개발 호재</span>
+                            <span className="text-[#059669]">도로망 신설 및 개발 호재</span>
                         </h3>
                         <p className="text-slate-500 md:text-lg font-medium">더욱 빠르고 편리해지는 광역 교통망으로 에코 알베로의 탁월한 미래 가치를 선점하세요.</p>
                     </div>
@@ -721,7 +731,7 @@ const App = () => {
                             <p className="text-slate-500 font-bold md:text-lg max-w-lg mb-2">
                                 사용자의 라이프스타일에 맞춘 맞춤형 자율 설계가 가능합니다. 분양사에서 제공하는 건축 타입별 예시를 확인해보세요.
                             </p>
-                            <span className="inline-flex items-center gap-2 text-[#5d7c47] text-sm font-bold bg-[#5d7c47]/10 px-4 py-2 rounded-full">
+                            <span className="inline-flex items-center gap-2 text-[#059669] text-sm font-bold bg-[#059669]/10 px-4 py-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                                 사진을 클릭하시면 크게 보실 수 있습니다.
                             </span>
@@ -795,7 +805,7 @@ const App = () => {
                         <span className="text-yellow-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM INTERIOR</span>
                         <div className="mb-6 space-y-3">
                             <h3 className="text-4xl md:text-5xl font-black break-keep text-slate-900">기본이 다른 품격,</h3>
-                            <h3 className="text-4xl md:text-5xl font-black break-keep text-slate-900">에코 알베로만의 <span className="text-[#5d7c47]">시그니처 인테리어</span></h3>
+                            <h3 className="text-4xl md:text-5xl font-black break-keep text-slate-900">에코 알베로만의 <span className="text-[#059669]">시그니처 인테리어</span></h3>
                         </div>
                         <p className="text-slate-500 md:text-lg font-medium">최고급 마감재와 트렌디한 공간 설계로 일상의 가치를 높이는 하이엔드 라이프를 선사합니다.</p>
                     </div>
@@ -814,7 +824,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
-                                    <div className="bg-[#5d7c47] text-white text-xs font-bold px-3 py-1.5 rounded-full w-max mb-4 shadow-md tracking-wider">KITCHEN</div>
+                                    <div className="bg-[#059669] text-white text-xs font-bold px-3 py-1.5 rounded-full w-max mb-4 shadow-md tracking-wider">KITCHEN</div>
                                     <h4 className="text-3xl font-black text-white mb-3">럭셔리 다이닝 & 오픈 키친</h4>
                                     <p className="text-white/90 md:text-lg font-medium leading-relaxed drop-shadow-md">하이엔드 주방 가구 및 효율적인 동선을 고려한 와이드 아일랜드 식탁. 온 가족이 소통하는 품격 있는 다이닝 문화를 제안합니다.</p>
                                 </div>
@@ -847,11 +857,11 @@ const App = () => {
             {/* --- Contact Form --- */}
             <section id="contact" className="py-24 bg-slate-900 relative overflow-hidden">
                 <div
-                    className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#5d7c47] rounded-full blur-[150px] opacity-20 -translate-y-1/2 translate-x-1/2">
+                    className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#059669] rounded-full blur-[150px] opacity-20 -translate-y-1/2 translate-x-1/2">
                 </div>
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="bg-white rounded-[50px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
-                        <div className="lg:w-[45%] bg-[#5d7c47] p-12 md:p-20 text-white space-y-8">
+                        <div className="lg:w-[45%] bg-[#059669] p-12 md:p-20 text-white space-y-8">
                             <div className="mb-6 space-y-3">
                                 <h3 className="text-4xl md:text-5xl font-black break-keep text-white">지금 바로</h3>
                                 <h3 className="text-4xl md:text-5xl font-black break-keep text-white">문의하세요</h3>
@@ -881,13 +891,13 @@ const App = () => {
                                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Name</label>
                                     <input type="text" placeholder="성함"
                                         value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#5d7c47] transition-colors font-bold text-lg" />
+                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#059669] transition-colors font-bold text-lg" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Phone</label>
                                     <input type="tel" placeholder="연락처"
                                         value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#5d7c47] transition-colors font-bold text-lg" />
+                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#059669] transition-colors font-bold text-lg" />
                                 </div>
                             </div>
                             <div className="space-y-2">
@@ -896,7 +906,7 @@ const App = () => {
                                     {['방문예약', '분양가문의', '필지문의', '기타'].map((item) => (
                                         <button key={item} type="button"
                                             onClick={() => setFormData({ ...formData, interest: item })}
-                                            className={`px-6 py-3 rounded-full border-2 font-bold transition-all ${formData.interest === item ? 'border-[#5d7c47] text-[#5d7c47] bg-[#5d7c47]/5' : 'border-slate-100 text-slate-500 hover:border-[#5d7c47] hover:text-[#5d7c47]'}`}>
+                                            className={`px-6 py-3 rounded-full border-2 font-bold transition-all ${formData.interest === item ? 'border-[#059669] text-[#059669] bg-[#059669]/5' : 'border-slate-100 text-slate-500 hover:border-[#059669] hover:text-[#059669]'}`}>
                                             {item}
                                         </button>
                                     ))}
@@ -904,7 +914,7 @@ const App = () => {
                             </div>
                             <div className="pt-8 w-full">
                                 <button type="submit" disabled={isSubmitting}
-                                    className="block text-center w-full bg-[#5d7c47] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#4a6339] disabled:bg-slate-300 transition-all shadow-xl shadow-green-100">
+                                    className="block text-center w-full bg-[#059669] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#047857] disabled:bg-slate-300 transition-all shadow-xl shadow-green-100">
                                     {isSubmitting ? '전송 중...' : '상담 신청하기'}
                                 </button>
                                 <p className="text-center mt-6 text-slate-400 text-sm font-medium w-full">개인정보는 분양 상담을 위해서만 활용됩니다.</p>
@@ -920,7 +930,7 @@ const App = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-12">
                         <div className="flex items-center gap-3">
                             <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-10 w-auto rounded-md grayscale opacity-80" />
-                            <div className="text-[#5d7c47] font-black text-2xl tracking-tighter italic">ECO ALBERO</div>
+                            <div className="text-[#059669] font-black text-2xl tracking-tighter italic">ECO ALBERO</div>
                         </div>
                         <div className="flex gap-12 text-slate-400 font-bold text-sm">
                             <button onClick={() => setModalType('terms')} className="hover:text-slate-900 transition-colors">이용약관</button>

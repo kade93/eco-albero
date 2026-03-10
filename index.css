@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --color-bg: #f5f4ef;
-    --color-brand: #5d7c47;
+    --color-brand: #059669;
     --color-gold: #c5a059;
     --color-dark: #2c2c2c;
     --color-text: #333333;
@@ -58,7 +58,7 @@
   }
 
   .btn-outline {
-    @apply border-2 border-[#5d7c47] text-[#5d7c47] px-8 py-4 rounded-full font-bold hover:bg-[#5d7c47] hover:text-white transition-all;
+    @apply border-2 border-[#059669] text-[#059669] px-8 py-4 rounded-full font-bold hover:bg-[#059669] hover:text-white transition-all;
   }
 }
 
