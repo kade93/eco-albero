@@ -256,45 +256,45 @@ const ZoomableImage = ({ src, alt }) => {
 
 const NaverMap = ({ center, address, label }) => {
     const clientId = 'u31616iqwo';
-    
+
     // 줌 레벨
-    const level = 15; 
+    const level = 15;
     const width = 800;
     const height = 600;
 
     // 마커 파라미터는 꼭 인코딩 필요!
     const markerParams = encodeURIComponent(`type:d|size:mid|pos:${center.replace(',', ' ')}|color:green`);
-    const staticMapUrl = `https://naveropenapi.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${center}&level=${level}&X-NCP-APIGW-API-KEY-ID=${clientId}&markers=${markerParams}`;
-    
+    const staticMapUrl = `https://maps.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${center}&level=${level}&X-NCP-APIGW-API-KEY-ID=${clientId}&markers=${markerParams}`;
+
     // 주소를 URL 인코딩하여 네이버 검색 링크 생성
     const searchUrl = `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
 
     return (
-        <a 
+        <a
             className="block w-full h-[300px] md:h-[400px] z-0 overflow-hidden relative cursor-pointer bg-slate-100 group rounded-3xl shadow-xl border border-slate-100"
             href={searchUrl}
             target="_blank"
             rel="noreferrer"
         >
-            <img 
-                src={staticMapUrl} 
-                alt={`${label} 네이버 지도`} 
+            <img
+                src={staticMapUrl}
+                alt={`${label} 네이버 지도`}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                onError={(e) => { 
-                    console.error("Static map load failed. Please ensure your domain is whitelisted in Naver Cloud Console."); 
-                    e.target.src = `https://via.placeholder.com/800x600?text=API+Key+or+Domain+Error`; 
+                onError={(e) => {
+                    console.error("Static map load failed. Please ensure your domain is whitelisted in Naver Cloud Console.");
+                    e.target.src = `https://via.placeholder.com/800x600?text=API+Key+or+Domain+Error`;
                 }}
             />
             {/* 좌측 상단 네이버 지도 열기 버튼 */}
             <div className="absolute left-4 top-4">
-                 <div className="bg-white/95 px-4 py-2 rounded-full shadow-lg text-[13px] md:text-[14px] font-sans tracking-wide text-[#03CF5D] font-bold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity border border-slate-100">
+                <div className="bg-white/95 px-4 py-2 rounded-full shadow-lg text-[13px] md:text-[14px] font-sans tracking-wide text-[#03CF5D] font-bold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity border border-slate-100">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z"/>
+                        <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z" />
                     </svg>
                     {label} 자세히 보기
-                 </div>
+                </div>
             </div>
-            
+
             {/* 하단 주소 표시 */}
             <div className="absolute bottom-4 left-0 w-full flex justify-center gap-2 z-10 px-4 pointer-events-none">
                 <div className="bg-[#064e3b]/95 text-white px-5 py-3 rounded-2xl text-[13px] md:text-[14px] font-sans tracking-wide shadow-xl flex items-center justify-center font-bold text-center break-keep w-full md:w-auto">
@@ -1124,26 +1124,26 @@ const App = () => {
                         <div className="flex flex-col gap-4">
                             <h4 className="text-[#064e3b] font-bold text-xl md:text-2xl flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
-                                분양 홍보관 (사무실)
+                                시행사 사무실
                             </h4>
-                            <NaverMap 
-                                label="주식회사 와운 (분양 홍보관)"
+                            <NaverMap
+                                label="주식회사 와운 (분양 홍보)"
                                 address="충북 청주시 상당구 수암로54번길 8 3층 주식회사 와운"
                                 center="127.4946,36.6468"
                             />
                         </div>
-                        
+
                         <div className="flex flex-col gap-4">
                             <h4 className="text-[#064e3b] font-bold text-xl md:text-2xl flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                                 현장위치 (사무소 & 견본주택)
                             </h4>
-                            <NaverMap 
-                                label="현장위치 & 견본주택"
+                            <NaverMap
+                                label="현장위"
                                 address="충북 청주시 상당구 남일면 고은리 산 35-2번지 일원"
                                 center="127.5255,36.5638"
                             />
