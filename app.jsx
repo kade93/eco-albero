@@ -138,8 +138,57 @@ const ZoomableImage = ({ src, alt }) => {
     const [isZoomed, setIsZoomed] = useState(false);
     const containerRef = useRef(null);
 
+    // Dragging state references
+    const isDragging = useRef(false);
+    const startX = useRef(0);
+    const startY = useRef(0);
+    const scrollLeft = useRef(0);
+    const scrollTop = useRef(0);
+    const dragDistance = useRef(0);
+
+    const handleMouseDown = (e) => {
+        if (!isZoomed) return;
+        isDragging.current = true;
+        dragDistance.current = 0;
+        startX.current = e.pageX - containerRef.current.offsetLeft;
+        startY.current = e.pageY - containerRef.current.offsetTop;
+        scrollLeft.current = containerRef.current.scrollLeft;
+        scrollTop.current = containerRef.current.scrollTop;
+    };
+
+    const handleMouseLeave = () => {
+        isDragging.current = false;
+    };
+
+    const handleMouseUp = () => {
+        isDragging.current = false;
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging.current || !isZoomed) return;
+        e.preventDefault();
+
+        const x = e.pageX - containerRef.current.offsetLeft;
+        const y = e.pageY - containerRef.current.offsetTop;
+
+        const walkX = (x - startX.current) * 1.5;
+        const walkY = (y - startY.current) * 1.5;
+
+        // Track how far we've dragged to prevent click triggers when dropping
+        dragDistance.current += Math.abs(x - startX.current) + Math.abs(y - startY.current);
+
+        containerRef.current.scrollLeft = scrollLeft.current - walkX;
+        containerRef.current.scrollTop = scrollTop.current - walkY;
+    };
+
     const handleZoomToggle = (e) => {
         e.stopPropagation();
+
+        // Prevent zooming out if the user was just dragging
+        if (dragDistance.current > 20) {
+            dragDistance.current = 0;
+            return;
+        }
 
         if (!isZoomed) {
             setIsZoomed(true);
@@ -172,20 +221,26 @@ const ZoomableImage = ({ src, alt }) => {
             }
         } else {
             setIsZoomed(false);
+            dragDistance.current = 0; // reset
         }
     };
 
     return (
         <div
             ref={containerRef}
-            className={`w-full h-full max-h-[90vh] rounded-xl relative shadow-2xl shadow-black ring-1 ring-white/10 flex transition-all duration-300 ${isZoomed ? 'overflow-auto items-start justify-start cursor-zoom-out bg-black/95 scrollbar-default' : 'overflow-hidden items-center justify-center cursor-zoom-in bg-transparent scrollbar-hide'}`}
+            className={`w-full h-full max-h-[90vh] rounded-xl relative shadow-2xl shadow-black ring-1 ring-white/10 flex transition-all duration-300 ${isZoomed ? 'overflow-auto items-start justify-start cursor-grab active:cursor-grabbing bg-black/95 scrollbar-hide' : 'overflow-hidden items-center justify-center cursor-zoom-in bg-transparent scrollbar-hide'}`}
             onClick={handleZoomToggle}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
         >
             <img
                 id={`zoom-img-${(alt || 'img').toString().replace(/\s+/g, '-')}`}
                 src={src}
                 alt={alt}
-                className={`transition-transform duration-300 origin-[0_0] ${isZoomed ? 'w-[200%] md:w-[250%] max-w-none h-auto select-none' : 'max-w-full max-h-[90vh] object-contain select-none'}`}
+                draggable={false}
+                className={`transition-transform duration-300 origin-[0_0] ${isZoomed ? 'w-[200%] md:w-[250%] max-w-none h-auto select-none pointer-events-none' : 'max-w-full max-h-[90vh] object-contain select-none'}`}
             />
 
             {/* Guide Icon */}
@@ -199,6 +254,57 @@ const ZoomableImage = ({ src, alt }) => {
     );
 };
 
+const NaverMap = ({ center, address, label }) => {
+    const clientId = 'u31616iqwo';
+    
+    // 줌 레벨
+    const level = 15; 
+    const width = 800;
+    const height = 600;
+
+    // 마커 파라미터는 꼭 인코딩 필요!
+    const markerParams = encodeURIComponent(`type:d|size:mid|pos:${center.replace(',', ' ')}|color:green`);
+    const staticMapUrl = `https://naveropenapi.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${center}&level=${level}&X-NCP-APIGW-API-KEY-ID=${clientId}&markers=${markerParams}`;
+    
+    // 주소를 URL 인코딩하여 네이버 검색 링크 생성
+    const searchUrl = `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
+
+    return (
+        <a 
+            className="block w-full h-[300px] md:h-[400px] z-0 overflow-hidden relative cursor-pointer bg-slate-100 group rounded-3xl shadow-xl border border-slate-100"
+            href={searchUrl}
+            target="_blank"
+            rel="noreferrer"
+        >
+            <img 
+                src={staticMapUrl} 
+                alt={`${label} 네이버 지도`} 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onError={(e) => { 
+                    console.error("Static map load failed. Please ensure your domain is whitelisted in Naver Cloud Console."); 
+                    e.target.src = `https://via.placeholder.com/800x600?text=API+Key+or+Domain+Error`; 
+                }}
+            />
+            {/* 좌측 상단 네이버 지도 열기 버튼 */}
+            <div className="absolute left-4 top-4">
+                 <div className="bg-white/95 px-4 py-2 rounded-full shadow-lg text-[13px] md:text-[14px] font-sans tracking-wide text-[#03CF5D] font-bold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity border border-slate-100">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z"/>
+                    </svg>
+                    {label} 자세히 보기
+                 </div>
+            </div>
+            
+            {/* 하단 주소 표시 */}
+            <div className="absolute bottom-4 left-0 w-full flex justify-center gap-2 z-10 px-4 pointer-events-none">
+                <div className="bg-[#064e3b]/95 text-white px-5 py-3 rounded-2xl text-[13px] md:text-[14px] font-sans tracking-wide shadow-xl flex items-center justify-center font-bold text-center break-keep w-full md:w-auto">
+                    {address}
+                </div>
+            </div>
+        </a>
+    );
+};
+
 const App = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -207,8 +313,9 @@ const App = () => {
     const [isPanoOpen, setIsPanoOpen] = useState(false);
     const [expandedPanoImage, setExpandedPanoImage] = useState(null);
 
-    const [formData, setFormData] = useState({ name: '', phone: '', interest: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '', interest: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [toastMessage, setToastMessage] = useState(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -244,31 +351,79 @@ const App = () => {
         document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
     };
 
-    const handleEmailSubmit = (e) => {
+    const handleEmailSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.name || !formData.phone) {
-            alert('성함과 연락처를 모두 입력해주세요.');
+        const showToast = (type, text) => {
+            setToastMessage({ type, text });
+            setTimeout(() => setToastMessage(null), 3500);
+        };
+
+        // 1. 필수값 체크: 이름은 필수
+        if (!formData.name.trim()) {
+            showToast('error', '성함을 입력해주세요.');
             return;
         }
 
-        const subject = encodeURIComponent(`[에코알베로] 분양 상담 신청 - ${formData.name}님`);
-        const body = encodeURIComponent(
-            `안녕하세요, 에코알베로 분양 상담 신청 내역입니다.\n\n` +
-            `■ 성함: ${formData.name}\n` +
-            `■ 연락처: ${formData.phone}\n` +
-            `■ 관심분야: ${formData.interest || '미선택'}\n\n` +
-            `위 내용으로 상담을 신청합니다. 확인 부탁드립니다.`
-        );
+        // 2. 필수값 체크: 연락처나 이메일 중 하나는 필수
+        if (!formData.phone.trim() && !formData.email.trim()) {
+            showToast('error', '연락처 또는 이메일 중 하나는 반드시 입력해주세요.');
+            return;
+        }
 
-        const mailtoUrl = `mailto:ecoalbero@naver.com?subject=${subject}&body=${body}`;
+        // 3. 연락처 정규식 검사 (숫자 및 하이픈 허용, 최소 9자리 이상)
+        if (formData.phone.trim()) {
+            const phoneRegex = /^[0-9-]{9,15}$/;
+            if (!phoneRegex.test(formData.phone)) {
+                showToast('error', '올바른 연락처 형식이 아닙니다. (예: 010-1234-5678)');
+                return;
+            }
+        }
 
-        // 메일 앱 실행
-        window.location.href = mailtoUrl;
+        // 4. 이메일 정규식 검사 (이메일이 입력된 경우에만)
+        if (formData.email.trim()) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                showToast('error', '올바른 이메일 형식이 아닙니다.');
+                return;
+            }
+        }
 
-        // 폼 초기화
-        setFormData({ name: '', phone: '', interest: '' });
-        alert('메일 프로그램이 실행되었습니다. 내용을 확인하신 후 전송 버튼을 눌러주세요!');
+        setIsSubmitting(true);
+
+        const payload = {
+            name: formData.name,
+            phone: formData.phone || '미입력',
+            email: formData.email || '미입력',
+            interest: formData.interest || '미선택',
+            message: formData.message || '남긴 메시지 없음',
+        };
+
+        try {
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbyk0_8jvzpCG6nh89gA-ovXOx88WxG4WqsN9Tpceo5YwMc-OA9cTD9Q6d3VIaWfjmMA/exec";
+
+            await fetch(scriptUrl, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "text/plain",
+                },
+                body: JSON.stringify(payload)
+            });
+
+            showToast('success', '상담 신청이 완료되었습니다. 남겨주신 정보로 빠른 시일 내에 연락드리겠습니다.');
+            setFormData({ name: '', phone: '', email: '', message: '', interest: '' });
+
+            if (modalType === 'contact') {
+                setTimeout(() => setModalType(null), 2500);
+            }
+
+        } catch (error) {
+            console.error(error);
+            showToast('error', '전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -276,10 +431,10 @@ const App = () => {
             {/* --- Sticky Header Wrapper --- */}
             <div className="sticky top-0 z-50 w-full">
                 {/* --- Top Info Bar --- */}
-                <div className="bg-[#059669] text-white py-2 px-6 hidden md:block shadow-sm">
+                <div className="bg-[#064e3b] text-white py-2 px-6 hidden md:block shadow-sm">
                     <div className="container mx-auto flex justify-between items-center text-[13px] font-medium tracking-wide">
                         <p className="flex items-center gap-2">
-                            <span className="bg-white text-[#059669] px-2 py-0.5 rounded text-[11px] font-black tracking-widest leading-none mt-[1px]">NOTICE</span>
+                            <span className="bg-white text-[#064e3b] px-2 py-0.5 rounded text-[11px] font-black tracking-widest leading-none mt-[1px]">NOTICE</span>
                             <span className="font-bold">청주 숲세권 프리미엄 타운하우스 "에코 알베로" 46세대 분양 중</span>
                         </p>
                         <div className="flex gap-4 items-center opacity-90">
@@ -298,25 +453,26 @@ const App = () => {
                             <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-12 w-auto rounded-lg" />
                             <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
                             <div className="flex flex-col leading-none hidden sm:flex">
-                                <span className="text-[#059669] font-black text-lg tracking-tighter">에코 알베로</span>
+                                <span className="text-[#064e3b] font-black text-lg tracking-tighter">에코 알베로</span>
                                 <span className="text-slate-400 text-[10px] uppercase tracking-widest font-bold">Village</span>
                             </div>
                         </div>
 
-                        <div className="hidden lg:flex items-center gap-10 text-[15px] font-bold text-slate-600">
-                            <a href="#plots" className="hover:text-[#059669] transition-colors">부지전경</a>
-                            <a href="#community" className="hover:text-[#059669] transition-colors">프리미엄 커뮤니티</a>
-                            <a href="#location" className="hover:text-[#059669] transition-colors">입지현황</a>
-                            <a href="#gallery" className="hover:text-[#059669] transition-colors">건축예시</a>
-                            <a href="#contact" className="hover:text-[#059669] transition-colors">상담예약</a>
+                        <div className="hidden lg:flex items-center gap-3 xl:gap-8 text-[13px] xl:text-[15px] font-bold text-slate-600">
+                            <a href="#plots" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">부지전경</a>
+                            <a href="#community" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">프리미엄 커뮤니티</a>
+                            <a href="#location" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">입지현황</a>
+                            <a href="#gallery" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">건축예시</a>
+                            <a href="#contact" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">상담예약</a>
+                            <a href="#directions" className="hover:text-[#064e3b] transition-colors whitespace-nowrap">오시는길</a>
                             <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
-                                className="border-2 border-[#059669] text-[#059669] px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-[#059669] hover:text-white transition-all font-bold">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                className="border-2 border-[#064e3b] text-[#064e3b] px-3 xl:px-6 py-1.5 xl:py-2.5 rounded-md flex items-center gap-1 xl:gap-2 hover:bg-[#064e3b] hover:text-white transition-all font-bold whitespace-nowrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 xl:h-5 xl:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그
                             </a>
                             <a href="tel:0432501120"
-                                className="bg-[#ff8a00] text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100">
-                                <IconPhone /> 043-250-1120
+                                className="bg-[#ff8a00] text-white px-3 xl:px-6 py-2 xl:py-3 rounded-md flex items-center gap-1 xl:gap-2 hover:bg-[#e67c00] transition-all shadow-lg shadow-orange-100 whitespace-nowrap">
+                                <div className='flex flex-col text-right'><span className='text-[10px] xl:text-xs opacity-80 leading-tight'>ecoalbero@naver.com</span><span className='flex items-center gap-1 leading-none text-sm xl:text-base'><IconPhone className='w-3 h-3 xl:w-4 xl:h-4' /> 043-250-1120</span></div>
                             </a>
                         </div>
 
@@ -334,10 +490,11 @@ const App = () => {
             {/* --- Mobile Dropdown Menu --- */}
             {isMenuOpen && (
                 <div className="lg:hidden bg-white border-b border-slate-100 shadow-xl overflow-hidden px-6 py-4 flex flex-col gap-4 absolute top-full left-0 w-full z-40 transition-all origin-top">
-                    <a href="#about" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>단지소개</a>
-                    <a href="#location" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>프리미엄 입지</a>
-                    <a href="#gallery" className="text-slate-600 font-bold hover:text-[#059669] py-2" onClick={() => setIsMenuOpen(false)}>건축예시</a>
-                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#059669] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#047857] mt-2 w-full text-center">
+                    <a href="#about" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>단지소개</a>
+                    <a href="#location" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>프리미엄 입지</a>
+                    <a href="#gallery" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>건축예시</a>
+                    <a href="#directions" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>오시는길</a>
+                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#064e3b] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#14532d] mt-2 w-full text-center">
                         문의하기
                     </button>
                 </div>
@@ -350,17 +507,17 @@ const App = () => {
                     className="absolute inset-0 w-full h-full bg-cover bg-center opacity-80"
                     style={{ backgroundImage: `url(${getAssetPath('nature_view.png')})` }}
                 ></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#059669]/10 via-white/50 to-white"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#064e3b]/10 via-white/50 to-white"></div>
                 <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
 
                 {/* Ratio-Locked Interactive Container */}
                 <div className="relative z-10 flex items-center justify-center px-4 lg:px-12 w-full">
                     <div
-                        className="relative w-full max-w-4xl flex items-center justify-center group/map bg-black border-2 border-[#059669]/50 rounded-xl shadow-2xl overflow-hidden"
+                        className="relative w-full max-w-4xl flex items-center justify-center group/map bg-slate-100 border-2 border-[#064e3b]/50 rounded-xl shadow-2xl overflow-hidden"
                         style={{ aspectRatio: '2112/2016' }}
                     >
                         <div className="absolute top-[5%] left-0 right-0 z-30 flex flex-col items-center pointer-events-none px-4">
-                            <h2 className="text-4xl md:text-6xl font-black text-white mb-4 md:mb-6 tracking-widest drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] shadow-black">EcoAlbero 에코알베로</h2>
+                            <h2 className="text-4xl md:text-6xl font-medium font-sans text-white mb-4 md:mb-6 tracking-widest drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)] shadow-black">ECOALBERO 에코알베로</h2>
                             <div className="inline-flex flex-col items-center bg-[#022c22]/90 backdrop-blur-md py-4 md:py-5 px-6 md:px-10 rounded-[2rem] shadow-2xl border border-white/20 mx-auto max-w-3xl pointer-events-auto">
                                 <p className="text-white text-sm md:text-xl font-bold tracking-wide text-center">
                                     청주의 맑은 하늘과 숲을 품은 하이엔드 타운하우스
@@ -396,7 +553,7 @@ const App = () => {
                                     {/* ALWAYS RENDER BOTH FOR DEBUGGING */}
                                     <path
                                         d={plot.path}
-                                        className="fill-red-500/50 stroke-red-600 group-hover/poly:fill-[#059669]/60 group-hover/poly:stroke-[#059669] transition-all duration-300"
+                                        className="fill-red-500/50 stroke-red-600 group-hover/poly:fill-[#064e3b]/60 group-hover/poly:stroke-[#064e3b] transition-all duration-300"
                                         strokeWidth="4"
                                     />
                                 </g>
@@ -431,8 +588,8 @@ const App = () => {
                             <IconClock /> 잔여 필지 빠르게 소진 중
                         </div>
                         <div className="mb-8 space-y-3">
-                            <h3 className="text-4xl md:text-5xl text-slate-900 font-extrabold break-keep">퇴근 후 30분</h3>
-                            <h3 className="text-4xl md:text-5xl text-slate-900 font-extrabold break-keep">도심의 소음이 숲의 숨소리로</h3>
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-medium font-sans break-keep">퇴근 후 30분</h3>
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-medium font-sans break-keep">도심의 소음이 숲의 숨소리로</h3>
                         </div>
                         <p className="text-slate-500 text-lg md:text-2xl mb-12 font-medium leading-relaxed">
                             하이닉스·현대백화점 30분, 청남대·대청댐 25분<br />
@@ -440,12 +597,12 @@ const App = () => {
                         </p>
                         <div className="flex flex-wrap gap-4 items-center justify-center">
                             <button onClick={scrollToContact}
-                                className="bg-[#059669] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#047857] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
+                                className="bg-[#064e3b] text-white px-10 py-5 rounded-full font-black text-lg hover:bg-[#14532d] shadow-lg shadow-green-100 transition-all flex items-center gap-2">
                                 지금 분양 문의하기
                             </button>
                             <a href={getAssetPath('eco_albero_catalog.pdf')} download="에코알베로_카달로그.pdf"
                                 className="bg-white border-2 border-slate-200 text-slate-700 px-10 py-5 rounded-full font-black text-lg hover:bg-slate-50 transition-all inline-block text-center flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#059669]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#064e3b]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 카달로그 다운로드
                             </a>
                         </div>
@@ -459,8 +616,8 @@ const App = () => {
                     <div className="text-center max-w-4xl mx-auto mb-16">
                         <span className="text-catalog-gold font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PRESTIGE COMMUNITY</span>
                         <div className="mb-6 space-y-3">
-                            <h3 className="text-4xl md:text-5xl text-slate-900 font-black break-keep">거주하기 편한 아파트형 단지공용 시설</h3>
-                            <h3 className="text-4xl md:text-5xl text-[#059669] font-black break-keep">프리미엄 커뮤니티 완벽 특화</h3>
+                            <h3 className="text-4xl md:text-5xl text-slate-900 font-medium font-sans break-keep">거주하기 편한 아파트형 단지공용 시설</h3>
+                            <h3 className="text-4xl md:text-5xl text-[#064e3b] font-medium font-sans break-keep">프리미엄 커뮤니티 완벽 특화</h3>
                         </div>
                         <p className="text-slate-500 md:text-lg font-medium">삶의 질을 중시하며 독특한 Lifestyle을 창조하는 마을</p>
                     </div>
@@ -468,7 +625,7 @@ const App = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {/* Community Feature */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#064e3b] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">관리사무동 운영</h4>
@@ -476,7 +633,7 @@ const App = () => {
                         </div>
                         {/* Convenience Facility */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#064e3b] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">24시간 무인편의점</h4>
@@ -484,7 +641,7 @@ const App = () => {
                         </div>
                         {/* Fitness */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#064e3b] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">주민 커뮤니티시설</h4>
@@ -492,7 +649,7 @@ const App = () => {
                         </div>
                         {/* Laundry */}
                         <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all">
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#059669] mb-6 shadow-sm">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#064e3b] mb-6 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                             </div>
                             <h4 className="text-xl font-bold text-slate-900 mb-3 leading-relaxed break-keep">무인 세탁소</h4>
@@ -507,10 +664,10 @@ const App = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10 order-2 lg:order-1">
-                            <span className="text-[#059669] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
+                            <span className="text-[#064e3b] font-black tracking-[0.2em] text-sm md:text-base">NATURE PARK VILLAGE</span>
                             <div className="mb-6 space-y-3">
-                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">단지 내 공원 시설</h3>
-                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">1만평 이상의 녹지를 품다</h3>
+                                <h3 className="text-3xl md:text-4xl xl:text-5xl font-medium font-sans text-slate-900 break-keep">단지 내 공원 시설</h3>
+                                <h3 className="text-3xl md:text-4xl xl:text-5xl font-medium font-sans text-slate-900 break-keep whitespace-nowrap">1만평 이상의 녹지를 품다</h3>
                             </div>
                             <p className="text-slate-600 text-lg leading-relaxed font-medium">
                                 공원 면적도 계약자 분들에게 제공됩니다.<br />
@@ -518,25 +675,25 @@ const App = () => {
                             </p>
                             <div className="space-y-6 pt-4">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
+                                    <div className="w-10 h-10 rounded-full bg-[#064e3b]/10 flex items-center justify-center text-[#064e3b]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">단지 내 과실수 산책로와 등산로 </span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
+                                    <div className="w-10 h-10 rounded-full bg-[#064e3b]/10 flex items-center justify-center text-[#064e3b]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">시원한 나무 정자가 조성된 단지 쉼터</span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
+                                    <div className="w-10 h-10 rounded-full bg-[#064e3b]/10 flex items-center justify-center text-[#064e3b]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">안전하고 편안한 단지 내 숲길 산책로</span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669]">
+                                    <div className="w-10 h-10 rounded-full bg-[#064e3b]/10 flex items-center justify-center text-[#064e3b]">
                                         <IconCheck />
                                     </div>
                                     <span className="text-lg font-bold text-slate-800">동남향, 정남향 설계로 태봉산 조망 확보!</span>
@@ -545,7 +702,7 @@ const App = () => {
                         </div>
                         <div className="lg:w-1/2 relative order-1 lg:order-2 mt-8 lg:mt-0">
                             {/* Decorative background blob */}
-                            <div className="absolute inset-0 bg-[#059669] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
+                            <div className="absolute inset-0 bg-[#064e3b] rounded-[40px] rotate-3 scale-105 opacity-10"></div>
 
                             {/* Premium Masonry Gallery */}
                             <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10 w-full">
@@ -578,7 +735,7 @@ const App = () => {
 
                             {/* Floating overlay badge */}
                             <div className="absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
-                                <div className="text-4xl font-black text-[#059669] mb-1">10,000평+</div>
+                                <div className="text-4xl font-black text-[#064e3b] mb-1">10,000평+</div>
                                 <div className="text-slate-500 font-bold">자연 녹지 공간</div>
                             </div>
                         </div>
@@ -591,10 +748,10 @@ const App = () => {
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-100 rounded-full opacity-60 filter blur-[100px] pointer-events-none"></div>
                 <div className="container mx-auto px-6 relative z-10 text-center">
-                    <span className="text-[#059669] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
+                    <span className="text-[#064e3b] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">HI-TECH PLAN</span>
                     <div className="mb-6 space-y-3">
-                        <h3 className="text-4xl md:text-5xl font-black break-keep">스마트한 첨단시스템으로</h3>
-                        <h3 className="text-4xl md:text-5xl font-black break-keep">생활 편의성을 업그레이드</h3>
+                        <h3 className="text-4xl md:text-5xl font-medium font-sans break-keep">스마트한 첨단시스템으로</h3>
+                        <h3 className="text-4xl md:text-5xl font-medium font-sans break-keep">생활 편의성을 업그레이드</h3>
                     </div>
                     <p className="text-slate-500 md:text-lg mb-16 font-medium max-w-4xl mx-auto">전방위 생활지원 SYSTEM, 생활서비스 조경 등 아파트 수준의 특별한 보안과 관리를 제공합니다.</p>
 
@@ -621,7 +778,7 @@ const App = () => {
                             <p className="text-slate-500 text-xs mt-2 leading-relaxed">스마트폰 연동 차량통제 게이트</p>
                         </div>
                         <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col items-center justify-center text-center">
-                            <div className="w-16 h-16 rounded-full bg-[#059669]/10 flex items-center justify-center text-[#059669] mb-4 shadow-sm">
+                            <div className="w-16 h-16 rounded-full bg-[#064e3b]/10 flex items-center justify-center text-[#064e3b] mb-4 shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                             </div>
                             <h5 className="font-black text-lg text-slate-900">전용 스마트앱 연동</h5>
@@ -637,12 +794,12 @@ const App = () => {
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2 space-y-10">
                             <div className="mb-6 space-y-3">
-                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">청주 중심이 가깝고</h3>
-                                <h3 className="text-4xl md:text-5xl font-black text-slate-900 break-keep">직주근접이 완벽</h3>
+                                <h3 className="text-4xl md:text-5xl font-medium font-sans text-slate-900 break-keep">청주 중심이 가깝고</h3>
+                                <h3 className="text-4xl md:text-5xl font-medium font-sans text-slate-900 break-keep">직주근접이 완벽</h3>
                             </div>
                             <div className="space-y-8">
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#064e3b] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -651,7 +808,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#064e3b] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -660,7 +817,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#064e3b] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -669,7 +826,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-6 items-start">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#059669] shrink-0">
+                                    <div className="w-14 h-14 bg-slate-50 rounded-2xl shadow-sm flex items-center justify-center text-[#064e3b] shrink-0">
                                         <IconCheck />
                                     </div>
                                     <div>
@@ -694,6 +851,8 @@ const App = () => {
                 </div>
             </section>
 
+
+
             {/* --- Development Info --- */}
             <section id="development" className="py-24 bg-slate-50 border-t border-slate-100 border-b">
                 <div className="container mx-auto px-6">
@@ -701,7 +860,7 @@ const App = () => {
                         <span className="text-blue-600 font-black tracking-[0.2em] text-sm md:text-base mb-4 block">PREMIUM VISION</span>
                         <h3 className="text-3xl md:text-5xl font-black mb-6 leading-[1.3] md:leading-[1.4]">
                             에코 알베로 주변<br />
-                            <span className="text-[#059669]">도로망 신설 및 개발 호재</span>
+                            <span className="text-[#064e3b]">도로망 신설 및 개발 호재</span>
                         </h3>
                         <p className="text-slate-500 md:text-lg font-medium">더욱 빠르고 편리해지는 광역 교통망으로 에코 알베로의 탁월한 미래 가치를 선점하세요.</p>
                     </div>
@@ -731,7 +890,7 @@ const App = () => {
                             <p className="text-slate-500 font-bold md:text-lg max-w-lg mb-2">
                                 사용자의 라이프스타일에 맞춘 맞춤형 자율 설계가 가능합니다. 분양사에서 제공하는 건축 타입별 예시를 확인해보세요.
                             </p>
-                            <span className="inline-flex items-center gap-2 text-[#059669] text-sm font-bold bg-[#059669]/10 px-4 py-2 rounded-full">
+                            <span className="inline-flex items-center gap-2 text-[#064e3b] text-sm font-bold bg-[#064e3b]/10 px-4 py-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                                 사진을 클릭하시면 크게 보실 수 있습니다.
                             </span>
@@ -855,71 +1014,140 @@ const App = () => {
             </section>
 
             {/* --- Contact Form --- */}
-            <section id="contact" className="py-24 bg-slate-900 relative overflow-hidden">
+            <section id="contact" className="py-12 md:py-16 bg-slate-900 relative overflow-hidden">
                 <div
                     className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#059669] rounded-full blur-[150px] opacity-20 -translate-y-1/2 translate-x-1/2">
                 </div>
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="bg-white rounded-[50px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
-                        <div className="lg:w-[45%] bg-[#059669] p-12 md:p-20 text-white space-y-8">
-                            <div className="mb-6 space-y-3">
-                                <h3 className="text-4xl md:text-5xl font-black break-keep text-white">지금 바로</h3>
-                                <h3 className="text-4xl md:text-5xl font-black break-keep text-white">문의하세요</h3>
+                <div className="container mx-auto px-6 relative z-10 max-w-6xl">
+                    <div className="bg-white rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+                        <div className="lg:w-[45%] bg-[#059669] p-8 md:p-12 text-white flex flex-col justify-center space-y-6">
+                            <div className="mb-2 space-y-2">
+                                <h3 className="text-3xl md:text-4xl font-black break-keep text-white">지금 바로</h3>
+                                <h3 className="text-3xl md:text-4xl font-black break-keep text-white">문의하세요</h3>
                             </div>
-                            <p className="text-white/70 text-lg font-medium">
+                            <p className="text-white/80 md:text-lg font-medium">
                                 원하시는 필지 위치와 건축 상담을<br />
                                 전문 분양상담사가 상세히 안내해 드립니다.
                             </p>
-                            <div className="pt-8 space-y-6">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                            <div className="pt-6 space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0">
                                         <IconPhone />
                                     </div>
-                                    <span className="text-2xl font-bold">043-250-1120</span>
+                                    <span className="text-xl font-bold">043-250-1120 <span className="text-sm text-white/70 font-medium ml-1">| ecoalbero@naver.com</span></span>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0">
                                         <IconMapPin />
                                     </div>
-                                    <span className="text-xl font-bold">현장: 청주시 남일면 고은리 산 35-2번지 일원</span>
+                                    <span className="text-lg font-bold">현장: 청주시 남일면 고은리 산 35-2번지 일원</span>
                                 </div>
                             </div>
                         </div>
-                        <form onSubmit={handleEmailSubmit} className="lg:w-[55%] p-12 md:p-20 space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Name</label>
+                        <form onSubmit={handleEmailSubmit} className="lg:w-[55%] p-8 md:p-12 space-y-5">
+                            <div className="space-y-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-[#059669] uppercase tracking-widest">Name *</label>
                                     <input type="text" placeholder="성함"
                                         value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#059669] transition-colors font-bold text-lg" />
+                                        className="w-full border-b-2 border-slate-100 py-2.5 outline-none focus:border-[#059669] transition-colors font-bold md:text-lg" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Phone</label>
-                                    <input type="tel" placeholder="연락처"
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-[#059669] uppercase tracking-widest">Phone *</label>
+                                    <input type="tel" placeholder="연락처 (숫자만)"
                                         value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        className="w-full border-b-2 border-slate-100 py-4 outline-none focus:border-[#059669] transition-colors font-bold text-lg" />
+                                        className="w-full border-b-2 border-slate-100 py-2.5 outline-none focus:border-[#059669] transition-colors font-bold md:text-lg" />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-[#059669] uppercase tracking-widest">Email *</label>
+                                    <input type="email" placeholder="이메일 주소를 입력해주세요"
+                                        value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="w-full border-b-2 border-slate-100 py-2.5 outline-none focus:border-[#059669] transition-colors font-bold md:text-lg" />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Interest</label>
-                                <div className="flex flex-wrap gap-4 pt-2">
-                                    {['방문예약', '분양가문의', '필지문의', '기타'].map((item) => (
+                            <div className="space-y-1">
+                                <div className="flex justify-between items-end mb-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interest</label>
+                                    <p className="text-[10px] font-bold text-slate-400">* 연락처 또는 이메일 중 하나는 필수입니다.</p>
+                                </div>
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    {['방문예약', '분양가문의', '필지문의', '기업문의(사택)', '기타'].map((item) => (
                                         <button key={item} type="button"
                                             onClick={() => setFormData({ ...formData, interest: item })}
-                                            className={`px-6 py-3 rounded-full border-2 font-bold transition-all ${formData.interest === item ? 'border-[#059669] text-[#059669] bg-[#059669]/5' : 'border-slate-100 text-slate-500 hover:border-[#059669] hover:text-[#059669]'}`}>
+                                            className={`px-4 py-2 text-sm rounded-full border-2 font-bold transition-all ${formData.interest === item ? 'border-[#059669] text-[#059669] bg-[#059669]/5' : 'border-slate-100 text-slate-500 hover:border-[#059669] hover:text-[#059669]'}`}>
                                             {item}
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            <div className="pt-8 w-full">
+                            <div className="space-y-1 pt-1">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Message (Optional)</label>
+                                <textarea placeholder="궁금하신 점이나 남기고 싶으신 메시지가 있다면 편하게 작성해주세요."
+                                    value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                    rows="2"
+                                    className="w-full border-2 border-slate-100 rounded-xl p-3 outline-none focus:border-[#059669] transition-colors font-medium text-sm md:text-base resize-none" />
+                            </div>
+                            <div className="pt-4 w-full">
                                 <button type="submit" disabled={isSubmitting}
-                                    className="block text-center w-full bg-[#059669] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#047857] disabled:bg-slate-300 transition-all shadow-xl shadow-green-100">
-                                    {isSubmitting ? '전송 중...' : '상담 신청하기'}
+                                    className="w-full flex items-center justify-center bg-[#059669] text-white rounded-xl font-black text-lg hover:bg-[#047857] disabled:opacity-80 disabled:cursor-not-allowed transition-all shadow-xl shadow-green-100 relative h-[60px]">
+                                    {isSubmitting ? (
+                                        <div className="absolute inset-0 flex items-center justify-center gap-3">
+                                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            <span className="animate-pulse text-base">안전하게 전송 중입니다...</span>
+                                        </div>
+                                    ) : (
+                                        '상담 신청하기'
+                                    )}
                                 </button>
-                                <p className="text-center mt-6 text-slate-400 text-sm font-medium w-full">개인정보는 분양 상담을 위해서만 활용됩니다.</p>
+                                <p className="text-center mt-3 text-slate-400 text-xs font-medium w-full">개인정보는 분양 상담을 위해서만 활용됩니다.</p>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- Directions --- */}
+            <section id="directions" className="py-24 bg-white border-b border-slate-100">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-4xl mx-auto mb-16">
+                        <span className="text-[#064e3b] font-black tracking-[0.2em] text-sm md:text-base mb-4 block">DIRECTIONS</span>
+                        <div className="mb-6 space-y-3">
+                            <h3 className="text-4xl md:text-5xl font-medium font-sans text-slate-900 break-keep">오시는 길</h3>
+                        </div>
+                        <p className="text-slate-500 md:text-lg font-medium">분양 사무실 및 현장 견본주택으로 모십니다.</p>
+                    </div>
+
+                    <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
+                        <div className="flex flex-col gap-4">
+                            <h4 className="text-[#064e3b] font-bold text-xl md:text-2xl flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                분양 홍보관 (사무실)
+                            </h4>
+                            <NaverMap 
+                                label="주식회사 와운 (분양 홍보관)"
+                                address="충북 청주시 상당구 수암로54번길 8 3층 주식회사 와운"
+                                center="127.4946,36.6468"
+                            />
+                        </div>
+                        
+                        <div className="flex flex-col gap-4">
+                            <h4 className="text-[#064e3b] font-bold text-xl md:text-2xl flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                현장위치 (사무소 & 견본주택)
+                            </h4>
+                            <NaverMap 
+                                label="현장위치 & 견본주택"
+                                address="충북 청주시 상당구 남일면 고은리 산 35-2번지 일원"
+                                center="127.5255,36.5638"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
@@ -940,9 +1168,9 @@ const App = () => {
                     </div>
                     <div className="mt-12 pt-12 border-t border-slate-50 text-center md:text-left space-y-4">
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">
-                            <span className="font-bold text-slate-500">시행사</span> : (주)와운 &nbsp;|&nbsp; <span className="font-bold text-slate-500">시공사</span> : <a href="http://www.igong.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">(주)이공건축</a><br />
-                            <span className="font-bold text-slate-500">사무실</span> : 충북 청주시 상당구 상당로 54번길 8 3층 &nbsp;|&nbsp; <span className="font-bold text-slate-500">현장위치</span> : 충북 청주시 상당구 남일면 고은리 산 35-2번지 일원 (현장사무소 & 견본주택)<br />
-                            <span className="font-bold text-slate-500">분양문의</span> : 043-250-1120
+                            <span className="font-bold text-slate-500">시행사</span> : 주식회사 와운 &nbsp;|&nbsp; <span className="font-bold text-slate-500">시공사</span> : <a href="http://www.igong.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">(주)이공건축</a><br />
+                            <span className="font-bold text-slate-500">사무실</span> : 충북 청주시 상당구 수암로54번길 8 3층 주식회사 와운 &nbsp;|&nbsp; <span className="font-bold text-slate-500">현장위치</span> : 충북 청주시 상당구 남일면 고은리 산 35-2번지 일원 (현장사무소 & 견본주택)<br />
+                            <span className="font-bold text-slate-500">분양문의</span> : 043-250-1120 &nbsp;|&nbsp; ecoalbero@naver.com
                         </p>
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">
                             ※ 본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제 시공 시 인허가 과정이나 현장 여건에 따라 변경될 수 있습니다.
@@ -1143,6 +1371,19 @@ const App = () => {
                             {expandedPanoImage.label}
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Custom Toast Notification */}
+            {toastMessage && (
+                <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-4 rounded-full shadow-2xl z-[10000] flex items-center gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300 font-bold tracking-wide text-sm md:text-base ${toastMessage.type === 'error' ? 'bg-rose-500 text-white' : 'bg-[#059669] text-white'
+                    }`}>
+                    {toastMessage.type === 'error' ? (
+                        <svg className="w-6 h-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    ) : (
+                        <svg className="w-6 h-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    )}
+                    {toastMessage.text}
                 </div>
             )}
         </div>
