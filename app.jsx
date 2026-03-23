@@ -264,14 +264,14 @@ const NaverMap = ({ center, address, label }) => {
 
     // 마커 파라미터는 꼭 인코딩 필요!
     const markerParams = encodeURIComponent(`type:d|size:mid|pos:${center.replace(',', ' ')}|color:green`);
-    const staticMapUrl = `https://maps.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${center}&level=${level}&X-NCP-APIGW-API-KEY-ID=${clientId}&markers=${markerParams}`;
+    const staticMapUrl = `https://maps.apigw.ntruss.com/map-static/v2/raster?w=${width}&h=${height}&center=${center}&level=${level}&X-NCP-APIGW-API-KEY-ID=${clientId}&markers=${markerParams}`;
 
     // 주소를 URL 인코딩하여 네이버 검색 링크 생성
     const searchUrl = `https://map.naver.com/p/search/${encodeURIComponent(address)}`;
 
     return (
         <a
-            className="block w-full h-[300px] md:h-[400px] z-0 overflow-hidden relative cursor-pointer bg-slate-100 group rounded-3xl shadow-xl border border-slate-100"
+            className="block w-full h-full z-0 overflow-hidden relative cursor-pointer bg-slate-100 group shadow-inner"
             href={searchUrl}
             target="_blank"
             rel="noreferrer"
@@ -285,22 +285,6 @@ const NaverMap = ({ center, address, label }) => {
                     e.target.src = `https://via.placeholder.com/800x600?text=API+Key+or+Domain+Error`;
                 }}
             />
-            {/* 좌측 상단 네이버 지도 열기 버튼 */}
-            <div className="absolute left-4 top-4">
-                <div className="bg-white/95 px-4 py-2 rounded-full shadow-lg text-[13px] md:text-[14px] font-sans tracking-wide text-[#03CF5D] font-bold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity border border-slate-100">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z" />
-                    </svg>
-                    {label} 자세히 보기
-                </div>
-            </div>
-
-            {/* 하단 주소 표시 */}
-            <div className="absolute bottom-4 left-0 w-full flex justify-center gap-2 z-10 px-4 pointer-events-none">
-                <div className="bg-[#064e3b]/95 text-white px-5 py-3 rounded-2xl text-[13px] md:text-[14px] font-sans tracking-wide shadow-xl flex items-center justify-center font-bold text-center break-keep w-full md:w-auto">
-                    {address}
-                </div>
-            </div>
         </a>
     );
 };
