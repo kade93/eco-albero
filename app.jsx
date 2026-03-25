@@ -255,8 +255,8 @@ const ZoomableImage = ({ src, alt }) => {
 };
 
 const NaverMap = ({ center, address, label }) => {
-    const clientId = 'u31616iqwo';
-    const clientSecret = 'WgP8MkEVVdZEB2tN2m6VAWu5FsKHOefzCqJ8X9xZ';
+    const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID;
+    const clientSecret = import.meta.env.VITE_NAVER_MAP_CLIENT_SECRET;
 
     const level = 15;
     const width = 800;
@@ -330,7 +330,8 @@ const App = () => {
     };
 
     const scrollToContact = () => {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        const el = document.getElementById('contact-directions');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
 
     const handleEmailSubmit = async (e) => {
@@ -467,19 +468,19 @@ const App = () => {
                         </button>
                     </div>
                 </nav>
+                {/* --- Mobile Dropdown Menu --- */}
+                {isMenuOpen && (
+                    <div className="lg:hidden bg-white border-b border-slate-100 shadow-xl overflow-hidden px-6 py-4 flex flex-col gap-4 absolute top-full left-0 w-full z-40 transition-all origin-top">
+                        <a href="#plots" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>부지현장</a>
+                        <a href="#location" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>입지환경</a>
+                        <a href="#design-interior" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>맞춤형 설계</a>
+                        <a href="#contact-directions" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>오시는 길</a>
+                        <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#064e3b] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#14532d] mt-2 w-full text-center">
+                            문의하기
+                        </button>
+                    </div>
+                )}
             </div>
-            {/* --- Mobile Dropdown Menu --- */}
-            {isMenuOpen && (
-                <div className="lg:hidden bg-white border-b border-slate-100 shadow-xl overflow-hidden px-6 py-4 flex flex-col gap-4 absolute top-full left-0 w-full z-40 transition-all origin-top">
-                    <a href="#plots" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>부지현장</a>
-                    <a href="#location" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>입지환경</a>
-                    <a href="#design-interior" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>맞춤형 설계</a>
-                    <a href="#contact-directions" className="text-slate-600 font-bold hover:text-[#064e3b] py-2" onClick={() => setIsMenuOpen(false)}>오시는 길</a>
-                    <button onClick={() => { scrollToContact(); setIsMenuOpen(false); }} className="bg-[#064e3b] text-white px-6 py-2.5 rounded-full font-bold hover:bg-[#14532d] mt-2 w-full text-center">
-                        문의하기
-                    </button>
-                </div>
-            )}
 
             {/* --- Hero Section (Nature Background with smooth fade & overlap) --- */}
             <section className="relative min-h-[65vh] md:min-h-[70vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23]">
@@ -1038,13 +1039,13 @@ const App = () => {
                             PREMIUM INTERIOR
                         </span>
                         <h3 className="text-3xl md:text-4xl lg:text-5xl font-black font-sans text-slate-900 leading-[1.3] tracking-tight mb-4">
-                            선택을 완성하는 프리미엄 인테리어
+                            선택을 완성하는 <span className="bg-gradient-to-r from-[#D4AF37] to-[#B58B22] text-transparent bg-clip-text">프리미엄 인테리어</span>
                         </h3>
                         <p className="text-slate-600 font-bold text-sm md:text-base max-w-xl mx-auto break-keep leading-relaxed mb-6">
                             타입 선택 후 라이프스타일에 맞춘<br />
                             맞춤형 인테리어 설계 제공
                         </p>
-                        <p className="text-slate-500 font-medium text-[13px] md:text-sm bg-black/5 inline-block px-4 py-1.5 rounded-full border border-black/5">
+                        <p className="text-slate-500 font-semibold text-[13px] md:text-sm bg-white inline-block px-5 py-2 rounded-full border border-[#D4AF37]/20 shadow-sm text-[#8a6f23]">
                             👆 분양 타입별 설계와 인테리어 예시를 확인해보세요
                         </p>
                     </div>
@@ -1125,17 +1126,27 @@ const App = () => {
                     </div>
 
                     {/* Connecting Connective Text */}
-                    <div className="text-center mb-10 relative">
-                        <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-200 -z-10"></div>
-                        <p className="inline-block text-slate-600 font-bold text-[13px] md:text-[14px] bg-[#F9F9F7] px-6 py-2 rounded-full border border-slate-200">
+                    <div className="text-center mb-12 relative max-w-4xl mx-auto">
+                        <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent -z-10"></div>
+                        <p className="inline-block text-[#9a7b21] font-black text-[13px] md:text-[15px] bg-[#F9F9F7] px-8 py-2.5 rounded-full border border-[#D4AF37]/30 shadow-sm tracking-wide">
                             타입 선택 후 라이프스타일에 맞춘 맞춤형 인테리어 설계 제공
                         </p>
                     </div>
 
-                    <div className="text-center mb-10 w-full flex flex-col items-center justify-center bg-white py-10 px-6 rounded-3xl shadow-sm border border-slate-100 max-w-5xl mx-auto">
-                        <h4 className="text-2xl md:text-3xl lg:text-4xl font-black font-sans text-slate-900 mb-4">원하는 공간과 스타일을 선택하세요</h4>
-                        <p className="text-slate-600 font-bold text-base md:text-lg break-keep mb-3">최고급 마감재와 트렌디한 공간 설계로<br/>일상의 가치를 높이는 하이엔드 라이프를 선사합니다.</p>
-                        <p className="text-slate-500 font-medium text-sm md:text-base break-keep mt-2">※ 전문 분양상담사가 1:1 맞춤 설계를 안내해드립니다.</p>
+                    <div className="text-center mb-10 w-full flex flex-col items-center justify-center bg-white py-12 px-6 rounded-[2rem] shadow-sm border border-slate-100 max-w-5xl mx-auto relative overflow-hidden">
+                        <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
+                        <h4 className="text-[26px] md:text-3xl lg:text-4xl font-black font-sans text-slate-900 mb-4 tracking-tight">
+                            원하는 공간과 스타일을 <span className="text-[#D4AF37]">선택</span>하세요
+                        </h4>
+                        <p className="text-slate-600 font-bold text-[15px] md:text-lg break-keep mb-5 leading-relaxed">
+                            <span className="text-[#b9952e]">최고급 마감재</span>와 <span className="text-[#b9952e]">트렌디한 공간 설계</span>로<br/>
+                            일상의 가치를 높이는 하이엔드 라이프를 선사합니다.
+                        </p>
+                        <div className="bg-[#F9F9F7] px-6 py-3 rounded-full border border-slate-200 shadow-sm">
+                            <p className="text-slate-700 font-black text-[13.5px] md:text-[15px] break-keep flex items-center justify-center gap-2">
+                                <span className="text-[#D4AF37] text-lg leading-none">※</span> 전문 분양상담사가 1:1 맞춤 설계를 안내해드립니다
+                            </p>
+                        </div>
                     </div>
 
                     {/* 2 Interior Highlights (Kitchen / Window) */}
