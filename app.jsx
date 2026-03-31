@@ -46,18 +46,18 @@ const PHASES = {
 // --- Plot Data (Extracted from 2112x2016 source) ---
 const PLOTS = [
     { id: '9-1', x: 65.41, y: 65.43, phase: '9', status: 'available', area: 723.4, path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
-    { id: '9-2', x: 69.54, y: 63.96, phase: '9', status: 'available', area: 816.4, path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
+    { id: '9-2', x: 69.54, y: 63.96, phase: '9', status: 'sold', area: 816.4, path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
     { id: '9-3', x: 73.43, y: 61.64, phase: '9', status: 'available', area: 821.1, path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
     { id: '9-4', x: 77.72, y: 58.83, phase: '9', status: 'available', area: 792.6, path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
-    { id: '9-5', x: 81.76, y: 56.35, phase: '9', status: 'available', area: 696.0, path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
+    { id: '9-5', x: 81.76, y: 56.35, phase: '9', status: 'sold', area: 696.0, path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
     { id: '8-1', x: 62.04, y: 44.54, phase: '8', status: 'available', area: 750.8, path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
-    { id: '8-2', x: 65.67, y: 42.47, phase: '8', status: 'available', area: 836.7, path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
+    { id: '8-2', x: 65.67, y: 42.47, phase: '8', status: 'sold', area: 836.7, path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
     { id: '8-3', x: 69.47, y: 40.4, phase: '8', status: 'available', area: 831.9, path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
     { id: '8-4', x: 73.06, y: 38.44, phase: '8', status: 'available', area: 816.4, path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
     { id: '7-1', x: 49.05, y: 50.44, phase: '7', status: 'available', area: 1346.8, path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
     { id: '7-2', x: 54.85, y: 48.53, phase: '7', status: 'available', area: 750.8, path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
     { id: '7-3', x: 58.37, y: 46.57, phase: '7', status: 'available', area: 749.6, path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
-    { id: '6-1', x: 47.49, y: 60.38, phase: '6', status: 'available', area: 1265.7, path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
+    { id: '6-1', x: 47.49, y: 60.38, phase: '6', status: 'sold', area: 1265.7, path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
     { id: '6-2', x: 52.82, y: 57.68, phase: '6', status: 'available', area: 662.6, path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
     { id: '6-3', x: 58.04, y: 54.97, phase: '6', status: 'available', area: 589.9, path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
     { id: '6-4', x: 61.31, y: 53.03, phase: '6', status: 'available', area: 595.9, path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
@@ -68,24 +68,24 @@ const PLOTS = [
     { id: '5-4', x: 68.19, y: 49.93, phase: '5', status: 'available', area: 594.7, path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
     { id: '5-5', x: 71.68, y: 48.08, phase: '5', status: 'available', area: 594.7, path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
     { id: '5-6', x: 75.0, y: 46.07, phase: '5', status: 'available', area: 588.8, path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
-    { id: '4-1', x: 57.86, y: 70.4, phase: '4', status: 'available', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
+    { id: '4-1', x: 57.86, y: 70.4, phase: '4', status: 'management', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
     { id: '4-2', x: 61.29, y: 67.45, phase: '4', status: 'available', area: 572.1, path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
     { id: '4-3', x: 60.83, y: 60.34, phase: '4', status: 'available', area: 585.2, path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
     { id: '4-4', x: 64.11, y: 58.47, phase: '4', status: 'available', area: 591.2, path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
     { id: '4-5', x: 67.42, y: 56.58, phase: '4', status: 'available', area: 592.3, path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
     { id: '2-1', x: 56.62, y: 62.44, phase: '2', status: 'available', area: 736.5, path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
-    { id: '2-2', x: 52.65, y: 64.57, phase: '2', status: 'available', area: 759.1, path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
-    { id: '2-3', x: 48.79, y: 66.7, phase: '2', status: 'available', area: 717.5, path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
+    { id: '2-2', x: 52.65, y: 64.57, phase: '2', status: 'sold', area: 759.1, path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
+    { id: '2-3', x: 48.79, y: 66.7, phase: '2', status: 'sold', area: 717.5, path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
     { id: '2-4', x: 52.54, y: 71.64, phase: '2', status: 'available', area: 809.2, path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
     { id: '2-5', x: 55.14, y: 76.19, phase: '2', status: 'available', area: 756.7, path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
     { id: '2-6', x: 58.42, y: 79.13, phase: '2', status: 'available', area: 729.4, path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
-    { id: '3-4', x: 50.72, y: 79.72, phase: '3', status: 'available', area: 1529.6, path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
+    { id: '3-4', x: 50.72, y: 79.72, phase: '3', status: 'sold', area: 1529.6, path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
     { id: '3-3', x: 65.45, y: 55.62, phase: '3', status: 'available', area: 743.3, path: 'M959 1564V1624H841V1564H959Z' },
-    { id: '3-2', x: 44.07, y: 74.22, phase: '3', status: 'available', area: 727.0, path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
+    { id: '3-2', x: 44.07, y: 74.22, phase: '3', status: 'sold', area: 727.0, path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
     { id: '3-1', x: 52.42, y: 57.03, phase: '3', status: 'available', area: 783.6, path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
     { id: '3-5', x: 49.78, y: 78.04, phase: '3', status: 'available', area: 1022.6, path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
     { id: '1-1', x: 58.57, y: 94.51, phase: '1', status: 'available', area: 819.4, path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
-    { id: '1-2', x: 55.09, y: 91.83, phase: '1', status: 'available', area: 772.7, path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
+    { id: '1-2', x: 55.09, y: 91.83, phase: '1', status: 'sold', area: 772.7, path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
     { id: '1-3', x: 51.73, y: 90.07, phase: '1', status: 'available', area: 734.1, path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
     { id: '1-4', x: 48.66, y: 88.14, phase: '1', status: 'available', area: 767.5, path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
     { id: '1-7', x: 60.08, y: 87.24, phase: '1', status: 'available', area: 646.3, path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
@@ -298,6 +298,7 @@ const App = () => {
     const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '', interest: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [toastMessage, setToastMessage] = useState(null);
+    const [isHighlightingPlots, setIsHighlightingPlots] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -412,7 +413,7 @@ const App = () => {
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900">
             {/* --- Top Info Bar (Not sticky) --- */}
-            <div className="bg-[#122219] text-[#D4AF37] py-1.5 px-6 hidden md:block border-b border-white/5 relative z-50">
+            <div className="bg-[#122219] text-[#D4AF37] py-1.5 px-6 hidden md:block border-b border-white/5 relative z-50" data-nosnippet>
                 <div className="container mx-auto flex justify-between items-center text-[12px] md:text-[13px] font-medium tracking-wide">
                     <p className="flex items-center gap-2">
                         <span className="bg-[#D4AF37] text-[#122219] px-2 py-0.5 rounded text-[10px] md:text-[11px] font-black tracking-widest leading-none mt-[1px]">NOTICE</span>
@@ -429,7 +430,7 @@ const App = () => {
             {/* --- Sticky Header Wrapper --- */}
             <div className="sticky top-0 z-40 w-full shadow-md">
                 {/* --- Header --- */}
-                <nav className={`w-full transition-all duration-300 ${scrolled
+                <nav data-nosnippet className={`w-full transition-all duration-300 ${scrolled
                     ? 'bg-[#1A2F23]/95 backdrop-blur-md shadow-lg border-b border-[#D4AF37]/20 relative' : 'bg-[#1A2F23] relative'}`}>
 
                     <div className="container mx-auto px-6 h-14 md:h-16 flex justify-between items-center relative z-10">
@@ -437,7 +438,7 @@ const App = () => {
                             <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-8 md:h-10 w-auto rounded-md" />
                             <div className="h-4 md:h-5 w-[1px] bg-white/20 mx-0.5 md:mx-1 hidden sm:block"></div>
                             <div className="flex flex-col leading-none hidden sm:flex">
-                                <span className="text-white font-black text-sm md:text-base tracking-tighter">에코 알베로</span>
+                                <span className="text-white font-black text-sm md:text-base tracking-tighter">에코알베로</span>
                                 <span className="text-[#D4AF37] text-[8px] md:text-[9px] uppercase tracking-widest font-bold">Village</span>
                             </div>
                         </div>
@@ -581,7 +582,11 @@ const App = () => {
                             <div className="flex flex-col sm:flex-row gap-3 items-center justify-center xl:justify-start">
                                 <button onClick={() => {
                                     const plotsEl = document.getElementById('plots');
-                                    if (plotsEl) plotsEl.scrollIntoView({ behavior: 'smooth' });
+                                    if (plotsEl) {
+                                        plotsEl.scrollIntoView({ behavior: 'smooth' });
+                                        setIsHighlightingPlots(true);
+                                        setTimeout(() => setIsHighlightingPlots(false), 2500);
+                                    }
                                 }}
                                     className="w-full sm:w-auto bg-[#1A2F23] text-white px-5 py-3 rounded-full font-bold text-sm hover:bg-[#0f1b14] shadow-lg shadow-green-900/20 transition-all flex items-center justify-center gap-2">
                                     <IconMapPin className="w-4 h-4" /> 필지별 조망 확인하기
@@ -598,8 +603,17 @@ const App = () => {
                         {/* --- Right Column: Interactive Plot Map --- */}
                         <div className="w-full xl:w-[55%] relative flex flex-col order-1 xl:order-2">
                             {/* Interactive Container */}
-                            <div className="relative w-full rounded-[30px] border-8 border-slate-50 shadow-2xl overflow-hidden bg-slate-100 group">
+                            <div className={`relative w-full rounded-[30px] border-8 shadow-2xl overflow-hidden bg-slate-100 group transition-all duration-500 ${isHighlightingPlots ? 'border-[#D4AF37] ring-4 ring-[#D4AF37]/40 scale-[1.01]' : 'border-slate-50'}`}>
                                 <div className="absolute inset-0 pointer-events-none z-30 ring-1 ring-inset ring-black/10 rounded-[22px]"></div>
+
+                                {isHighlightingPlots && (
+                                    <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/10 backdrop-blur-[1px]">
+                                        <div className="bg-[#D4AF37] text-slate-900 px-6 py-4 rounded-3xl shadow-2xl flex flex-col items-center animate-bounce border-4 border-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 md:h-10 md:w-10 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
+                                            <span className="font-black text-lg md:text-xl tracking-tight">원하시는 필지를 클릭해보세요!</span>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Map Header / Legend Overlay */}
                                 <div className="absolute top-4 left-4 md:top-6 md:left-6 right-4 md:right-6 flex flex-col sm:flex-row justify-between items-start sm:items-center z-40 pointer-events-none gap-2">
@@ -611,53 +625,84 @@ const App = () => {
                                         <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#10b981] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">분양 가능</span></div>
                                         <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">분양 완료</span></div>
                                         <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#64748b] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">계약 진행</span></div>
+                                        <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#8b5cf6] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">사무동</span></div>
                                     </div>
                                 </div>
-                                <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-40 pointer-events-none">
-                                    <div className="bg-[#1A2F23]/90 text-white backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/20 flex items-center gap-2">
-                                        <span className="w-3 h-3 rounded-full bg-[#D4AF37] animate-pulse"></span>
-                                        <span className="text-xs font-bold tracking-wide">필지 클릭하여 실제 조망 보기</span>
+
+                                {/* Promo Overlay on Left Empty Space */}
+                                <div className="absolute top-[88px] md:top-[104px] left-4 md:left-6 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700">
+                                    <div className="bg-white/85 backdrop-blur-md px-3 md:px-4 py-2.5 rounded-xl shadow-md border border-[#D4AF37]/30 flex flex-col gap-1.5 w-max">
+                                        <div className="flex items-center gap-1.5 text-[#1A2F23]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                            <span className="text-[10px] md:text-xs font-black tracking-tight drop-shadow-sm">46필지 한정, 일부 필지 선택 진행 중</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 text-[#1A2F23]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                            <span className="text-[10px] md:text-xs font-black tracking-tight drop-shadow-sm">좋은 위치는 먼저 선택됩니다</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2112/2016' }}>
-                                    {/* Base Map Image */}
-                                    <img
-                                        src={getAssetPath('site_main_before_polygon.png')}
-                                        alt="Master Plan Map"
-                                        className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.02] transition-transform duration-[2000ms]"
-                                    />
-                                    <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors duration-700"></div>
+                                    {/* Map Zoom Wrapper */}
+                                    <div className="absolute inset-0 w-full h-full origin-[62%_100%] scale-[1.3] md:scale-[1.35] transition-transform duration-[2000ms] ease-out group-hover:scale-[1.35] md:group-hover:scale-[1.4]">
+                                        {/* Base Map Image */}
+                                        <img
+                                            src={getAssetPath('site_main_before_polygon.png')}
+                                            alt="Master Plan Map"
+                                            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                                        />
+                                        <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors duration-700"></div>
 
-                                    {/* High-Precision SVG Interaction Layer */}
-                                    <svg viewBox="0 0 2112 2016" className="absolute inset-0 w-full h-full z-10 select-none overflow-visible" preserveAspectRatio="none">
-                                        {PLOTS.map(plot => (
-                                            <g key={`poly-${plot.id}`} className="pointer-events-auto cursor-pointer group/poly"
-                                                onClick={() => { setSelectedPlot(plot); setIsPanoOpen(true); }} >
-                                                <path d={plot.path}
-                                                    className={`transition-all duration-300 ${plot.status === 'sold' ? 'fill-[#f59e0b]/20 stroke-[#f59e0b]/80 group-hover/poly:fill-[#f59e0b]/50 hover:stroke-[#f59e0b]' :
-                                                        plot.status === 'in_progress' ? 'fill-[#64748b]/20 stroke-[#64748b]/80 group-hover/poly:fill-[#64748b]/50 hover:stroke-[#64748b]' :
-                                                        'fill-[#10b981]/20 stroke-[#10b981]/80 group-hover/poly:fill-[#10b981]/50 hover:stroke-[#10b981]'}`}
-                                                    strokeWidth="4" />
-                                            </g>
-                                        ))}
-                                    </svg>
+                                        {/* High-Precision SVG Interaction Layer */}
+                                        <svg viewBox="0 0 2112 2016" className="absolute inset-0 w-full h-full z-10 select-none overflow-visible" preserveAspectRatio="none">
+                                            {PLOTS.map(plot => (
+                                                <g key={`poly-${plot.id}`} className={`pointer-events-auto group/poly ${plot.status === 'available' ? 'cursor-pointer' : 'cursor-default'}`}
+                                                    onClick={() => {
+                                                        if (plot.status === 'available') {
+                                                            setSelectedPlot(plot); setIsPanoOpen(true);
+                                                        }
+                                                    }} >
+                                                    <path d={plot.path}
+                                                        className={`transition-all duration-300 ${plot.status === 'sold' ? 'fill-[#f59e0b]/50 stroke-[#f59e0b]/90 group-hover/poly:fill-[#f59e0b]/70 hover:stroke-[#f59e0b]' :
+                                                            plot.status === 'management' ? 'fill-[#8b5cf6]/50 stroke-[#8b5cf6]/90 group-hover/poly:fill-[#8b5cf6]/70 hover:stroke-[#8b5cf6]' :
+                                                                plot.status === 'in_progress' ? 'fill-[#64748b]/20 stroke-[#64748b]/80 group-hover/poly:fill-[#64748b]/50 hover:stroke-[#64748b]' :
+                                                                    'fill-[#10b981]/20 stroke-[#10b981]/80 group-hover/poly:fill-[#10b981]/50 hover:stroke-[#10b981]'}
+                                                        ${isHighlightingPlots && plot.status === 'available' ? 'animate-pulse fill-[#10b981]/60 stroke-[#10b981]' : ''}`}
+                                                        strokeWidth="4" />
+                                                </g>
+                                            ))}
+                                        </svg>
 
-                                    {/* Visual Marker Labels */}
-                                    <div className="absolute inset-0 pointer-events-none z-20">
-                                        {PLOTS.map(plot => (
-                                            <div key={`label-${plot.id}`}
-                                                className="absolute w-4 h-4 -ml-2 -mt-2 text-[6px] md:w-6 md:h-6 md:-ml-3 md:-mt-3 md:text-[8px] tracking-tighter text-white font-bold rounded-full flex items-center justify-center border shadow-md pointer-events-none backdrop-blur-sm"
-                                                style={{
-                                                    ...getPathCenter(plot.path), 
-                                                    backgroundColor: PHASES[plot.phase].color + 'CC',
-                                                    borderColor: plot.status === 'sold' ? '#f59e0b' : plot.status === 'in_progress' ? '#64748b' : '#10b981',
-                                                    borderWidth: '2px'
-                                                }}>
-                                                {plot.id}
-                                            </div>
-                                        ))}
+                                        {/* Visual Marker Labels */}
+                                        <div className="absolute inset-0 pointer-events-none z-20">
+                                            {PLOTS.map(plot => (
+                                                <div key={`label-${plot.id}`}
+                                                    className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center border shadow-sm pointer-events-none backdrop-blur-sm tracking-tighter
+                                                        ${plot.status === 'sold' 
+                                                            ? 'px-[3px] md:px-[5px] py-[1.5px] rounded-[3px] text-[6px] md:text-[7px] text-[#D4AF37] font-black shadow-md whitespace-nowrap'
+                                                            : plot.status === 'management'
+                                                            ? 'px-1 md:px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] text-white font-bold whitespace-nowrap'
+                                                            : 'w-4 h-4 md:w-5 md:h-5 rounded-full text-[6px] md:text-[7px] text-white font-bold'}`}
+                                                    style={{
+                                                        ...getPathCenter(plot.path),
+                                                        backgroundColor: plot.status === 'sold' ? '#0f172aE6' : plot.status === 'management' ? '#8b5cf6B3' : (PHASES[plot.phase].color + '99'),
+                                                        borderColor: plot.status === 'sold' ? '#D4AF3780' : plot.status === 'management' ? '#8b5cf6EE' : plot.status === 'in_progress' ? '#64748b' : '#10b981',
+                                                        borderWidth: plot.status === 'sold' ? '1px' : '1.5px'
+                                                    }}>
+                                                    {plot.status === 'sold' ? '계약완료' : plot.status === 'management' ? '사무동' : plot.id}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
+                            
+                            {/* View Prompt Moved Outside */}
+                            <div className="mt-4 flex justify-end w-full animate-in fade-in">
+                                <div className="bg-white text-slate-800 px-5 py-3 rounded-full border border-slate-200 shadow-sm flex items-center gap-2 w-max">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] shadow-sm animate-pulse"></span>
+                                    <span className="text-[12px] md:text-[14px] font-bold tracking-wide">원하시는 필지를 클릭하여 실제 뷰를 확인하세요</span>
                                 </div>
                             </div>
                         </div>
@@ -745,6 +790,7 @@ const App = () => {
                                         <div className="text-white text-lg md:text-xl lg:text-2xl font-bold font-sans leading-[1.3] tracking-tight break-keep drop-shadow-md">
                                             단지의 품격을 높이는<br />최신식 다목적 커뮤니티
                                         </div>
+                                        <p className="text-[#D4AF37] text-[11px] md:text-xs font-bold mt-3 opacity-90 drop-shadow-md">* 커뮤니티시설은 착공 예정입니다</p>
                                     </div>
                                 </div>
 
@@ -760,8 +806,14 @@ const App = () => {
                                         <div className="text-white text-lg md:text-xl lg:text-2xl font-bold font-sans leading-[1.3] tracking-tight break-keep drop-shadow-md">
                                             생활의 여유를 더하는<br />편리한 24시 무인 시설
                                         </div>
+                                        <p className="text-[#D4AF37] text-[11px] md:text-xs font-bold mt-3 opacity-90 drop-shadow-md">* 커뮤니티시설은 착공 예정입니다.</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* 커뮤니티 안내 문구 */}
+                            <div className="mt-5 text-center lg:text-right px-2">
+                                <p className="text-[#1A2F23]/60 text-[12px] md:text-sm font-bold tracking-tight">※ 일부 시설은 단지 조성과 함께 순차적으로 완성됩니다.</p>
                             </div>
                         </div>
 
@@ -810,7 +862,7 @@ const App = () => {
                                 </div>
                             </div>
 
-                            <div className="pt-10">
+                            <div className="pt-10 flex justify-center lg:justify-start w-full">
                                 <button onClick={scrollToContact}
                                     className="bg-gradient-to-r from-[#DBA644] to-[#C08A27] text-white px-10 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all w-full md:w-auto whitespace-nowrap shadow-md">
                                     지금 분양 문의하기
@@ -927,7 +979,7 @@ const App = () => {
                             <div className="mb-10 lg:mb-12">
                                 <span className="text-[#1A2F23] font-black tracking-[0.2em] text-xs md:text-sm mb-4 block">PREMIUM LOCATION & VISION</span>
                                 <h3 className="text-[26px] leading-[1.35] md:text-[38px] lg:text-[44px] font-black font-sans text-slate-900 break-keep mb-5 lg:mb-6 tracking-tight sm:whitespace-nowrap relative z-10 sm:w-max w-full">
-                                    에코 알베로의 미래 가치,<br />도로망 확장으로 완성됩니다
+                                    에코알베로의 미래 가치,<br />도로망 확장으로 완성됩니다
                                 </h3>
                                 <p className="text-slate-600 font-medium text-[15px] md:text-base leading-[1.7] break-keep">
                                     광역 교통망 확장으로 입지 가치가 지속 상승하며, 청주 중심을 누리는 30분 프리미엄 생활권입니다. 도심의 인프라와 자연의 쾌적함을 모두 누릴 수 있는 가장 현실적인 전원 입지를 자랑합니다.
@@ -1139,7 +1191,7 @@ const App = () => {
                             원하는 공간과 스타일을 <span className="text-[#D4AF37]">선택</span>하세요
                         </h4>
                         <p className="text-slate-600 font-bold text-[15px] md:text-lg break-keep mb-5 leading-relaxed">
-                            <span className="text-[#b9952e]">최고급 마감재</span>와 <span className="text-[#b9952e]">트렌디한 공간 설계</span>로<br/>
+                            <span className="text-[#b9952e]">최고급 마감재</span>와 <span className="text-[#b9952e]">트렌디한 공간 설계</span>로<br />
                             일상의 가치를 높이는 하이엔드 라이프를 선사합니다.
                         </p>
                         <div className="bg-[#F9F9F7] px-6 py-3 rounded-full border border-slate-200 shadow-sm">
@@ -1203,7 +1255,7 @@ const App = () => {
                             <div className="w-full h-[180px] lg:h-[240px] rounded-2xl lg:rounded-[1.5rem] overflow-hidden border border-white/10 relative cursor-pointer mb-5 shadow-xl shrink-0">
                                 <div className="absolute inset-0 bg-black/10 transition-colors pointer-events-none z-10"></div>
                                 <NaverMap
-                                    label="에코 알베로"
+                                    label="에코알베로"
                                     address="충북 청주시 상당구 남일면 고은리 산 35-2번지 일원"
                                     center="127.5255,36.5638"
                                 />
@@ -1244,7 +1296,7 @@ const App = () => {
                                 </div>
 
                                 <div className="mt-6 pt-5 border-t border-white/10 w-full flex items-center justify-between">
-                                    <span className="text-[#A3B8B0] text-xs font-bold tracking-widest hidden sm:inline-block">ECO ALBERO</span>
+                                    <span className="text-[#A3B8B0] text-xs font-bold tracking-widest hidden sm:inline-block">ECOALBERO</span>
                                     <a href="https://blog.naver.com/ecoalbero" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#fff] hover:text-[#D4AF37] transition-colors text-xs lg:text-[13px] font-bold group bg-white/5 px-4 py-2 rounded-xl border border-white/10 shrink-0">
                                         <div className="bg-[#03C75A] p-1 rounded-md">
                                             <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-white"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z" /></svg>
@@ -1325,7 +1377,7 @@ const App = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-12">
                         <div className="flex items-center gap-3">
                             <img src={getAssetPath('eco_albero_logo.jpeg')} alt="Eco Albero Logo" className="h-10 w-auto rounded-md grayscale opacity-80" />
-                            <div className="text-[#1A2F23] font-black text-2xl tracking-[0.1em]">ECO ALBERO</div>
+                            <div className="text-[#1A2F23] font-black text-2xl tracking-[0.1em]">ECOALBERO</div>
                         </div>
                         <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-slate-400 font-bold text-sm">
                             <button onClick={() => setModalType('terms')} className="hover:text-slate-900 transition-colors">이용약관</button>
@@ -1346,7 +1398,7 @@ const App = () => {
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">
                             ※ 본 사이트의 조감도 및 CG는 소비자의 이해를 돕기 위한 것으로 실제 시공 시 인허가 과정이나 현장 여건에 따라 변경될 수 있습니다.
                         </p>
-                        <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECO ALBERO. ALL RIGHTS RESERVED.</p>
+                        <p className="mt-6 text-slate-300 text-xs uppercase tracking-widest">© 2026 ECOALBERO. ALL RIGHTS RESERVED.</p>
                     </div>
                 </div>
             </footer>
@@ -1369,7 +1421,7 @@ const App = () => {
                                 <>
                                     <section className="space-y-3">
                                         <h6 className="text-slate-900 font-bold">제 1 조 (목적)</h6>
-                                        <p className="text-sm">본 약관은 에코 알베로 분양 홍보 사이트(이하 "사이트")가 제공하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
+                                        <p className="text-sm">본 약관은 에코알베로 분양 홍보 사이트(이하 "사이트")가 제공하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
                                     </section>
                                     <section className="space-y-3">
                                         <h6 className="text-slate-900 font-bold">제 2 조 (정보의 한계 및 변경)</h6>
@@ -1377,14 +1429,14 @@ const App = () => {
                                     </section>
                                     <section className="space-y-3">
                                         <h6 className="text-slate-900 font-bold">제 3 조 (저작권의 귀속)</h6>
-                                        <p className="text-sm">사이트에 게재된 모든 콘텐츠(이미지, 텍스트, 로고 등)에 대한 저작권은 에코 알베로 및 분양 대행사에 귀속되며, 무단 복제 및 배포를 금합니다.</p>
+                                        <p className="text-sm">사이트에 게재된 모든 콘텐츠(이미지, 텍스트, 로고 등)에 대한 저작권은 에코알베로 및 분양 대행사에 귀속되며, 무단 복제 및 배포를 금합니다.</p>
                                     </section>
                                 </>
                             ) : (
                                 <>
                                     <section className="space-y-3">
                                         <h6 className="text-slate-900 font-bold">1. 개인정보의 수집 및 이용 목적</h6>
-                                        <p className="text-sm">수집된 개인정보는 에코 알베로 분양 상담, 방문 예약 확인, 분양 관련 정보 제공(전화, SMS) 및 마케팅 활용을 위해 사용됩니다.</p>
+                                        <p className="text-sm">수집된 개인정보는 에코알베로 분양 상담, 방문 예약 확인, 분양 관련 정보 제공(전화, SMS) 및 마케팅 활용을 위해 사용됩니다.</p>
                                     </section>
                                     <section className="space-y-3">
                                         <h6 className="text-slate-900 font-bold">2. 수집하는 개인정보 항목</h6>
