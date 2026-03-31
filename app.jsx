@@ -1528,7 +1528,7 @@ const App = () => {
                                     </span>
                                     <span className="text-white/40 text-xs">부지 {selectedPlot.id}</span>
                                 </div>
-                                <h2 className="text-3xl font-serif text-white mb-6">프리미엄 부지 {selectedPlot.id}</h2>
+                                <h2 className="text-3xl font-serif text-white mb-6">{selectedPlot.id} 필지</h2>
 
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
