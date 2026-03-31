@@ -484,17 +484,17 @@ const App = () => {
             </div>
 
             {/* --- Hero Section (Nature Background with smooth fade & overlap) --- */}
-            <section className="relative min-h-[65vh] md:min-h-[70vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23]">
+            <section className="relative min-h-[65vh] md:min-h-[70vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23] pt-16 md:pt-24">
                 <div
                     className="absolute inset-0 w-full h-full bg-cover bg-center -z-10"
                     style={{ backgroundImage: `url(${getAssetPath('nature_view.png')})`, backgroundPosition: 'center 30%' }}
                 >
                     {/* Seamless fade to white background of the next section */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-white"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white/90"></div>
                 </div>
 
-                <div className="container mx-auto px-6 relative flex flex-col items-center mt-[-3vh] text-white pb-24">
-                    <span className="text-[#D4AF37] font-bold tracking-[0.2em] text-xs md:text-sm mb-4 drop-shadow-md">
+                <div className="container mx-auto px-6 relative flex flex-col items-center mt-[-2vh] text-white pb-24 md:pb-28">
+                    <span className="text-[#FDE68A] font-bold tracking-[0.2em] text-xs md:text-sm mb-4 md:mb-5 drop-shadow-md bg-black/30 backdrop-blur-sm px-4 md:px-5 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg">
                         PREMIUM TOWNHOUSE VILLAGE
                     </span>
 
@@ -602,6 +602,19 @@ const App = () => {
 
                         {/* --- Right Column: Interactive Plot Map --- */}
                         <div className="w-full xl:w-[55%] relative flex flex-col order-1 xl:order-2">
+                            
+                            {/* Mobile Promo Banner (Hidden on desktop) */}
+                            <div className="md:hidden bg-[#1A2F23]/5 border border-[#D4AF37]/40 rounded-[14px] p-3 mb-4 flex flex-col gap-1.5 shadow-sm">
+                                <div className="flex items-center gap-1.5 text-[#1A2F23]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                    <span className="text-[12px] font-black tracking-tight drop-shadow-sm">46필지 한정, 일부 필지 선택 진행 중</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-[#1A2F23]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                    <span className="text-[12px] font-black tracking-tight drop-shadow-sm">좋은 위치는 먼저 선택됩니다</span>
+                                </div>
+                            </div>
+
                             {/* Interactive Container */}
                             <div className={`relative w-full rounded-[30px] border-8 shadow-2xl overflow-hidden bg-slate-100 group transition-all duration-500 ${isHighlightingPlots ? 'border-[#D4AF37] ring-4 ring-[#D4AF37]/40 scale-[1.01]' : 'border-slate-50'}`}>
                                 <div className="absolute inset-0 pointer-events-none z-30 ring-1 ring-inset ring-black/10 rounded-[22px]"></div>
@@ -615,22 +628,8 @@ const App = () => {
                                     </div>
                                 )}
 
-                                {/* Map Header / Legend Overlay */}
-                                <div className="absolute top-4 left-4 md:top-6 md:left-6 right-4 md:right-6 flex flex-col sm:flex-row justify-between items-start sm:items-center z-40 pointer-events-none gap-2">
-                                    <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/50">
-                                        <h3 className="text-[#1A2F23] font-black text-lg tracking-widest leading-none mb-1">ECOALBERO</h3>
-                                        <p className="text-[#D4AF37] font-bold text-[10px] tracking-[0.2em] leading-none">MASTER PLAN</p>
-                                    </div>
-                                    <div className="flex gap-2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/50">
-                                        <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#10b981] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">분양 가능</span></div>
-                                        <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">분양 완료</span></div>
-                                        <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#64748b] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">계약 진행</span></div>
-                                        <div className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#8b5cf6] shadow-sm"></span><span className="text-slate-800 text-[10px] font-black tracking-tight">사무동</span></div>
-                                    </div>
-                                </div>
-
-                                {/* Promo Overlay on Left Empty Space */}
-                                <div className="absolute top-[88px] md:top-[104px] left-4 md:left-6 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700">
+                                {/* Promo Overlay on Left Empty Space (Desktop Only) */}
+                                <div className="hidden md:block absolute top-[88px] md:top-[104px] left-4 md:left-6 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700">
                                     <div className="bg-white/85 backdrop-blur-md px-3 md:px-4 py-2.5 rounded-xl shadow-md border border-[#D4AF37]/30 flex flex-col gap-1.5 w-max">
                                         <div className="flex items-center gap-1.5 text-[#1A2F23]">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
@@ -664,11 +663,9 @@ const App = () => {
                                                         }
                                                     }} >
                                                     <path d={plot.path}
-                                                        className={`transition-all duration-300 ${plot.status === 'sold' ? 'fill-[#f59e0b]/50 stroke-[#f59e0b]/90 group-hover/poly:fill-[#f59e0b]/70 hover:stroke-[#f59e0b]' :
-                                                            plot.status === 'management' ? 'fill-[#8b5cf6]/50 stroke-[#8b5cf6]/90 group-hover/poly:fill-[#8b5cf6]/70 hover:stroke-[#8b5cf6]' :
-                                                                plot.status === 'in_progress' ? 'fill-[#64748b]/20 stroke-[#64748b]/80 group-hover/poly:fill-[#64748b]/50 hover:stroke-[#64748b]' :
-                                                                    'fill-[#10b981]/20 stroke-[#10b981]/80 group-hover/poly:fill-[#10b981]/50 hover:stroke-[#10b981]'}
-                                                        ${isHighlightingPlots && plot.status === 'available' ? 'animate-pulse fill-[#10b981]/60 stroke-[#10b981]' : ''}`}
+                                                        className={`transition-all duration-300 ${plot.status === 'sold' ? 'fill-transparent stroke-transparent pointer-events-none' :
+                                                            'fill-[#D4AF37]/10 stroke-[#D4AF37]/60 group-hover/poly:fill-[#D4AF37]/30 hover:stroke-[#D4AF37]'}
+                                                        ${isHighlightingPlots && plot.status === 'available' ? 'animate-pulse fill-[#D4AF37]/40 stroke-[#D4AF37]' : ''}`}
                                                         strokeWidth="4" />
                                                 </g>
                                             ))}
@@ -676,28 +673,40 @@ const App = () => {
 
                                         {/* Visual Marker Labels */}
                                         <div className="absolute inset-0 pointer-events-none z-20">
-                                            {PLOTS.map(plot => (
-                                                <div key={`label-${plot.id}`}
-                                                    className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center border shadow-sm pointer-events-none backdrop-blur-sm tracking-tighter
-                                                        ${plot.status === 'sold' 
-                                                            ? 'px-[3px] md:px-[5px] py-[1.5px] rounded-[3px] text-[6px] md:text-[7px] text-[#D4AF37] font-black shadow-md whitespace-nowrap'
-                                                            : plot.status === 'management'
-                                                            ? 'px-1 md:px-1.5 py-[2px] rounded-sm text-[7px] md:text-[8px] text-white font-bold whitespace-nowrap'
-                                                            : 'w-4 h-4 md:w-5 md:h-5 rounded-full text-[6px] md:text-[7px] text-white font-bold'}`}
-                                                    style={{
-                                                        ...getPathCenter(plot.path),
-                                                        backgroundColor: plot.status === 'sold' ? '#0f172aE6' : plot.status === 'management' ? '#8b5cf6B3' : (PHASES[plot.phase].color + '99'),
-                                                        borderColor: plot.status === 'sold' ? '#D4AF3780' : plot.status === 'management' ? '#8b5cf6EE' : plot.status === 'in_progress' ? '#64748b' : '#10b981',
-                                                        borderWidth: plot.status === 'sold' ? '1px' : '1.5px'
-                                                    }}>
-                                                    {plot.status === 'sold' ? '계약완료' : plot.status === 'management' ? '사무동' : plot.id}
-                                                </div>
-                                            ))}
+                                            {PLOTS.map(plot => {
+                                                if (plot.status === 'sold') {
+                                                    return (
+                                                        <div key={`label-${plot.id}`} className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30 drop-shadow-md" style={getPathCenter(plot.path)}>
+                                                            <div className="bg-gradient-to-r from-[#831843] to-[#e11d48] pl-[4px] pr-[7px] md:pl-[5px] md:pr-[9px] py-[1.5px] flex items-center justify-center border-l border-l-[#D4AF37]"
+                                                                style={{ clipPath: 'polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%)', minHeight: '9px' }}>
+                                                                <span className="text-white text-[4.5px] md:text-[5.5px] font-black tracking-widest whitespace-nowrap drop-shadow-sm ml-[1px] relative bottom-[0.2px]">분양완료</span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <div key={`label-${plot.id}`}
+                                                        className={`absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center shadow-md pointer-events-none backdrop-blur-[2px]
+                                                            ${plot.status === 'management'
+                                                                ? 'px-[5px] md:px-[6px] py-[2px] rounded-[5px] bg-[#F9F9F7E6] border border-[#1A2F23]/20'
+                                                                : 'w-[15px] h-[15px] md:w-[19px] md:h-[19px] rounded-full text-[5.5px] md:text-[6.5px] text-slate-900 font-bold bg-white/95 border-[1px] border-slate-900 leading-none pt-[0.5px] tracking-tight'}`}
+                                                        style={getPathCenter(plot.path)}>
+                                                        {plot.status === 'management' ? (
+                                                            <div className="flex items-center justify-center gap-[2.5px] mt-[0.5px]">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-[8px] h-[8px] md:w-[10px] md:h-[10px] text-[#1A2F23] -mt-[1px]">
+                                                                    <path fillRule="evenodd" d="M3 2.25a.75.75 0 01.75-.75h16.5a.75.75 0 01.75.75v18a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75v-18zM6 6a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 016 6zm0 3.75a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM8.25 12a.75.75 0 00-.75.75v1.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75v-1.5a.75.75 0 00-.75-.75h-1.5zm-2.25 5.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM12 6a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 0112 6zm0 3.75a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                                                                </svg>
+                                                                <span className="text-[5.5px] md:text-[6.5px] font-black tracking-tight text-[#1A2F23]">사무동</span>
+                                                            </div>
+                                                        ) : plot.id}
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {/* View Prompt Moved Outside */}
                             <div className="mt-4 flex justify-end w-full animate-in fade-in">
                                 <div className="bg-white text-slate-800 px-5 py-3 rounded-full border border-slate-200 shadow-sm flex items-center gap-2 w-max">
