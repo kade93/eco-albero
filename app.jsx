@@ -45,52 +45,52 @@ const PHASES = {
 
 // --- Plot Data (Extracted from 2112x2016 source) ---
 const PLOTS = [
-    { id: '9-1', x: 65.41, y: 65.43, phase: '9', status: 'available', area: 723.4, path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
-    { id: '9-2', x: 69.54, y: 63.96, phase: '9', status: 'sold', area: 816.4, path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
-    { id: '9-3', x: 73.43, y: 61.64, phase: '9', status: 'available', area: 821.1, path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
-    { id: '9-4', x: 77.72, y: 58.83, phase: '9', status: 'available', area: 792.6, path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
-    { id: '9-5', x: 81.76, y: 56.35, phase: '9', status: 'sold', area: 696.0, path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' },
-    { id: '8-1', x: 62.04, y: 44.54, phase: '8', status: 'available', area: 750.8, path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
-    { id: '8-2', x: 65.67, y: 42.47, phase: '8', status: 'sold', area: 836.7, path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
-    { id: '8-3', x: 69.47, y: 40.4, phase: '8', status: 'available', area: 831.9, path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
-    { id: '8-4', x: 73.06, y: 38.44, phase: '8', status: 'available', area: 816.4, path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
-    { id: '7-1', x: 49.05, y: 50.44, phase: '7', status: 'available', area: 1346.8, path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
-    { id: '7-2', x: 54.85, y: 48.53, phase: '7', status: 'available', area: 750.8, path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
-    { id: '7-3', x: 58.37, y: 46.57, phase: '7', status: 'available', area: 749.6, path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
-    { id: '6-1', x: 47.49, y: 60.38, phase: '6', status: 'sold', area: 1265.7, path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
-    { id: '6-2', x: 52.82, y: 57.68, phase: '6', status: 'available', area: 662.6, path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
-    { id: '6-3', x: 58.04, y: 54.97, phase: '6', status: 'available', area: 589.9, path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
-    { id: '6-4', x: 61.31, y: 53.03, phase: '6', status: 'available', area: 595.9, path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
-    { id: '6-5', x: 64.57, y: 51.07, phase: '6', status: 'available', area: 597.1, path: 'M1326.5 1009L1371.5 1088L1422.5 1059.5L1371.5 982L1326.5 1009Z' },
-    { id: '5-1', x: 70.72, y: 55.03, phase: '5', status: 'available', area: 591.2, path: 'M1489 1151L1448.5 1071.5L1502 1046.5L1539.5 1127.5L1489 1151Z' },
-    { id: '5-2', x: 74.02, y: 53.12, phase: '5', status: 'available', area: 591.2, path: 'M1563 1114.5L1518.5 1034L1563 1006L1609 1085.5L1563 1114.5Z' },
-    { id: '5-3', x: 77.53, y: 51.13, phase: '5', status: 'available', area: 582.8, path: 'M1633 1071.5L1591 996L1642.5 968L1687.5 1046.5L1633 1071.5Z' },
-    { id: '5-4', x: 68.19, y: 49.93, phase: '5', status: 'available', area: 594.7, path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
-    { id: '5-5', x: 71.68, y: 48.08, phase: '5', status: 'available', area: 594.7, path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
-    { id: '5-6', x: 75.0, y: 46.07, phase: '5', status: 'available', area: 588.8, path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
-    { id: '4-1', x: 57.86, y: 70.4, phase: '4', status: 'management', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
-    { id: '4-2', x: 61.29, y: 67.45, phase: '4', status: 'available', area: 572.1, path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
-    { id: '4-3', x: 60.83, y: 60.34, phase: '4', status: 'available', area: 585.2, path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
-    { id: '4-4', x: 64.11, y: 58.47, phase: '4', status: 'available', area: 591.2, path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
-    { id: '4-5', x: 67.42, y: 56.58, phase: '4', status: 'available', area: 592.3, path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
-    { id: '2-1', x: 56.62, y: 62.44, phase: '2', status: 'available', area: 736.5, path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
-    { id: '2-2', x: 52.65, y: 64.57, phase: '2', status: 'sold', area: 759.1, path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
-    { id: '2-3', x: 48.79, y: 66.7, phase: '2', status: 'sold', area: 717.5, path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
-    { id: '2-4', x: 52.54, y: 71.64, phase: '2', status: 'available', area: 809.2, path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
-    { id: '2-5', x: 55.14, y: 76.19, phase: '2', status: 'available', area: 756.7, path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
-    { id: '2-6', x: 58.42, y: 79.13, phase: '2', status: 'available', area: 729.4, path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
-    { id: '3-4', x: 50.72, y: 79.72, phase: '3', status: 'sold', area: 1529.6, path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
-    { id: '3-3', x: 65.45, y: 55.62, phase: '3', status: 'available', area: 743.3, path: 'M959 1564V1624H841V1564H959Z' },
-    { id: '3-2', x: 44.07, y: 74.22, phase: '3', status: 'sold', area: 727.0, path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
-    { id: '3-1', x: 52.42, y: 57.03, phase: '3', status: 'available', area: 783.6, path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
-    { id: '3-5', x: 49.78, y: 78.04, phase: '3', status: 'available', area: 1022.6, path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
-    { id: '1-1', x: 58.57, y: 94.51, phase: '1', status: 'available', area: 819.4, path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
-    { id: '1-2', x: 55.09, y: 91.83, phase: '1', status: 'sold', area: 772.7, path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
-    { id: '1-3', x: 51.73, y: 90.07, phase: '1', status: 'available', area: 734.1, path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
-    { id: '1-4', x: 48.66, y: 88.14, phase: '1', status: 'available', area: 767.5, path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
-    { id: '1-7', x: 60.08, y: 87.24, phase: '1', status: 'available', area: 646.3, path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
-    { id: '1-6', x: 56.2, y: 83.71, phase: '1', status: 'available', area: 634.8, path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
-    { id: '1-5', x: 52.71, y: 81.51, phase: '1', status: 'available', area: 638.2, path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
+    { id: '1', x: 58.57, y: 94.51, phase: '1', status: 'available', area: 819.4, path: 'M1169.5 1923L1290 1959.5L1299 1927.5L1269.5 1867.5L1224.5 1831L1169.5 1923Z' },
+    { id: '2', x: 55.09, y: 91.83, phase: '1', status: 'available', area: 772.7, path: 'M1210.5 1823L1154.5 1923L1088 1898L1154.5 1789L1210.5 1823Z' },
+    { id: '3', x: 51.73, y: 90.07, phase: '1', status: 'available', area: 734.1, path: 'M1138 1783.5L1075.5 1893.5L1023.5 1867.5L1088 1751L1138 1783.5Z' },
+    { id: '4', x: 48.66, y: 88.14, phase: '1', status: 'available', area: 767.5, path: 'M1075.5 1743L1006 1856L958.5 1831L1023.5 1712L1075.5 1743Z' },
+    { id: '5', x: 52.71, y: 81.51, phase: '1', status: 'available', area: 638.2, path: 'M1154.5 1625L1108.5 1703.5L1050 1670.5L1098.5 1592.5L1154.5 1625Z' },
+    { id: '6', x: 56.2, y: 83.71, phase: '1', status: 'available', area: 634.8, path: 'M1231.5 1670.5L1182 1751L1120.5 1712L1169.5 1633.5L1231.5 1670.5Z' },
+    { id: '7', x: 60.08, y: 87.24, phase: '1', status: 'available', area: 646.3, path: 'M1316.5 1762L1282.5 1808.5L1197.5 1758L1231.5 1703.5L1316.5 1762Z' },
+    { id: '8', x: 56.62, y: 62.44, phase: '2', status: 'available', area: 736.5, path: 'M1238 1278L1196 1196L1131.5 1228.5L1176 1313L1238 1278Z' },
+    { id: '9', x: 52.65, y: 64.57, phase: '2', status: 'available', area: 759.1, path: 'M1155 1322.5L1112.5 1240.5L1046 1272L1091.5 1351.5L1155 1322.5Z' },
+    { id: '10', x: 48.79, y: 66.7, phase: '2', status: 'available', area: 717.5, path: 'M1073 1363.5L1028.5 1278L970 1322.5L1007.5 1396L1073 1363.5Z' },
+    { id: '11', x: 52.54, y: 71.64, phase: '2', status: 'available', area: 809.2, path: 'M1123.5 1396L1022.5 1450L1123.5 1519L1155 1460.5L1123.5 1396Z' },
+    { id: '12', x: 55.14, y: 76.19, phase: '2', status: 'available', area: 756.7, path: 'M1169 1482.5L1104.5 1575L1162 1610L1218 1529.5L1169 1482.5Z' },
+    { id: '13', x: 58.42, y: 79.13, phase: '2', status: 'available', area: 729.4, path: 'M1228.5 1542.5L1176 1619.5L1249.5 1661.5L1287 1610L1228.5 1542.5Z' },
+    { id: '14', x: 52.42, y: 57.03, phase: '3', status: 'available', area: 783.6, path: 'M934.5 1378L959 1453H841L833 1423L934.5 1378Z' },
+    { id: '15', x: 44.07, y: 74.22, phase: '3', status: 'available', area: 727.0, path: 'M961.5 1472.5L959 1544H841V1472.5H961.5Z' },
+    { id: '16', x: 65.45, y: 55.62, phase: '3', status: 'available', area: 743.3, path: 'M959 1564V1624H841V1564H959Z' },
+    { id: '17', x: 50.72, y: 79.72, phase: '3', status: 'available', area: 1529.6, path: 'M1013 1718L945 1824L841 1742V1644H959L971 1682L1013 1718Z' },
+    { id: '18', x: 49.78, y: 78.04, phase: '3', status: 'available', area: 1022.6, path: 'M1108.5 1534.5L1025.5 1677L1001 1654.5L1013 1466L1108.5 1534.5Z' },
+    { id: '19', x: 57.86, y: 70.4, phase: '4', status: 'available', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
+    { id: '20', x: 61.29, y: 67.45, phase: '4', status: 'available', area: 572.1, path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
+    { id: '21', x: 60.83, y: 60.34, phase: '4', status: 'available', area: 585.2, path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
+    { id: '22', x: 64.11, y: 58.47, phase: '4', status: 'available', area: 591.2, path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
+    { id: '23', x: 67.42, y: 56.58, phase: '4', status: 'available', area: 592.3, path: 'M1422.5 1182L1380 1106L1427 1077.5L1468 1155.5L1422.5 1182Z' },
+    { id: '24', x: 70.72, y: 55.03, phase: '5', status: 'available', area: 591.2, path: 'M1489 1151L1448.5 1071.5L1502 1046.5L1539.5 1127.5L1489 1151Z' },
+    { id: '25', x: 74.02, y: 53.12, phase: '5', status: 'available', area: 591.2, path: 'M1563 1114.5L1518.5 1034L1563 1006L1609 1085.5L1563 1114.5Z' },
+    { id: '26', x: 77.53, y: 51.13, phase: '5', status: 'available', area: 582.8, path: 'M1633 1071.5L1591 996L1642.5 968L1687.5 1046.5L1633 1071.5Z' },
+    { id: '27', x: 68.19, y: 49.93, phase: '5', status: 'available', area: 594.7, path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
+    { id: '28', x: 71.68, y: 48.08, phase: '5', status: 'available', area: 594.7, path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
+    { id: '29', x: 75.0, y: 46.07, phase: '5', status: 'available', area: 588.8, path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
+    { id: '30', x: 47.49, y: 60.38, phase: '6', status: 'available', area: 1265.7, path: 'M957.5 1249L966 1294.5L1099 1233.5L1039.5 1127.5L998.5 1150L957.5 1249Z' },
+    { id: '31', x: 52.82, y: 57.68, phase: '6', status: 'available', area: 662.6, path: 'M1072 1150L1118.5 1222.5L1179.5 1184L1135.5 1108L1072 1150Z' },
+    { id: '32', x: 58.04, y: 54.97, phase: '6', status: 'available', area: 589.9, path: 'M1189.5 1088L1234.5 1164.5L1281 1140.5L1234.5 1059.5L1189.5 1088Z' },
+    { id: '33', x: 61.31, y: 53.03, phase: '6', status: 'available', area: 595.9, path: 'M1258.5 1048.5L1297 1127.5L1352 1099.5L1308 1021.5L1258.5 1048.5Z' },
+    { id: '34', x: 64.57, y: 51.07, phase: '6', status: 'available', area: 597.1, path: 'M1326.5 1009L1371.5 1088L1422.5 1059.5L1371.5 982L1326.5 1009Z' },
+    { id: '35', x: 49.05, y: 50.44, phase: '7', status: 'available', area: 1346.8, path: 'M1011 995L1021 979L1081.5 946L1136 1040L1006 1105L985.5 1058L1011 995Z' },
+    { id: '36', x: 54.85, y: 48.53, phase: '7', status: 'available', area: 750.8, path: 'M1156.5 1028.5L1105 932L1161 902.5L1213 1000.5L1156.5 1028.5Z' },
+    { id: '37', x: 58.37, y: 46.57, phase: '7', status: 'available', area: 749.6, path: 'M1232.5 990L1183 894L1232.5 864L1283.5 956L1232.5 990Z' },
+    { id: '38', x: 62.04, y: 44.54, phase: '8', status: 'available', area: 750.8, path: 'M1310.5 948L1259 851L1310.5 824.5L1360.5 918.5L1310.5 948Z' },
+    { id: '39', x: 65.67, y: 42.47, phase: '8', status: 'available', area: 836.7, path: 'M1384 907.5L1331.5 812.5L1394.5 778.5L1440.5 874.5L1384 907.5Z' },
+    { id: '40', x: 69.47, y: 40.4, phase: '8', status: 'available', area: 831.9, path: 'M1464 865L1413 771L1475 738L1520.5 833L1464 865Z' },
+    { id: '41', x: 73.06, y: 38.44, phase: '8', status: 'available', area: 816.4, path: 'M1541 824.5L1496 728.5L1541 702.5L1596.5 794.5L1541 824.5Z' },
+    { id: '42', x: 65.41, y: 65.43, phase: '9', status: 'available', area: 723.4, path: 'M1368 1353.5L1334 1287L1395 1252.5L1442 1348.5L1368 1353.5Z' },
+    { id: '43', x: 69.54, y: 63.96, phase: '9', status: 'available', area: 816.4, path: 'M1469 1340L1415 1243L1469 1210.5L1521.5 1314L1469 1340Z' },
+    { id: '44', x: 73.43, y: 61.64, phase: '9', status: 'available', area: 821.1, path: 'M1545.5 1302.5L1494.5 1200.5L1563.5 1164.5L1605 1243L1545.5 1302.5Z' },
+    { id: '45', x: 77.72, y: 58.83, phase: '9', status: 'available', area: 792.6, path: 'M1631.5 1233L1588 1152.5L1656.5 1116.5L1700 1195L1631.5 1233Z' },
+    { id: '46', x: 81.76, y: 56.35, phase: '9', status: 'available', area: 696.0, path: 'M1719.5 1178L1677.5 1105L1749.5 1061.5L1767.5 1158L1719.5 1178Z' }
 ];
 
 // SVG path 데이터로부터 자동으로 중앙 좌표(bounding box 중심)를 계산하는 함수
@@ -494,20 +494,17 @@ const App = () => {
                 </div>
 
                 <div className="container mx-auto px-6 relative flex flex-col items-center mt-[-2vh] text-white pb-24 md:pb-28">
-                    <span className="text-[#FDE68A] font-bold tracking-[0.2em] text-xs md:text-sm mb-4 md:mb-5 drop-shadow-md bg-black/30 backdrop-blur-sm px-4 md:px-5 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg">
-                        PREMIUM TOWNHOUSE VILLAGE
+                    <span className="text-[#FDE68A] font-bold tracking-[0.2em] text-xs md:text-sm mb-4 md:mb-5 drop-shadow-md bg-black/30 backdrop-blur-sm px-4 md:px-5 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg uppercase">
+                        ECO ALBERO PRIVATE ESTATE
                     </span>
 
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-sans break-keep leading-[1.2] mb-3 text-center drop-shadow-lg text-white">
-                        퇴근 후 30분
-                    </h2>
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-sans break-keep leading-[1.2] mb-6 text-center drop-shadow-lg text-white">
-                        도심의 소음이 숲의 숨소리로
+                        같은 하루, 다른 삶을 선택하다
                     </h2>
 
-                    <p className="text-white/90 text-base md:text-lg font-medium leading-relaxed text-center mb-8 max-w-xl drop-shadow-md">
-                        하이닉스·현대백화점 30분, 청남대 25분<br />
-                        도심의 편리함과 자연의 평온함을 동시에 소유하세요
+                    <p className="text-white/95 text-base md:text-lg font-medium leading-relaxed text-center mb-8 max-w-2xl mx-auto drop-shadow-md break-keep">
+                        <strong className="text-white tracking-wide">자연이 일상이 되고, 아이들은 마음껏 뛰어놀며<br/>삶의 여유와 품격이 깊어지는 프리미엄 전원주택 단지, 에코알베로</strong><br /><br />
+                        <span className="text-white/80">도심과 자연을 함께 누리는 균형 잡힌 입지 | 병원·생활 인프라까지 편리하게 연결되는 입지<br />청주시내 25분 · 세종 35분 · 대전 35분</span>
                     </p>
                 </div>
 
@@ -604,14 +601,15 @@ const App = () => {
                         <div className="w-full xl:w-[55%] relative flex flex-col order-1 xl:order-2">
                             
                             {/* Mobile Promo Banner (Hidden on desktop) */}
-                            <div className="md:hidden bg-[#1A2F23]/5 border border-[#D4AF37]/40 rounded-[14px] p-3 mb-4 flex flex-col gap-1.5 shadow-sm">
+                            <div className="md:hidden mx-4 mb-5 px-3 py-2 bg-white/80 backdrop-blur-md border border-[#D4AF37]/30 shadow-sm flex flex-row items-center justify-center gap-3 whitespace-nowrap rounded-xl">
                                 <div className="flex items-center gap-1.5 text-[#1A2F23]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                    <span className="text-[12px] font-black tracking-tight drop-shadow-sm">46필지 한정, 일부 필지 선택 진행 중</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                    <span className="text-[11px] font-bold tracking-tight drop-shadow-sm">46필지 한정 분양 중</span>
                                 </div>
+                                <div className="w-[3px] h-[3px] bg-[#D4AF37]/60 rounded-full"></div>
                                 <div className="flex items-center gap-1.5 text-[#1A2F23]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                    <span className="text-[12px] font-black tracking-tight drop-shadow-sm">좋은 위치는 먼저 선택됩니다</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                    <span className="text-[11px] font-bold tracking-tight drop-shadow-sm">마지막 좋은 위치 선점</span>
                                 </div>
                             </div>
 
@@ -629,15 +627,16 @@ const App = () => {
                                 )}
 
                                 {/* Promo Overlay on Left Empty Space (Desktop Only) */}
-                                <div className="hidden md:block absolute top-6 left-6 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700">
-                                    <div className="bg-white/85 backdrop-blur-md px-3 md:px-4 py-2.5 rounded-xl shadow-md border border-[#D4AF37]/30 flex flex-col gap-1.5 w-max">
+                                <div className="hidden md:block absolute top-6 xl:top-8 left-6 xl:left-8 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700 opacity-95">
+                                    <div className="bg-white/80 backdrop-blur-md px-4 py-2.5 rounded-[14px] shadow-sm border border-[#D4AF37]/50 flex flex-row items-center gap-4 w-max">
                                         <div className="flex items-center gap-1.5 text-[#1A2F23]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                            <span className="text-[10px] md:text-xs font-black tracking-tight drop-shadow-sm">46필지 한정, 일부 필지 선택 진행 중</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                            <span className="text-sm font-bold tracking-wide drop-shadow-sm">46필지 한정 분양 중</span>
                                         </div>
+                                        <div className="w-[3px] h-[3px] bg-[#D4AF37]/60 rounded-full"></div>
                                         <div className="flex items-center gap-1.5 text-[#1A2F23]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#10b981]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                            <span className="text-[10px] md:text-xs font-black tracking-tight drop-shadow-sm">좋은 위치는 먼저 선택됩니다</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                            <span className="text-sm font-bold tracking-wide drop-shadow-sm">마지막 좋은 위치 선점</span>
                                         </div>
                                     </div>
                                 </div>
@@ -786,9 +785,9 @@ const App = () => {
                             {/* Decorative background circle */}
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[#D4AF37]/10 rounded-full blur-[80px] z-0 pointer-events-none"></div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full h-full relative z-10 min-h-[500px] lg:min-h-0">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full relative z-10 lg:h-full">
                                 {/* Left Uniform Image */}
-                                <div className="w-full h-full relative rounded-3xl overflow-hidden group min-h-[300px] sm:min-h-0 isolate">
+                                <div className="w-full relative rounded-3xl overflow-hidden group min-h-[350px] sm:h-full isolate">
                                     <img src={getAssetPath('community_lounge.png')} alt="하이엔드 커뮤니티" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 -z-10" />
 
                                     {/* Subtle Overlay Gradient */}
@@ -804,7 +803,7 @@ const App = () => {
                                 </div>
 
                                 {/* Right Uniform Image */}
-                                <div className="w-full h-full relative rounded-3xl overflow-hidden group min-h-[300px] sm:min-h-0 isolate">
+                                <div className="w-full relative rounded-3xl overflow-hidden group min-h-[350px] sm:h-full isolate">
                                     <img src={getAssetPath('smart_convenience.png')} alt="스마트 무인 시설" className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 -z-10" />
 
                                     {/* Subtle Overlay Gradient */}
@@ -1523,12 +1522,9 @@ const App = () => {
                         <div className="w-full md:w-1/3 h-full p-8 flex flex-col justify-between bg-slate-900 border-l border-white/5 overflow-y-auto">
                             <div>
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-catalog-gold/20 text-catalog-gold border border-catalog-gold/30">
-                                        {PHASES[selectedPlot.phase].label}
-                                    </span>
-                                    <span className="text-white/40 text-xs">부지 {selectedPlot.id}</span>
+                                    <span className="text-white/60 text-sm tracking-widest font-medium uppercase font-sans">에코알베로 PRE-SALE</span>
                                 </div>
-                                <h2 className="text-3xl font-serif text-white mb-6">{selectedPlot.id} 필지</h2>
+                                <h2 className="text-3xl font-serif text-white mb-6">필지 {selectedPlot.id}</h2>
 
                                 <div className="space-y-6">
                                     <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
