@@ -484,10 +484,10 @@ const App = () => {
             </div>
 
             {/* --- Hero Section (Nature Background with smooth fade & overlap) --- */}
-            <section className="relative min-h-[65vh] md:min-h-[70vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23] pt-16 md:pt-24">
+            <section className="relative min-h-[70vh] md:min-h-[85vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23] pt-16 md:pt-24 transition-colors duration-1000">
                 <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center -z-10"
-                    style={{ backgroundImage: `url(${getAssetPath('nature_view.png')})`, backgroundPosition: 'center 30%' }}
+                    className="absolute inset-0 w-full h-full bg-cover bg-center -z-10 transition-all duration-1000"
+                    style={{ backgroundImage: `url(${getAssetPath('nature_view_day.png')})`, backgroundPosition: 'center 75%' }}
                 >
                     {/* Seamless fade to white background of the next section */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white/90"></div>

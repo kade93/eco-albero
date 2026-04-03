@@ -6,6 +6,8 @@ dist-ssr
 .idea
 .DS_Store
 에코알베로_필지별_전필지_작업.xlsx
+public/generated_backgrounds
+*.pdf
 
 # Local env files
 .env
