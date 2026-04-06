@@ -547,7 +547,7 @@ const App = () => {
             </section>
 
             {/* --- Interactive Plot Explorer (Horizontal Layout) --- */}
-            <section id="plots" className="relative pt-24 md:pt-28 pb-12 lg:pb-16 flex items-center justify-center overflow-hidden bg-white z-10 border-b border-black/5">
+            <section id="plots" className="relative pt-36 md:pt-28 pb-12 lg:pb-16 flex items-center justify-center overflow-hidden bg-white z-10 border-b border-black/5">
                 <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#1A2F23]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
                 <div className="container mx-auto px-6 relative z-10 w-full max-w-[1400px]">
                     <div className="flex flex-col xl:flex-row items-center gap-10 xl:gap-14">
