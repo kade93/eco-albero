@@ -498,13 +498,20 @@ const App = () => {
                         ECO ALBERO PRIVATE ESTATE
                     </span>
 
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-sans break-keep leading-[1.2] mb-6 text-center drop-shadow-lg text-white">
+                    <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold font-sans break-keep leading-[1.3] md:leading-[1.2] mb-4 md:mb-6 text-center drop-shadow-lg text-white">
                         같은 하루, 다른 삶을 선택하다
                     </h2>
 
-                    <p className="text-white/95 text-base md:text-lg font-medium leading-relaxed text-center mb-8 max-w-2xl mx-auto drop-shadow-md break-keep">
-                        <strong className="text-white tracking-wide">자연이 일상이 되고, 아이들은 마음껏 뛰어놀며<br/>삶의 여유와 품격이 깊어지는 프리미엄 전원주택 단지, 에코알베로</strong><br /><br />
-                        <span className="text-white/80">도심과 자연을 함께 누리는 균형 잡힌 입지 | 병원·생활 인프라까지 편리하게 연결되는 입지<br />청주시내 25분 · 세종 35분 · 대전 35분</span>
+                    <p className="text-white/95 text-[14px] sm:text-base md:text-lg font-medium leading-[1.65] md:leading-relaxed text-center mb-8 max-w-2xl mx-auto drop-shadow-md break-keep px-2">
+                        <strong className="text-white tracking-wide block mb-3 md:mb-4">
+                            자연이 일상이 되고, 아이들은 마음껏 뛰어놀며<br className="hidden sm:block" />
+                            삶의 여유와 품격이 깊어지는 프리미엄 전원주택 단지, 에코알베로
+                        </strong>
+                        <span className="text-white/80 block leading-[1.6]">
+                            도심과 자연을 함께 누리는 균형 잡힌 입지<br />
+                            병원 · 생활 인프라까지 편리하게 연결되는 입지<br />
+                            청주시내 25분 · 세종 35분 · 대전 35분
+                        </span>
                     </p>
                 </div>
 
@@ -558,7 +565,7 @@ const App = () => {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D4AF37]"></span>
                                 </span>
-                                단 46필지, 선택은 이미 시작되었습니다
+                                46필지 한정, 일부 필지 선택 진행 중
                             </div>
 
                             <div className="mb-4 md:mb-6">
@@ -601,15 +608,14 @@ const App = () => {
                         <div className="w-full xl:w-[55%] relative flex flex-col order-1 xl:order-2">
                             
                             {/* Mobile Promo Banner (Hidden on desktop) */}
-                            <div className="md:hidden mx-4 mb-5 px-3 py-2 bg-white/80 backdrop-blur-md border border-[#D4AF37]/30 shadow-sm flex flex-row items-center justify-center gap-3 whitespace-nowrap rounded-xl">
+                            <div className="md:hidden mx-4 mb-5 px-3 py-2.5 bg-white/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-sm flex flex-col items-center justify-center gap-1.5 whitespace-nowrap rounded-xl">
                                 <div className="flex items-center gap-1.5 text-[#1A2F23]">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                    <span className="text-[11px] font-bold tracking-tight drop-shadow-sm">46필지 한정 분양 중</span>
+                                    <span className="text-[12px] font-bold tracking-tight drop-shadow-sm">46필지 한정, 일부 필지 선택 진행 중</span>
                                 </div>
-                                <div className="w-[3px] h-[3px] bg-[#D4AF37]/60 rounded-full"></div>
                                 <div className="flex items-center gap-1.5 text-[#1A2F23]">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                    <span className="text-[11px] font-bold tracking-tight drop-shadow-sm">마지막 좋은 위치 선점</span>
+                                    <span className="text-[12px] font-bold tracking-tight drop-shadow-sm">좋은 위치는 먼저 선택됩니다</span>
                                 </div>
                             </div>
 
@@ -627,16 +633,15 @@ const App = () => {
                                 )}
 
                                 {/* Promo Overlay on Left Empty Space (Desktop Only) */}
-                                <div className="hidden md:block absolute top-6 xl:top-8 left-6 xl:left-8 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700 opacity-95">
-                                    <div className="bg-white/80 backdrop-blur-md px-4 py-2.5 rounded-[14px] shadow-sm border border-[#D4AF37]/50 flex flex-row items-center gap-4 w-max">
+                                <div className="hidden md:block absolute top-5 xl:top-6 left-5 xl:left-6 z-40 pointer-events-none animate-in fade-in slide-in-from-left-4 duration-700 opacity-90">
+                                    <div className="bg-white/75 backdrop-blur-md px-4 py-2 rounded-xl border border-[#D4AF37]/50 flex flex-col items-start gap-1 w-max shadow-md">
                                         <div className="flex items-center gap-1.5 text-[#1A2F23]">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                            <span className="text-sm font-bold tracking-wide drop-shadow-sm">46필지 한정 분양 중</span>
+                                            <span className="text-sm font-bold tracking-wide drop-shadow-md">46필지 한정, 일부 필지 선택 진행 중</span>
                                         </div>
-                                        <div className="w-[3px] h-[3px] bg-[#D4AF37]/60 rounded-full"></div>
                                         <div className="flex items-center gap-1.5 text-[#1A2F23]">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                                            <span className="text-sm font-bold tracking-wide drop-shadow-sm">마지막 좋은 위치 선점</span>
+                                            <span className="text-sm font-bold tracking-wide drop-shadow-md">좋은 위치는 먼저 선택됩니다</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1521,19 +1526,25 @@ const App = () => {
 
                         <div className="w-full md:w-1/3 h-full p-8 flex flex-col justify-between bg-slate-900 border-l border-white/5 overflow-y-auto">
                             <div>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="text-white/60 text-sm tracking-widest font-medium uppercase font-sans">에코알베로 PRE-SALE</span>
+                                <div className="flex items-center gap-2 mb-2 md:mb-3">
+                                    <span className="text-[#D4AF37] text-xs md:text-sm tracking-widest font-bold uppercase font-sans">ECO ALBERO PRE-SALE</span>
                                 </div>
-                                <h2 className="text-3xl font-serif text-white mb-6">필지 {selectedPlot.id}</h2>
+                                <h2 className="text-4xl md:text-[42px] font-sans font-black text-white mb-6 md:mb-8 tracking-tight drop-shadow-sm leading-none">
+                                    필지 {selectedPlot.id}
+                                </h2>
 
-                                <div className="space-y-6">
-                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
-                                        <div className="text-sm font-bold text-catalog-gold">분양 면적</div>
-                                        <div className="text-xl font-light text-white">{calculateMappedArea(selectedPlot)} <span className="text-sm text-white/50">m²</span></div>
+                                <div className="space-y-4 md:space-y-5">
+                                    <div className="p-4 md:p-5 rounded-[14px] bg-white/[0.03] border border-white/10 flex justify-between items-center shadow-sm hover:bg-white/[0.06] transition-colors">
+                                        <div className="text-sm md:text-[15px] font-bold text-catalog-gold/90">분양 면적</div>
+                                        <div className="text-xl md:text-[22px] font-bold font-sans text-white tracking-tight">
+                                            {calculateMappedArea(selectedPlot)} <span className="text-sm md:text-base font-medium text-white/50 tracking-normal ml-0.5">m²</span>
+                                        </div>
                                     </div>
-                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center">
-                                        <div className="text-sm font-bold text-catalog-gold">분양가</div>
-                                        <div className="text-xl font-bold text-white tracking-widest">문의</div>
+                                    <div className="p-4 md:p-5 rounded-[14px] bg-white/[0.03] border border-white/10 flex justify-between items-center shadow-sm hover:bg-white/[0.06] transition-colors">
+                                        <div className="text-sm md:text-[15px] font-bold text-catalog-gold/90">분양가</div>
+                                        <div className="text-xl md:text-[22px] font-black font-sans text-white tracking-widest drop-shadow-sm">
+                                            문의
+                                        </div>
                                     </div>
 
                                     <div className="pt-4 border-t border-white/10">
