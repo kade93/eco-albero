@@ -578,7 +578,7 @@ const App = () => {
                             </div>
 
                             <p className="text-slate-500 text-sm md:text-base mb-8 font-medium leading-relaxed max-w-xl mx-auto xl:mx-0">
-                                <strong className="text-slate-800 tracking-wide text-base">숲세권 프리미엄 타운하우스, 에코알베로</strong><br />
+                                <strong className="text-slate-800 tracking-wide text-base">숲세권 프리미엄 전원주택단지, 에코알베로</strong><br />
                                 단지 곳곳에 펼쳐지는 놀라운 전망과 녹지 공간을 확인해보세요. 원하시는 필지를 클릭하시면 실제 현장에 선 듯한 파노라마 뷰가 펼쳐집니다.
                             </p>
 
