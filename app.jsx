@@ -68,7 +68,7 @@ const PLOTS = [
     { id: '5-4', x: 68.19, y: 49.93, phase: '5', status: 'available', area: 594.7, path: 'M1436 1046.5L1391.5 968L1448.5 946L1489 1025.5L1436 1046.5Z' },
     { id: '5-5', x: 71.68, y: 48.08, phase: '5', status: 'available', area: 594.7, path: 'M1508.5 1010L1471 934.5L1518.5 907L1563 985L1508.5 1010Z' },
     { id: '5-6', x: 75.0, y: 46.07, phase: '5', status: 'available', area: 588.8, path: 'M1578.5 968L1539.5 895.5L1591 866.5L1633 946L1578.5 968Z' },
-    { id: '4-1', x: 57.86, y: 70.4, phase: '4', status: 'management', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
+    { id: '4-1', x: 57.86, y: 70.4, phase: '4', status: 'available', area: 647.2, path: 'M1204 1456.5L1161.5 1376.5L1237 1337L1282 1422L1243 1466.5L1204 1456.5Z' },
     { id: '4-2', x: 61.29, y: 67.45, phase: '4', status: 'available', area: 572.1, path: 'M1282 1404.5L1243 1329L1313.5 1293.5L1351.5 1367L1282 1404.5Z' },
     { id: '4-3', x: 60.83, y: 60.34, phase: '4', status: 'available', area: 585.2, path: 'M1282 1257L1243 1182L1286.5 1155.5L1330 1231L1282 1257Z' },
     { id: '4-4', x: 64.11, y: 58.47, phase: '4', status: 'available', area: 591.2, path: 'M1351.5 1218L1313.5 1145L1357 1118.5L1396 1194L1351.5 1218Z' },
@@ -484,16 +484,16 @@ const App = () => {
             </div>
 
             {/* --- Hero Section (Nature Background with smooth fade & overlap) --- */}
-            <section className="relative min-h-[70vh] md:min-h-[85vh] flex flex-col items-center justify-center overflow-visible z-20 bg-[#1A2F23] pt-16 md:pt-24 transition-colors duration-1000">
+            <section className="relative min-h-[60vh] md:min-h-[600px] xl:min-h-[680px] flex flex-col items-center justify-center overflow-visible z-20 bg-white pt-16 md:pt-20 transition-colors duration-1000">
                 <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center -z-10 transition-all duration-1000"
-                    style={{ backgroundImage: `url(${getAssetPath('nature_view_day.png')})`, backgroundPosition: 'center 75%' }}
+                    className="absolute inset-0 w-full h-full bg-cover -z-10 transition-all duration-1000"
+                    style={{ backgroundImage: `url(${getAssetPath('nature_view_sunset_upscaled.jpeg')})`, backgroundPosition: 'center 60%' }}
                 >
                     {/* Seamless fade to white background of the next section */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white/90"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#1a1311]/40 via-transparent to-[#ffffff] pointer-events-none"></div>
                 </div>
 
-                <div className="container mx-auto px-6 relative flex flex-col items-center mt-[-2vh] text-white pb-24 md:pb-28">
+                <div className="container mx-auto px-6 relative flex flex-col items-center mt-0 md:mt-[-2vh] text-white pb-20 md:pb-24">
                     <span className="text-[#FDE68A] font-bold tracking-[0.2em] text-xs md:text-sm mb-4 md:mb-5 drop-shadow-md bg-black/30 backdrop-blur-sm px-4 md:px-5 py-1.5 md:py-2 rounded-full border border-white/20 shadow-lg uppercase">
                         ECO ALBERO PRIVATE ESTATE
                     </span>
@@ -606,7 +606,7 @@ const App = () => {
 
                         {/* --- Right Column: Interactive Plot Map --- */}
                         <div className="w-full xl:w-[55%] relative flex flex-col order-1 xl:order-2">
-                            
+
                             {/* Mobile Promo Banner (Hidden on desktop) */}
                             <div className="md:hidden mx-4 mb-5 px-3 py-2.5 bg-white/85 backdrop-blur-md border border-[#D4AF37]/40 shadow-sm flex flex-col items-center justify-center gap-1.5 whitespace-nowrap rounded-xl">
                                 <div className="flex items-center gap-1.5 text-[#1A2F23]">
@@ -1496,9 +1496,9 @@ const App = () => {
                             <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto w-full">
                                 <div className="grid grid-cols-3 gap-3 md:gap-6">
                                     {[
-                                        { id: 'se', label: '동남향 VIEW', src: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80' },
-                                        { id: 's', label: '정남향 VIEW', src: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80' },
-                                        { id: 'sw', label: '남서향 VIEW', src: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&q=80' }
+                                        { id: 'se', label: '동남향 VIEW', src: getAssetPath('view_southeast.png') },
+                                        { id: 's', label: '정남향 VIEW', src: getAssetPath('view_south.png') },
+                                        { id: 'sw', label: '남서향 VIEW', src: getAssetPath('view_southwest.png') }
                                     ].map((img, index) => (
                                         <div
                                             key={index}
