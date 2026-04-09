@@ -487,7 +487,7 @@ const App = () => {
             <section className="relative min-h-[60vh] md:min-h-[600px] xl:min-h-[680px] flex flex-col items-center justify-center overflow-visible z-20 bg-white pt-16 md:pt-20 transition-colors duration-1000">
                 <div
                     className="absolute inset-0 w-full h-full bg-cover -z-10 transition-all duration-1000"
-                    style={{ backgroundImage: `url(${getAssetPath('nature_view_sunset_upscaled.jpeg')})`, backgroundPosition: 'center 60%' }}
+                    style={{ backgroundImage: `url(${getAssetPath('nature_view_sunset_upscaled.jpeg')})`, backgroundColor: '#40332B', backgroundPosition: 'center 60%' }}
                 >
                     {/* Seamless fade to white background of the next section */}
                     <div className="absolute inset-0 bg-gradient-to-b from-[#1a1311]/40 via-transparent to-[#ffffff] pointer-events-none"></div>
